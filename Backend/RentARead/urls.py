@@ -1,4 +1,4 @@
-"""Wattpay URL Configuration
+"""RentARead URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.1/topics/http/urls/
@@ -20,7 +20,6 @@ from django.views.generic import TemplateView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('loginPage.urls')),
-    path('api/', include('inmuebles.urls')),
     re_path(r'.*', TemplateView.as_view(template_name="index.html",
             content_type="text/html"))
 ]

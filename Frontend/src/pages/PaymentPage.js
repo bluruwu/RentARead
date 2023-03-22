@@ -24,7 +24,7 @@ export default function PaymentPage(props) {
     return(
         <>
             <Helmet>
-                <title> Pagos en línea | WATTPAY</title>
+                <title> Pagos en línea | RentARead</title>
             </Helmet>
             <Container>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>

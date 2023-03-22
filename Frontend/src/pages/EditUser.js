@@ -19,7 +19,7 @@ const StyledRoot2 = styled('div')(({ theme }) => ({
     return( 
     <>
     <Helmet>
-        <title> Editar | WATTPAY </title>
+        <title> Editar | RentARead </title>
     </Helmet>
     <Container maxWidth='sm' class="container-sm">
     <StyledRoot2>

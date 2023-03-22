@@ -21,7 +21,7 @@ const StyledRoot2 = styled('div')(({ theme }) => ({
     <>
     
     <Helmet>
-        <title> Publicidad | WATTPAY </title>
+        <title> Publicidad | RentARead </title>
     </Helmet>
 
     <Container maxWidth='sm' class="container-sm">

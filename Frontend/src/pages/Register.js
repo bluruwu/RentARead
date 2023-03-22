@@ -19,7 +19,7 @@ export default function Register(){
     return(
         <>
         <Helmet>
-            <title> Register | WATTPAY </title>
+            <title> Register | RentARead </title>
         </Helmet>
 
         <Container maxWidth='sm' class="container-sm">

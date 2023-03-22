@@ -1,14 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 // @mui
 import { styled } from '@mui/material/styles';
-import {
-  Container,
-  Typography,
-  Avatar,
-  Box,
-  List,
-  ListItemText,
-} from '@mui/material';
+import { Container, Typography, Avatar, Box, List, ListItemText } from '@mui/material';
 // components
 import NavBar from '../components/nav-section/NavBar';
 // hooks
@@ -62,14 +55,14 @@ export default function LoginPage() {
   return (
     <>
       <Helmet>
-        <title> Home | WATTPAY </title>
+        <title> Home | RentARead </title>
       </Helmet>
       <NavBar />
       <StyledRoot>
         <Container maxWidth="sm">
           <StyledContent sx={{ textAlign: 'center', alignItems: 'center' }}>
             <Typography variant="h2" paragraph>
-              WATTPAY
+              RentARead
               <Typography sx={{ color: 'text.secondary' }}>
                 <p>
                   Somos una empresa colombiana que desarrolla software para el manejo de clientes, facturación y recaudo
@@ -87,8 +80,8 @@ export default function LoginPage() {
               <List>
                 <ListItemText primary="CONTACTO" />
                 <ListItemText primary="Teléfono: 602-4552330" />
-                <ListItemText primary="Email: wattpay@gmail.com" />
-                <ListItemText primary="GitHub: https://github.com/bluruwu/WattPay" />
+                <ListItemText primary="Email: rentaread@gmail.com" />
+                <ListItemText primary="GitHub: https://github.com/bluruwu/RentARead" />
               </List>
             </Box>
           </StyledContent>

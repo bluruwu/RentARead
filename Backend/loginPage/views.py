@@ -77,104 +77,68 @@ class LoginView(APIView):
 
         data = self.request.data
 
-        username = data['correo_electronico']
+        username = data['email']
         password = data['contrasena']
 
         # peticiones a la base de datos
-        nombreUsuario = str((Usuario.objects.filter(
-            correo_electronico=username).values().first())['nombre'])
+        # nombreUsuario = str((Usuario.objects.filter(
+        #     email=username).values().first())['nombre'])
 
-        lista = list(Usuario.objects.all().values())
+        # lista = list(Usuario.objects.all().values())
 
-        listaC = list(Usuario.objects.filter(
-            id_tipo_usuario_id=3).values())
-        print(lista)
+        # listaC = list(Usuario.objects.filter(
+        #     id_tipo_usuario_id=3).values())
+        # print(lista)
 
-        inmueb = list(Inmueble.objects.all().values())
-        print(inmueb)
-        listaL = []
-        i = 0
-        while i < len(inmueb):
-            namess = str((Inmueble.objects.all().values()[i])['cedula_id'])
-            direccions = str((Inmueble.objects.all().values()[i])['direccion'])
-            ciudads = str((Inmueble.objects.all().values()[i])['ciudad'])
-            loc = geocoder.osm(direccions+','+ciudads+','+'colombia')
-            print(loc)
-            localC = {
-                'nombre': str((Usuario.objects.filter(
-                    cedula='1002545432').values().first())['nombre']),
-                'coordenadas': loc.latlng
-            }
-            listaL.append(localC)
-            i += 1
+        # inmueb = list(Inmueble.objects.all().values())
+        # print(inmueb)
+        # listaL = []
+        # i = 0
+        # while i < len(inmueb):
+        #     namess = str((Inmueble.objects.all().values()[i])['cedula_id'])
+        #     direccions = str((Inmueble.objects.all().values()[i])['direccion'])
+        #     ciudads = str((Inmueble.objects.all().values()[i])['ciudad'])
+        #     loc = geocoder.osm(direccions+','+ciudads+','+'colombia')
+        #     print(loc)
+        #     localC = {
+        #         'nombre': str((Usuario.objects.filter(
+        #             cedula='1002545432').values().first())['nombre']),
+        #         'coordenadas': loc.latlng
+        #     }
+        #     listaL.append(localC)
+        #     i += 1
 
-        print(listaL)
+        # print(listaL)
 
-        listaFac = list(Factura.objects.filter(
-            id_inmueble='1007').values())
-        print(listaFac)
+        # listaFac = list(Factura.objects.filter(
+        #     id_inmueble='1007').values())
+        # print(listaFac)
 
-        cedulaUsuario = str((Usuario.objects.filter(
-            correo_electronico=username).values().first())['cedula'])
+        # cedulaUsuario = str((Usuario.objects.filter(
+        #     email=username).values().first())['cedula'])
 
-        telefonoUsuario = str((Usuario.objects.filter(
-            correo_electronico=username).values().first())['telefono'])
+        # telefonoUsuario = str((Usuario.objects.filter(
+        #     email=username).values().first())['telefono'])
 
-        tipo = (Usuario.objects.filter(
-            correo_electronico=username).values().first())['id_tipo_usuario_id']
-        print(tipo)
+        # tipo = (Usuario.objects.filter(
+        #     email=username).values().first())['id_tipo_usuario_id']
+        # print(tipo)
 
-        direccion = str((Inmueble.objects.filter(
-            id_inmueble='1007').values().first())['direccion'])
+        # direccion = str((Inmueble.objects.filter(
+        #     id_inmueble='1007').values().first())['direccion'])
 
-        ciudad = str((Inmueble.objects.filter(
-            id_inmueble='1007').values().first())['ciudad'])
+        # ciudad = str((Inmueble.objects.filter(
+        #     id_inmueble='1007').values().first())['ciudad'])
 
-        # geolocalizacion
-        loc = geocoder.osm(direccion+ciudad+'colombia')
-        coordenadas = loc.latlng
+        # # geolocalizacion
+        # loc = geocoder.osm(direccion+ciudad+'colombia')
+        # coordenadas = loc.latlng
 
         user = auth.authenticate(username=username, password=password)
         print(user)
 
         if user is not None:
-            estado = Usuario.objects.get(
-                correo_electronico=data['correo_electronico']).estado_usuario
-
-            if (estado) == "activo":
-                auth.login(request, user)
-                if(tipo) == 3:
-                    return Response(
-                        {'success': 'Usuario autenticado exitosamente',
-                            'name': nombreUsuario,
-                            'correo': username,
-                            'cedula': cedulaUsuario,
-                            'telefono': telefonoUsuario,
-                            'direccion': direccion,
-                            'ciudad': ciudad,
-                            'coordenadas': coordenadas,
-                            'tipo': tipo,
-                            'lista': lista,
-                            'listaC': listaC,
-                            'listaLoc': listaL,
-                            'listaFac': listaFac,
-                         })
-                else:
-                    return Response(
-                        {'success': 'Usuario autenticado exitosamente',
-                            'name': nombreUsuario,
-                            'correo': username,
-                            'cedula': cedulaUsuario,
-                            'telefono': telefonoUsuario,
-                            'tipo': tipo,
-                            'lista': lista,
-                            'listaC': listaC,
-                            'listaLoc': listaL,
-                            'listaFac': listaFac,
-
-                         })
-            else:
-                return Response({'error': 'Usuario inactivo'})
+            return Response({'success': "Usuario autenticado exitosamente"})
         else:
             return Response({'error': 'Usuario y/o contraseña incorrectas'})
         # except:
@@ -196,13 +160,13 @@ class EditarUsuarioView(APIView):
     def put(self, request, format=None):
         data = self.request.data
 
-        username = data['correo_electronico']
+        username = data['email']
         nombre = data['nombre']
         telefono = data['telefono']
         tipo_documento = data['tipo_documento']
         cedula = data['cedula']
         Usuario.objects.filter(
-            correo_electronico=username).update(nombre=nombre, telefono=telefono, tipo_documento=tipo_documento)
+            email=username).update(nombre=nombre, telefono=telefono, tipo_documento=tipo_documento)
         if Usuario.objects.get(pk=cedula).estado_usuario == "activo":
             Usuario.objects.filter(cedula=cedula).update(
                 estado_usuario="inactivo")
@@ -218,7 +182,7 @@ class CambiarContrasenaView(APIView):
     def post(self, request, format=None):
         data = self.request.data
 
-        username = data['correo_electronico']
+        username = data['email']
         contrasena_antigua = data['contrasena_antigua']
         contrasena_nueva = data['contrasena_nueva']
         contrasena_re = data['contrasena_re']

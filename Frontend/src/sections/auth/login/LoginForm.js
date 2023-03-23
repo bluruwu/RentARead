@@ -30,37 +30,32 @@ export default function LoginForm() {
   };
 
   // Captcha
-  const [disableSubmit,setDisableSubmit] = useState(true)
-  const [captchaResult, setCaptchaResult] = useState()
+  const [disableSubmit, setDisableSubmit] = useState(true);
+  const [captchaResult, setCaptchaResult] = useState();
   const handleRecaptcha = (value) => {
-      fetch('http://127.0.0.1:8000/api/recaptcha', {
+    fetch('http://127.0.0.1:8000/api/recaptcha', {
       method: 'POST',
-      body: JSON.stringify({'captcha_value': value }),
-      headers: { 'Content-Type': 'application/json' }
+      body: JSON.stringify({ captcha_value: value }),
+      headers: { 'Content-Type': 'application/json' },
     })
-     .then(res => res.json())
-     .then(data => {
-      if (String(data.captcha.success) === 'true') {
-        setDisableSubmit(false)
-      }else
-        setDisableSubmit(true)
-       console.log(data.captcha.success)
-       setCaptchaResult(data.captcha.success)
-     }) 
-  }
+      .then((res) => res.json())
+      .then((data) => {
+        if (String(data.captcha.success) === 'true') {
+          setDisableSubmit(false);
+        } else setDisableSubmit(true);
+        console.log(data.captcha.success);
+        setCaptchaResult(data.captcha.success);
+      });
+  };
 
   // Login
   const url = 'http://127.0.0.1:8000/api/login';
   const [showPassword, setShowPassword] = useState(false);
   const [goToDashboard, setGoToDashboard] = useState(false);
-
-  // Mora
-  const urll = 'http://127.0.0.1:8000/api/mora';
-
-
+  const [goToRegister, setGoToRegister] = useState(false);
 
   const [data, setData] = useState({
-    correo_electronico: '',
+    email: '',
     contrasena: '',
     cedula: '',
   });
@@ -90,42 +85,38 @@ export default function LoginForm() {
           if (String(data.success) === 'Usuario autenticado exitosamente') {
             confirmacion();
             setGoToDashboard(true);
-            if(data.tipo === 3)
-            {
-              // guarda los datos recibidos del backend
-              account.displayName = String(data.name);
-              account.email = String(data.correo);
-              account.cedula = String(data.cedula);
-              account.telefono = String(data.telefono);
-              account.direccion = String(data.direccion);
-              account.ciudad = String(data.ciudad);
-              account.coordenadas = String(data.coordenadas);
-              account.tipo = data.tipo;
-              console.log(account.lista);
-              account.lista = data.lista;
-              console.log(account.lista);
-              account.listaCliente = data.listaC;
-              account.listaCoordenadas = data.listaLoc;
-              account.facturas = data.listaFac;
-              console.log(account);
-
-            }
-            else
-            {
-              // guarda los datos recibidos del backend
-            account.displayName = String(data.name);
-            account.email = String(data.correo);
-            account.cedula = String(data.cedula);
-            account.telefono = String(data.telefono);
-            account.tipo = data.tipo;
-            console.log(account.lista);
-            account.lista = data.lista;
-            console.log(account.lista);
-            account.listaCliente = data.listaC;
-            account.listaCoordenadas = data.listaLoc;
-            account.facturas = data.listaFac;
-            console.log(account);
-            }
+            // if (data.tipo === 3) {
+            //   // guarda los datos recibidos del backend
+            //   account.displayName = String(data.name);
+            //   account.email = String(data.correo);
+            //   account.cedula = String(data.cedula);
+            //   account.telefono = String(data.telefono);
+            //   account.direccion = String(data.direccion);
+            //   account.ciudad = String(data.ciudad);
+            //   account.coordenadas = String(data.coordenadas);
+            //   account.tipo = data.tipo;
+            //   console.log(account.lista);
+            //   account.lista = data.lista;
+            //   console.log(account.lista);
+            //   account.listaCliente = data.listaC;
+            //   account.listaCoordenadas = data.listaLoc;
+            //   account.facturas = data.listaFac;
+            //   console.log(account);
+            // } else {
+            //   // guarda los datos recibidos del backend
+            //   account.displayName = String(data.name);
+            //   account.email = String(data.correo);
+            //   account.cedula = String(data.cedula);
+            //   account.telefono = String(data.telefono);
+            //   account.tipo = data.tipo;
+            //   console.log(account.lista);
+            //   account.lista = data.lista;
+            //   console.log(account.lista);
+            //   account.listaCliente = data.listaC;
+            //   account.listaCoordenadas = data.listaLoc;
+            //   account.facturas = data.listaFac;
+            //   console.log(account);
+            // }
           } else if ('error' in data) {
             info(String(data.error));
           }
@@ -133,44 +124,46 @@ export default function LoginForm() {
     } catch (error) {
       console.warn(error);
     }
-    data.cedula = account.cedula;
-    try {
-      fetch(urll, {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: {
-          'X-CSRFToken': Cookies.get('csrftoken'),
-          Accept: 'application/json',
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (String(data.success) === 'En mora') 
-          {
-            account.mora = 'En mora';
-          } 
-          else if (String(data.success) === 'Facturas al día' ) 
-          {
-            account.mora = 'Facturas al dia';
-          }
-          else if (String(data.success) === 'Facturas pendientes') 
-          {
-            account.mora = 'Facturas pendientes';
-          }
 
-        });
-    } catch (error) {
-      console.warn(error);
-    }
+    // data.cedula = account.cedula;
+    // try {
+    //   fetch(urll, {
+    //     method: 'POST',
+    //     credentials: 'same-origin',
+    //     headers: {
+    //       'X-CSRFToken': Cookies.get('csrftoken'),
+    //       Accept: 'application/json',
+    //       'Content-type': 'application/json',
+    //     },
+    //     body: JSON.stringify(data),
+    //   })
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //       if (String(data.success) === 'En mora') {
+    //         confirmacion();
+    //         //   account.mora = 'En mora';
+    //         // } else if (String(data.success) === 'Facturas al día') {
+    //         //   account.mora = 'Facturas al dia';
+    //         // } else if (String(data.success) === 'Facturas pendientes') {
+    //         //   account.mora = 'Facturas pendientes';
+    //         // }
+    //       }
+    //       else {
 
+    //       }
+    //     });
+    // } catch (error) {
+    //   console.warn(error);
+    // }
   }
 
   if (goToDashboard) {
     return <Navigate to="/dashboard/user" />;
   }
 
+  if (goToRegister) {
+    return <Navigate to="/register" />;
+  }
 
   return (
     <>
@@ -179,10 +172,10 @@ export default function LoginForm() {
 
         <TextField
           onChange={(e) => handle(e)}
-          value={data.correo_electronico}
+          value={data.email}
           name="email"
           label="Email"
-          id="correo_electronico"
+          id="email"
           variant="outlined"
         />
 
@@ -207,19 +200,23 @@ export default function LoginForm() {
       </Stack>
 
       <Stack direction="row" alignItems="center" justifyContent="end" sx={{ my: 2 }}>
-        <Link variant="subtitle2" underline="hover">
-          ¿Olvidó su contraseña?
+        <Link variant="subtitle2" underline="hover" onClick={() => setGoToRegister(true)}>
+          Crea tu cuenta aquí
         </Link>
       </Stack>
 
-      <Stack alignItems="center" className="g-recaptcha" sx={{pb: '1rem'}}>
-        <ReCAPTCHA
-          sitekey = "6Lf5qt8jAAAAAAARz5DGg9H46anFT4cAd03eZ3Ig"
-          onChange={handleRecaptcha}
-        />
+      <Stack alignItems="center" className="g-recaptcha" sx={{ pb: '1rem' }}>
+        <ReCAPTCHA sitekey="6Lf5qt8jAAAAAAARz5DGg9H46anFT4cAd03eZ3Ig" onChange={handleRecaptcha} />
       </Stack>
-      <LoadingButton onClick={(e) => submit(e)} disabled={disableSubmit} fullWidth size="large" type="submit" variant="contained">
-        Iniciar Sesión 
+      <LoadingButton
+        onClick={(e) => submit(e)}
+        disabled={disableSubmit}
+        fullWidth
+        size="large"
+        type="submit"
+        variant="contained"
+      >
+        Iniciar Sesión
       </LoadingButton>
     </>
   );

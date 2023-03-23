@@ -38,15 +38,15 @@ class SignUpView(APIView):
 
         data = self.request.data
 
-        email = data['email']
         tipo_documento = data['tipo_documento']
         cedula = data['cedula']
         nombre = data['nombre']
+        email = data['email']
+        contrasena = data['contrasena']
+        contrasena_re = data['contrasena_re']
         telefono = data['telefono']
         ciudad = data['ciudad']
         direccion = data['direccion']
-        contrasena = data['contrasena']
-        contrasena_re = data['contrasena_re']
 
         if contrasena == contrasena_re:
             if Usuario.objects.filter(cedula=cedula).exists():

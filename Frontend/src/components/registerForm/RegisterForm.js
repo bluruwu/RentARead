@@ -31,7 +31,7 @@ export default function RegisterForm() {
       button: 'Aceptar',
     });
   };
-
+  
   const url = 'http://127.0.0.1:8000/api/register';
   const [data, setData] = useState({
     cedula: '',
@@ -40,25 +40,16 @@ export default function RegisterForm() {
     contrasena: '',
     contrasena_re: '',
     telefono: '',
-    id_tipo_usuario: '',
+    
     tipo_documento:'', 
     ciudad:'',
     direccion : ''
   });
 
-  const tipoUsuario = [ 
-    {value:"1", label:"Gerente" },
-    {value: "2",label: "Administrador"},
-    {value:"4", label: "Operador"},
-    {value:"3",label:"Cliente"},
-    
-
-   
-    ]
+  
     const docIdType=[
       {label:"C.C.",value:"cc"},
       {label:"N.I.T.", value:"nit"},
-      {label: "Ciudad",value:"ciudad"}
   
     ]
 
@@ -67,8 +58,6 @@ export default function RegisterForm() {
     const newdata = { ...data };
     if(select ===1 ){
       newdata.tipo_documento=e.target.value
-    }else if (select===2){
-      newdata.id_tipo_usuario=e.target.value
     }else{
       newdata[e.target.id] = e.target.value;
     }
@@ -122,6 +111,7 @@ export default function RegisterForm() {
           select
           label = "Tipo de Documento"
           size= 'medium'
+          InputProps={{ style: { width: 300 } }}
           onChange={(e)=>handle (e,1)}
           value= {data.tipo_documento }
           >
@@ -142,6 +132,7 @@ export default function RegisterForm() {
             label="Cedula"
             id="cedula"
             variant="outlined"
+            InputProps={{ style: { width: 300 } }}
           />
         </Grid>
         <Grid item lg={2}xs={2} md={2}>
@@ -152,6 +143,7 @@ export default function RegisterForm() {
             label="Nombre completo"
             id="nombre"
             variant="outlined"
+            InputProps={{ style: { width: 300 } }}
           />
         </Grid>
         <Grid item lg={2}xs={2} md={2}>
@@ -162,6 +154,7 @@ export default function RegisterForm() {
             label="Correo electronico"
             id="correo_electronico"
             variant="outlined"
+            InputProps={{ style: { width: 300 } }}
           />
         </Grid>
         <Grid item lg={2}xs={2} md={2}>
@@ -173,6 +166,7 @@ export default function RegisterForm() {
             id="contrasena"
             variant="outlined"
             type='password'
+            InputProps={{ style: { width: 300 } }}
           />
         </Grid>
         <Grid item lg={2}xs={2} md={2}>
@@ -184,16 +178,18 @@ export default function RegisterForm() {
             id="contrasena_re"
             variant="outlined"
             type='password'
+            InputProps={{ style: { width: 300 } }}
           />
         </Grid>
         <Grid item lg={2}xs={2} md={2}>
-          <TextField
+          <TextField 
             onChange={(e) => handle(e)}
             value={data.telefono}
             size="medium"
             label="Telefono"
             id="telefono"
             variant="outlined"
+            InputProps={{ style: { width: 300 } }}
           />
         </Grid>
         
@@ -208,28 +204,7 @@ export default function RegisterForm() {
 
 
 
-        <Grid item lg={2}xs={2} md={2}>
-          <TextField
-            id="id_tipo_usuario"
-            select
-            label="Tipo de usuario"
-            onChange={(e) => handle(e,2)}
-            value={data.id_tipo_usuario}
-            size="medium"
-            
-            
-            variant="outlined"
-
-          >
-            {tipoUsuario.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-              {option.label}
-              </MenuItem>
-              ))}
-              
-        
-          </TextField>
-        </Grid>
+       
        
         <Grid item lg={2}xs={2} md={2}>
           <TextField
@@ -239,6 +214,7 @@ export default function RegisterForm() {
             label="Ciudad"
             id="ciudad"
             variant="outlined"
+            InputProps={{ style: { width: 300 } }}
           />
         </Grid>
        
@@ -250,14 +226,15 @@ export default function RegisterForm() {
             label="Dirección"
             id="direccion"
             variant="outlined"
+            InputProps={{ style: { width: 630 } }}
           />
         </Grid>
         </Grid>
         <Stack spacing={2}>
-          <Button onClick={(e) => submit(e)} variant='contained'> Registrarse </Button>
+          <Button style={{backgroundColor: "#FFA500", color: "#fff"}} onClick={(e) => submit(e)} variant='contained'> Registrarse </Button>
         </Stack>
       </Stack>
-
+      
       
     </>
   );

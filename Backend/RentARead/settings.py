@@ -84,14 +84,22 @@ WSGI_APPLICATION = 'RentARead.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cblyymkd',
-        'USER': 'cblyymkd',
-        'PASSWORD': 'v0onuf9If0_VbNfGhZZn2X-h8a3yVBCu',
-        'HOST': 'babar.db.elephantsql.com',
-        'PORT': 5432
+        'NAME': 'postgres',
+        # 'DATABASE': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'mibasededatos',
+        'HOST': 'db.alzmmcukzfhwbtniiruv.supabase.co',
+        'PORT': 5432,
     }
 }
 
+
+# engine = 'django.db.backends.postgresql'
+# user = 'postgres'
+# password = 'mibasededatos'
+# host = 'db.alzmmcukzfhwbtniiruv.supabase.co'
+# port = 5432
+# database = 'postgres'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

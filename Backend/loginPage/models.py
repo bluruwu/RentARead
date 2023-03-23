@@ -245,10 +245,9 @@ class Usuario(models.Model):
     cedula = models.CharField(primary_key=True, max_length=100)
     nombre = models.CharField(max_length=100)
     telefono = models.CharField(max_length=100)
-    correo_electronico = models.CharField(max_length=100)
-    estado_usuario = models.CharField(max_length=100, default='activo')
-    id_tipo_usuario = models.ForeignKey(
-        Tipousuario, models.DO_NOTHING, db_column='id_tipo_usuario')
+    email = models.CharField(max_length=100)
+    ciudad = models.CharField(max_length=100)
+    direccion = models.CharField(max_length=100)
     tipo_documento = models.CharField(max_length=100)
 
     class Meta:
@@ -256,4 +255,4 @@ class Usuario(models.Model):
         db_table = 'usuario'
 
     def __str__(self):
-        return f"{self.cedula}, {self.nombre}, {self.telefono}, {self.correo_electronico}, {self.estado_usuario}, {self.id_tipo_usuario}, {self.tipo_documento}"
+        return f"{self.cedula}, {self.nombre}, {self.telefono}, {self.email}, {self.tipo_documento}"

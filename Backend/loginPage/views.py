@@ -27,6 +27,8 @@ class CheckAuthenticatedView(APIView):
         except:
             return Response({'error': 'Error al autenticar'})
 
+# CLASE PARA REGISTRO DE NUEVOS USUARIOS
+
 
 @method_decorator(csrf_protect, name='dispatch')
 class SignUpView(APIView):
@@ -36,30 +38,30 @@ class SignUpView(APIView):
 
         data = self.request.data
 
+        email = data['email']
+        tipo_documento = data['tipo_documento']
         cedula = data['cedula']
         nombre = data['nombre']
-        correo_electronico = data['correo_electronico']
+        telefono = data['telefono']
+        ciudad = data['ciudad']
+        direccion = data['direccion']
         contrasena = data['contrasena']
         contrasena_re = data['contrasena_re']
-        telefono = data['telefono']
-        id_tipo_usuario = Tipousuario.objects.get(
-            pk=data['id_tipo_usuario'])
-        tipo_documento = data['tipo_documento']
 
         if contrasena == contrasena_re:
             if Usuario.objects.filter(cedula=cedula).exists():
                 return Response({'error': 'Ya existe una cuenta asociada a esta cédula'})
             else:
-                if Usuario.objects.filter(correo_electronico=correo_electronico).exists():
+                if Usuario.objects.filter(email=email).exists():
                     return Response({'error': 'Este correo electrónico ya está en uso'})
                 else:
                     if len(contrasena) < 4:
                         return Response({'error': 'La contraseña es muy corta'})
                     else:
                         user = User.objects.create_user(
-                            username=correo_electronico, password=contrasena)
-                        Usuario.objects.create(cedula=cedula, nombre=nombre, correo_electronico=correo_electronico, telefono=telefono,
-                                               id_tipo_usuario=id_tipo_usuario, tipo_documento=tipo_documento)
+                            username=email, password=contrasena)
+                        Usuario.objects.create(email=email, cedula=cedula, nombre=nombre, telefono=telefono,
+                                               ciudad=ciudad, direccion=direccion, tipo_documento=tipo_documento)
                         return Response({'success': 'El usuario ha sido creado'})
         else:
             return Response({'error': 'Las contraseñas no coinciden'})
@@ -81,9 +83,8 @@ class LoginView(APIView):
         # peticiones a la base de datos
         nombreUsuario = str((Usuario.objects.filter(
             correo_electronico=username).values().first())['nombre'])
-        
-        lista  = list(Usuario.objects.all().values())
-      
+
+        lista = list(Usuario.objects.all().values())
 
         listaC = list(Usuario.objects.filter(
             id_tipo_usuario_id=3).values())
@@ -93,23 +94,23 @@ class LoginView(APIView):
         print(inmueb)
         listaL = []
         i = 0
-        while i <  len(inmueb):
+        while i < len(inmueb):
             namess = str((Inmueble.objects.all().values()[i])['cedula_id'])
             direccions = str((Inmueble.objects.all().values()[i])['direccion'])
             ciudads = str((Inmueble.objects.all().values()[i])['ciudad'])
             loc = geocoder.osm(direccions+','+ciudads+','+'colombia')
             print(loc)
             localC = {
-                        'nombre': str((Usuario.objects.filter(
-                            cedula='1002545432').values().first())['nombre']),
-                        'coordenadas': loc.latlng
-                        }
+                'nombre': str((Usuario.objects.filter(
+                    cedula='1002545432').values().first())['nombre']),
+                'coordenadas': loc.latlng
+            }
             listaL.append(localC)
-            i +=1
-    
-        print(listaL)   
+            i += 1
 
-        listaFac =list(Factura.objects.filter(
+        print(listaL)
+
+        listaFac = list(Factura.objects.filter(
             id_inmueble='1007').values())
         print(listaFac)
 
@@ -122,10 +123,10 @@ class LoginView(APIView):
         tipo = (Usuario.objects.filter(
             correo_electronico=username).values().first())['id_tipo_usuario_id']
         print(tipo)
-        
+
         direccion = str((Inmueble.objects.filter(
             id_inmueble='1007').values().first())['direccion'])
-        
+
         ciudad = str((Inmueble.objects.filter(
             id_inmueble='1007').values().first())['ciudad'])
 
@@ -153,11 +154,11 @@ class LoginView(APIView):
                             'ciudad': ciudad,
                             'coordenadas': coordenadas,
                             'tipo': tipo,
-                            'lista':lista,
-                            'listaC':listaC,
-                            'listaLoc' : listaL,
+                            'lista': lista,
+                            'listaC': listaC,
+                            'listaLoc': listaL,
                             'listaFac': listaFac,
-                        })
+                         })
                 else:
                     return Response(
                         {'success': 'Usuario autenticado exitosamente',
@@ -166,12 +167,12 @@ class LoginView(APIView):
                             'cedula': cedulaUsuario,
                             'telefono': telefonoUsuario,
                             'tipo': tipo,
-                            'lista':lista,
-                            'listaC':listaC,
-                            'listaLoc' : listaL,
+                            'lista': lista,
+                            'listaC': listaC,
+                            'listaLoc': listaL,
                             'listaFac': listaFac,
 
-                        })
+                         })
             else:
                 return Response({'error': 'Usuario inactivo'})
         else:
@@ -209,6 +210,7 @@ class EditarUsuarioView(APIView):
             Usuario.objects.filter(cedula=cedula).update(
                 estado_usuario="activo")
         return Response({'success': 'Se han actualizado los datos'})
+
 
 class CambiarContrasenaView(APIView):
     permission_classes = (permissions.AllowAny,)

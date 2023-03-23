@@ -42,6 +42,8 @@ export default function RegisterForm() {
     telefono: '',
     id_tipo_usuario: '',
     tipo_documento:'', 
+    ciudad:'',
+    direccion : ''
   });
 
   const tipoUsuario = [ 
@@ -49,12 +51,14 @@ export default function RegisterForm() {
     {value: "2",label: "Administrador"},
     {value:"4", label: "Operador"},
     {value:"3",label:"Cliente"},
+    
 
    
     ]
     const docIdType=[
       {label:"C.C.",value:"cc"},
-      {label:"N.I.T.", value:"nit"}
+      {label:"N.I.T.", value:"nit"},
+      {label: "Ciudad",value:"ciudad"}
   
     ]
 
@@ -192,6 +196,18 @@ export default function RegisterForm() {
             variant="outlined"
           />
         </Grid>
+        
+        
+
+
+
+
+
+
+
+
+
+
         <Grid item lg={2}xs={2} md={2}>
           <TextField
             id="id_tipo_usuario"
@@ -211,14 +227,38 @@ export default function RegisterForm() {
               </MenuItem>
               ))}
               
-
+        
           </TextField>
+        </Grid>
+       
+        <Grid item lg={2}xs={2} md={2}>
+          <TextField
+            onChange={(e) => handle(e)}
+            value={data.ciudad}
+            size="medium"
+            label="Ciudad"
+            id="ciudad"
+            variant="outlined"
+          />
+        </Grid>
+       
+        <Grid item lg={2}xs={2} md={2}>
+          <TextField
+            onChange={(e) => handle(e)}
+            value={data.direccion}
+            size="medium"
+            label="Dirección"
+            id="direccion"
+            variant="outlined"
+          />
         </Grid>
         </Grid>
         <Stack spacing={2}>
           <Button onClick={(e) => submit(e)} variant='contained'> Registrarse </Button>
         </Stack>
       </Stack>
+
+      
     </>
   );
 }

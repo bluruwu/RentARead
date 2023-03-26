@@ -138,6 +138,7 @@ class LoginView(APIView):
         print(user)
 
         if user is not None:
+            auth.login(request, user)
             return Response({'success': "Usuario autenticado exitosamente"})
         else:
             return Response({'error': 'Usuario y/o contraseña incorrectas'})

@@ -58,8 +58,10 @@ export default function AccountPopover() {
       })
         .then((response) => response.json())
         .then((data) => {
+          if ('success' in data) {
+            setGoToInicio(true);
+          }
           console.log(data);
-          return data;
         });
     } catch (error) {
       console.warn(error);

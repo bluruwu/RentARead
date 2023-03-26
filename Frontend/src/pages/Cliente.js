@@ -82,7 +82,7 @@ export default function Cliente() {
   return (
     <div className="Info-cliente">
       <Helmet>
-        <title>Cliente</title>
+        <title>Mis Datos</title>
       </Helmet>
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={4}>
@@ -114,7 +114,7 @@ export default function Cliente() {
       <StyledContentInfo sx={{ textAlign: 'left', alignItems: 'center' }}>
         <div className="contenedor-text-contrato">
           <h2 className="Contrato"> Datos de Contrato</h2>
-          <p className="NoContrato"> Numero de contrato: 1582245526</p>
+          <p className="NoContrato"> Libros en préstamo: 2</p>
           <p className="Estado"> Estado de cuenta: {account.mora}</p>
           <p className="ultimopago"> Fecha de ultimo pago: 10/01/2023</p>
           <p className="ultimafactura"> Fecha ultima factura: 10/02/2023</p>
@@ -123,4 +123,3 @@ export default function Cliente() {
     </div>
   );
 }
-

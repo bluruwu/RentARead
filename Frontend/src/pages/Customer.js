@@ -154,21 +154,20 @@ export default function UserPage() {
   const [goToBills, setGoToBills] = useState(false);
 
   if (goToBills) {
-    return <Bills customer = {false} name = {nameSelected}/>;
+    return <Bills customer={false} name={nameSelected} />;
   }
 
   return (
     <>
       <Helmet>
-        <title> Clientes </title>
+        <title> Mis Libros </title>
       </Helmet>
 
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Clientes
+            Mis Libros
           </Typography>
-
         </Stack>
 
         <Card>
@@ -187,36 +186,54 @@ export default function UserPage() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                {account.listaCliente.map(celda =>
-                    <TableRow hover key={celda.cedula} tabIndex={-1} role="checkbox" selected={selected.indexOf(celda.nombre) !== -1}>
-                        <TableCell padding="checkbox">
-                          <Checkbox checked={selected.indexOf(celda.nombre) !== -1} onChange={(event) => handleClick(event, celda.nombre)} />
-                        </TableCell>
+                  {account.listaCliente.map((celda) => (
+                    <TableRow
+                      hover
+                      key={celda.cedula}
+                      tabIndex={-1}
+                      role="checkbox"
+                      selected={selected.indexOf(celda.nombre) !== -1}
+                    >
+                      <TableCell padding="checkbox">
+                        <Checkbox
+                          checked={selected.indexOf(celda.nombre) !== -1}
+                          onChange={(event) => handleClick(event, celda.nombre)}
+                        />
+                      </TableCell>
 
-                        <TableCell component="th" scope="row" padding="none">
-                          <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={celda.nombre} src={'/Frontend/public/static/images/avatars/avatar_default.jpg'} />
-                            <Typography variant="subtitle2" noWrap>
-                              {celda.nombre}
-                            </Typography>
-                          </Stack>
-                        </TableCell>
+                      <TableCell component="th" scope="row" padding="none">
+                        <Stack direction="row" alignItems="center" spacing={2}>
+                          <Avatar
+                            alt={celda.nombre}
+                            src={'/Frontend/public/static/images/avatars/avatar_default.jpg'}
+                          />
+                          <Typography variant="subtitle2" noWrap>
+                            {celda.nombre}
+                          </Typography>
+                        </Stack>
+                      </TableCell>
 
-                        <TableCell align="left">{celda.cedula}</TableCell>
+                      <TableCell align="left">{celda.cedula}</TableCell>
 
-                        <TableCell align="left">{'Si' ? 'Si' : 'No'}</TableCell>
+                      <TableCell align="left">{'Si' ? 'Si' : 'No'}</TableCell>
 
-                        <TableCell align="left">
-                          <Label color={(celda.estado_usuario === 'inactivo' && 'error') || 'success'}>{sentenceCase(celda.estado_usuario)}</Label>
-                        </TableCell>
+                      <TableCell align="left">
+                        <Label color={(celda.estado_usuario === 'inactivo' && 'error') || 'success'}>
+                          {sentenceCase(celda.estado_usuario)}
+                        </Label>
+                      </TableCell>
 
-                        <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={(event) => handleOpenMenu(event, celda.nombre)}>
-                            <Iconify icon={'eva:more-vertical-fill'} />
-                          </IconButton>
-                        </TableCell>
-                      </TableRow>
-                  )}
+                      <TableCell align="right">
+                        <IconButton
+                          size="large"
+                          color="inherit"
+                          onClick={(event) => handleOpenMenu(event, celda.nombre)}
+                        >
+                          <Iconify icon={'eva:more-vertical-fill'} />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
                   {emptyRows > 0 && (
                     <TableRow style={{ height: 53 * emptyRows }}>
                       <TableCell colSpan={6} />
@@ -286,15 +303,15 @@ export default function UserPage() {
           Editar
         </MenuItem>
 
-        <MenuItem 
-        onClick={() => {
-          setGoToBills(true);
-        }}
-        variant="contained"
-        startIcon={<Iconify icon="eva:plus-fill" />}
+        <MenuItem
+          onClick={() => {
+            setGoToBills(true);
+          }}
+          variant="contained"
+          startIcon={<Iconify icon="eva:plus-fill" />}
         >
           <Iconify icon={'ri:bill-line'} sx={{ mr: 2 }} />
-          Facturas
+          Recomendaciones
         </MenuItem>
       </Popover>
     </>

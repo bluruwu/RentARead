@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { Grid, Container, Typography} from '@mui/material';
+import { Grid, Container, Typography } from '@mui/material';
 // components
 // sections
 import {
@@ -21,31 +21,35 @@ export default function DashboardAppPage() {
   return (
     <>
       <Helmet>
-        <title> Estadísticas | Minimal UI </title>
+        <title> Libros Cercanos </title>
       </Helmet>
 
       <Container maxWidth="xl">
         <Typography variant="h4" sx={{ mb: 5 }}>
-          Estadísticas
+          Libros Cercanos
         </Typography>
 
-
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} md={3}>
+          {/* <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary title="Clientes Activos" total={215000} icon={'mdi:users-group'} />
-          </Grid>
+          </Grid> */}
 
-          <Grid item xs={12} sm={6} md={3}>
+          {/* <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary title="Operadores" total={1265} color="info" icon={'ri:customer-service-2-fill'} />
-          </Grid>
+          </Grid> */}
 
-          <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Ingresos por mes" total={880000000} color="success" icon={'material-symbols:attach-money'} />
-          </Grid>
+          {/* <Grid item xs={12} sm={6} md={3}>
+            <AppWidgetSummary
+              title="Ingresos por mes"
+              total={880000000}
+              color="success"
+              icon={'material-symbols:attach-money'}
+            />
+          </Grid> */}
 
-          <Grid item xs={12} sm={6} md={3}>
+          {/* <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary title="clientes en mora" total={85000} color="error" icon={'ic:baseline-warning-amber'} />
-          </Grid>
+          </Grid> */}
 
           <Grid item xs={12} md={6} lg={8}>
             <AppWebsiteVisits
@@ -71,7 +75,7 @@ export default function DashboardAppPage() {
                   fill: 'solid',
                   data: [445, 368, 562, 288, 315, 489, 520, 476, 394, 413, 467],
                 },
-            /*    {
+                /*    {
                   name: 'Team B',
                   type: 'area',
                   fill: 'gradient',
@@ -107,7 +111,7 @@ export default function DashboardAppPage() {
 
           <Grid item xs={12} md={6} lg={12}>
             <AppConversionRates
-              title="Cliente nuevos por mes"
+              title="Libros vendidos"
               subheader="(+43%) que el año pasado"
               chartData={[
                 { label: 'Enero', value: 400 },
@@ -127,9 +131,8 @@ export default function DashboardAppPage() {
           </Grid>
 
           <Grid item xs={12} md={6} lg={12}>
-            <MapView/>
+            <MapView />
           </Grid>
-         
         </Grid>
       </Container>
     </>

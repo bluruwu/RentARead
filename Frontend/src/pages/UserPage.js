@@ -41,11 +41,11 @@ import account from '../_mock/account';
 
 // ----------------------------------------------------------------------
 const TABLE_HEAD = [
-  { id: 'nombre', label: 'Nombre', alignRight: false },
-  { id: 'userID', label: 'ID', alignRight: false },
-  { id: 'role', label: 'Tipo', alignRight: false },
-  { id: 'isInMora', label: 'En Mora', alignRight: false },
-  { id: 'status', label: 'Estado', alignRight: false },
+  { id: 'nombre', label: 'Nombre del Libro', alignRight: false },
+  { id: 'userID', label: 'Autor', alignRight: false },
+  { id: 'role', label: 'Género', alignRight: false },
+  { id: 'isInMora', label: 'Disponible', alignRight: false },
+  { id: 'status', label: 'Tipo de Venta', alignRight: false },
   { id: '' },
 ];
 

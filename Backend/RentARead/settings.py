@@ -84,12 +84,11 @@ WSGI_APPLICATION = 'RentARead.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        "DATABASE": "railway",
-        'NAME': 'railway',
-        'USER': 'postgres',
-        'PASSWORD': 'Tzvhs8UMAMiKMQI16e7U',
-        'HOST': 'containers-us-west-165.railway.app',
-        'PORT': 7056,
+        'NAME': 'yikqekac',
+        'USER': 'yikqekac',
+        'PASSWORD': 'LNnKafmVHWQkztKgLNeTxy5UJbkt0wUc',
+        'HOST': 'babar.db.elephantsql.com',
+        'PORT': 5432
     }
 }
 

@@ -14,7 +14,6 @@ export default function RegisterForm() {
       button: 'Aceptar',
     });
   };
-  
 
   const fallo = () => {
     swal({
@@ -31,7 +30,7 @@ export default function RegisterForm() {
       button: 'Aceptar',
     });
   };
-  
+
   const url = 'http://127.0.0.1:8000/api/register';
   const [data, setData] = useState({
     cedula: '',
@@ -40,25 +39,22 @@ export default function RegisterForm() {
     contrasena: '',
     contrasena_re: '',
     telefono: '',
-    
-    tipo_documento:'', 
-    ciudad:'',
-    direccion : ''
+
+    tipo_documento: '',
+    ciudad: '',
+    direccion: '',
   });
 
-  
-    const docIdType=[
-      {label:"C.C.",value:"cc"},
-      {label:"N.I.T.", value:"nit"},
-  
-    ]
+  const docIdType = [
+    { label: 'C.C.', value: 'cc' },
+    { label: 'N.I.T.', value: 'nit' },
+  ];
 
-
-  function handle(e,select=0) {
+  function handle(e, select = 0) {
     const newdata = { ...data };
-    if(select ===1 ){
-      newdata.tipo_documento=e.target.value
-    }else{
+    if (select === 1) {
+      newdata.tipo_documento = e.target.value;
+    } else {
       newdata[e.target.id] = e.target.value;
     }
     setData(newdata);
@@ -98,144 +94,139 @@ export default function RegisterForm() {
   }
   return (
     <>
-      <Stack spacing={3} sx={{
-        '& .MuiTextField-root': { m: 1, width: '37ch' },
-        }}>
-        <Grid container columns={4} spacing={2} sx={{
-        '& .MuiTextField-root': { m: 1, width: '37ch' },
-        }} >  
-        <CSRFToken />
-        <Grid item lg={2}xs={2} md={2}>
-          <TextField
-          id='tipo_documento'
-          select
-          label = "Tipo de Documento"
-          size= 'medium'
-          InputProps={{ style: { width: 300 } }}
-          onChange={(e)=>handle (e,1)}
-          value= {data.tipo_documento }
-          >
-            { docIdType.map((optione) => (
-              <MenuItem key={optione.value} value={optione.value}>
-              {optione.label}
-              </MenuItem>
+      <Stack
+        spacing={3}
+        sx={{
+          '& .MuiTextField-root': { m: 1, width: '37ch' },
+        }}
+      >
+        <Grid
+          container
+          columns={4}
+          spacing={2}
+          sx={{
+            '& .MuiTextField-root': { m: 1, width: '37ch' },
+          }}
+        >
+          <CSRFToken />
+          <Grid item lg={2} xs={2} md={2}>
+            <TextField
+              id="tipo_documento"
+              select
+              label="Tipo de Documento"
+              size="medium"
+              InputProps={{ style: { width: 300 } }}
+              onChange={(e) => handle(e, 1)}
+              value={data.tipo_documento}
+            >
+              {docIdType.map((optione) => (
+                <MenuItem key={optione.value} value={optione.value}>
+                  {optione.label}
+                </MenuItem>
               ))}
-              
-          </TextField>
-        </Grid>
-        
-        <Grid item lg={2}xs={2} md={2}>
-          <TextField
-            onChange={(e) => handle(e)}
-            value={data.cedula}
-            size="medium"
-            label="Cedula"
-            id="cedula"
-            variant="outlined"
-            InputProps={{ style: { width: 300 } }}
-          />
-        </Grid>
-        <Grid item lg={2}xs={2} md={2}>
-          <TextField
-            onChange={(e) => handle(e)}
-            value={data.nombre}
-            size="medium"
-            label="Nombre completo"
-            id="nombre"
-            variant="outlined"
-            InputProps={{ style: { width: 300 } }}
-          />
-        </Grid>
-        <Grid item lg={2}xs={2} md={2}>
-          <TextField
-            onChange={(e) => handle(e)}
-            value={data.correo_electronico}
-            size="medium"
-            label="Correo electronico"
-            id="correo_electronico"
-            variant="outlined"
-            InputProps={{ style: { width: 300 } }}
-          />
-        </Grid>
-        <Grid item lg={2}xs={2} md={2}>
-          <TextField
-            onChange={(e) => handle(e)}
-            value={data.contrasena}
-            size="medium"
-            label="Contraseña"
-            id="contrasena"
-            variant="outlined"
-            type='password'
-            InputProps={{ style: { width: 300 } }}
-          />
-        </Grid>
-        <Grid item lg={2}xs={2} md={2}>
-          <TextField
-            onChange={(e) => handle(e)}
-            value={data.contrasena_re}
-            size="medium"
-            label="Confirmar contraseña"
-            id="contrasena_re"
-            variant="outlined"
-            type='password'
-            InputProps={{ style: { width: 300 } }}
-          />
-        </Grid>
-        <Grid item lg={2}xs={2} md={2}>
-          <TextField 
-            onChange={(e) => handle(e)}
-            value={data.telefono}
-            size="medium"
-            label="Telefono"
-            id="telefono"
-            variant="outlined"
-            InputProps={{ style: { width: 300 } }}
-          />
-        </Grid>
-        
-        
+            </TextField>
+          </Grid>
 
+          <Grid item lg={2} xs={2} md={2}>
+            <TextField
+              onChange={(e) => handle(e)}
+              value={data.cedula}
+              size="medium"
+              label="Cedula"
+              id="cedula"
+              variant="outlined"
+              InputProps={{ style: { width: 300 } }}
+            />
+          </Grid>
+          <Grid item lg={2} xs={2} md={2}>
+            <TextField
+              onChange={(e) => handle(e)}
+              value={data.nombre}
+              size="medium"
+              label="Nombre completo"
+              id="nombre"
+              variant="outlined"
+              InputProps={{ style: { width: 300 } }}
+            />
+          </Grid>
+          <Grid item lg={2} xs={2} md={2}>
+            <TextField
+              onChange={(e) => handle(e)}
+              value={data.email}
+              size="medium"
+              label="Correo electronico"
+              id="email"
+              variant="outlined"
+              InputProps={{ style: { width: 300 } }}
+            />
+          </Grid>
+          <Grid item lg={2} xs={2} md={2}>
+            <TextField
+              onChange={(e) => handle(e)}
+              value={data.contrasena}
+              size="medium"
+              label="Contraseña"
+              id="contrasena"
+              variant="outlined"
+              type="password"
+              InputProps={{ style: { width: 300 } }}
+            />
+          </Grid>
+          <Grid item lg={2} xs={2} md={2}>
+            <TextField
+              onChange={(e) => handle(e)}
+              value={data.contrasena_re}
+              size="medium"
+              label="Confirmar contraseña"
+              id="contrasena_re"
+              variant="outlined"
+              type="password"
+              InputProps={{ style: { width: 300 } }}
+            />
+          </Grid>
+          <Grid item lg={2} xs={2} md={2}>
+            <TextField
+              onChange={(e) => handle(e)}
+              value={data.telefono}
+              size="medium"
+              label="Telefono"
+              id="telefono"
+              variant="outlined"
+              InputProps={{ style: { width: 300 } }}
+            />
+          </Grid>
 
+          <Grid item lg={2} xs={2} md={2}>
+            <TextField
+              onChange={(e) => handle(e)}
+              value={data.ciudad}
+              size="medium"
+              label="Ciudad"
+              id="ciudad"
+              variant="outlined"
+              InputProps={{ style: { width: 300 } }}
+            />
+          </Grid>
 
-
-
-
-
-
-
-
-       
-       
-        <Grid item lg={2}xs={2} md={2}>
-          <TextField
-            onChange={(e) => handle(e)}
-            value={data.ciudad}
-            size="medium"
-            label="Ciudad"
-            id="ciudad"
-            variant="outlined"
-            InputProps={{ style: { width: 300 } }}
-          />
-        </Grid>
-       
-        <Grid item lg={2}xs={2} md={2}>
-          <TextField
-            onChange={(e) => handle(e)}
-            value={data.direccion}
-            size="medium"
-            label="Dirección"
-            id="direccion"
-            variant="outlined"
-            InputProps={{ style: { width: 630 } }}
-          />
-        </Grid>
+          <Grid item lg={2} xs={2} md={2}>
+            <TextField
+              onChange={(e) => handle(e)}
+              value={data.direccion}
+              size="medium"
+              label="Dirección"
+              id="direccion"
+              variant="outlined"
+              InputProps={{ style: { width: 630 } }}
+            />
+          </Grid>
         </Grid>
         <Stack spacing={2}>
-          <Button style={{backgroundColor: "#FFA500", color: "#fff"}} onClick={(e) => submit(e)} variant='contained'> Registrarse </Button>
+          <Button style={{ backgroundColor: '#FFA500', color: '#fff' }} onClick={(e) => submit(e)} variant="contained">
+            {' '}
+            Registrarse{' '}
+          </Button>
         </Stack>
       </Stack>
-      
-      
     </>
   );
 }

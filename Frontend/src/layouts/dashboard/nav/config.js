@@ -4,37 +4,37 @@ import account from '../../../_mock/account';
 // ----------------------------------------------------------------------
 const icon = (name) => <SvgColor src={`/static/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />;
 const navConfig = [
-   {
-    title: 'Estadísticas',
+  {
+    title: 'Libros Cercanos',
     path: '/dashboard/app',
     icon: icon('ic_analytics'),
-  }, 
+  },
   {
-    title: 'Usuarios',
+    title: 'Libros Disponibles',
     path: '/dashboard/user',
     icon: icon('ic_user'),
   },
   {
-    title: 'Facturas',
+    title: 'Recomendaciones',
     path: '/dashboard/bills',
     icon: icon('ic_bills'),
-  }, 
+  },
   {
-    title: 'Inicio',
+    title: 'Mis Datos',
     path: '/dashboard/cliente',
     icon: icon('ic_profile'),
   },
   {
-    title: 'Clientes',
+    title: 'Mis Libros',
     path: '/dashboard/customers',
     icon: icon('ic_customers'),
   },
   {
-    title: 'Registrar Publicidad',
+    title: '',
     path: '/dashboard/publicityRegistry',
-    icon: icon('ic_blog')
-  } 
- /* {
+    icon: icon('ic_blog'),
+  },
+  /* {
     title: 'Mapa de clientes',
     path: '/dashboard/map',
     icon: icon('ic_customers'),
@@ -59,6 +59,6 @@ const navConfig = [
     path: '/404',
     icon: icon('ic_disabled'),
   }, */
- ];
+];
 
 export default navConfig;

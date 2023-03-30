@@ -4,6 +4,7 @@
   "licence": "MIT",
   "version": "1.6.0",
   "private": false,
+  "proxy": "http://127.0.0.1:3000/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

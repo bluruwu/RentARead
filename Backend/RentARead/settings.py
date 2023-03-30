@@ -83,12 +83,15 @@ WSGI_APPLICATION = 'RentARead.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'yikqekac',
-        'USER': 'yikqekac',
-        'PASSWORD': 'LNnKafmVHWQkztKgLNeTxy5UJbkt0wUc',
-        'HOST': 'babar.db.elephantsql.com',
-        'PORT': 5432
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'mibasededatos',
+        'HOST': 'db.urvjbwydtfdlpruzakwr.supabase.co',
+        'PORT': '5432',
+        'OPTIONS': {
+            'sslmode': 'require',
+        },
     }
 }
 

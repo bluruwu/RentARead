@@ -78,15 +78,6 @@ class AuthUserUserPermissions(models.Model):
         unique_together = (('user', 'permission'),)
 
 
-class Bancoaliado(models.Model):
-    id_banco = models.IntegerField(primary_key=True)
-    nombre_corresponsal = models.CharField(max_length=100)
-
-    class Meta:
-        managed = False
-        db_table = 'bancoaliado'
-
-
 class DjangoAdminLog(models.Model):
     action_time = models.DateTimeField()
     object_id = models.TextField(blank=True, null=True)
@@ -133,114 +124,6 @@ class DjangoSession(models.Model):
         db_table = 'django_session'
 
 
-class Factura(models.Model):
-    id_factura = models.AutoField(primary_key=True)
-    consumo = models.IntegerField()
-    costo = models.DecimalField(max_digits=15, decimal_places=2)
-
-    id_inmueble = models.ForeignKey(
-        'Inmueble', models.DO_NOTHING, db_column='id_inmueble')
-    id_publicidad = models.ForeignKey(
-        'Publicidad', models.DO_NOTHING, db_column='id_publicidad')
-
-    fecha_inicio = models.DateField()
-    fecha_corte = models.DateField()
-    fecha_vencimiento = models.DateField()
-    fecha_expedicion = models.DateField()
-
-    id_tarifa_mes = models.ForeignKey(
-        'Tarifa', models.DO_NOTHING, db_column='id_tarifa_mes')
-    subsidio_contribucion = models.DecimalField(
-        max_digits=15, decimal_places=2)
-
-    class Meta:
-        managed = False
-        db_table = 'factura'
-
-    def __str__(self):
-        return f"{self.id_factura}, {self.consumo}, {self.costo}, {self.id_inmueble}, {self.id_publicidad}, {self.fecha_inicio}, {self.fecha_corte}, {self.fecha_vencimiento}, {self.fecha_expedicion}"
-
-
-class Inmueble(models.Model):
-    id_inmueble = models.AutoField(primary_key=True)
-    tipo_inmueble = models.CharField(max_length=100)
-    estrato = models.IntegerField()
-    estado_inmueble = models.CharField(max_length=50, default="activo")
-    cedula = models.ForeignKey(
-        'Usuario', models.DO_NOTHING, db_column='cedula')
-    barrio = models.CharField(max_length=100)
-    ciudad = models.CharField(max_length=100)
-    direccion = models.CharField(max_length=100)
-    complemento = models.CharField(max_length=100)
-
-    class Meta:
-        managed = False
-        db_table = 'inmueble'
-
-    def __str__(self):
-        return f"{self.id_inmueble}, {self.tipo_inmueble}, {self.estrato}, {self.estado_inmueble}, {self.cedula}, {self.barrio}, {self.ciudad}, {self.direccion}, {self.complemento}"
-
-
-class Pago(models.Model):
-    id_pago = models.AutoField(primary_key=True)
-    monto = models.IntegerField()
-    id_factura = models.ForeignKey(
-        Factura, models.DO_NOTHING, db_column='id_factura')
-    id_banco = models.ForeignKey(
-        Bancoaliado, models.DO_NOTHING, db_column='id_banco')
-    fecha = models.CharField(max_length=100)
-
-    class Meta:
-        managed = False
-        db_table = 'pago'
-
-
-class Publicidad(models.Model):
-    id_publicidad = models.AutoField(primary_key=True)
-    empresa_encargada = models.CharField(max_length=100)
-    precio_publicidad = models.IntegerField()
-
-    class Meta:
-        managed = False
-        db_table = 'publicidad'
-
-
-class Tarifa(models.Model):
-    id_tarifa_mes = models.DateField(primary_key=True)
-    tarifa_mes = models.DecimalField(max_digits=15, decimal_places=2)
-    estrato1 = models.DecimalField(max_digits=15, decimal_places=2)
-    estrato2 = models.DecimalField(max_digits=15, decimal_places=2)
-    estrato3 = models.DecimalField(max_digits=15, decimal_places=2)
-    estrato4 = models.DecimalField(max_digits=15, decimal_places=2)
-    estrato5 = models.DecimalField(max_digits=15, decimal_places=2)
-    estrato6 = models.DecimalField(max_digits=15, decimal_places=2)
-    comercial_industrial = models.DecimalField(
-        max_digits=15, decimal_places=2)
-
-    class Meta:
-        managed = False
-        db_table = 'tarifa'
-
-
-class Tipousuario(models.Model):
-    id_tipo_usuario = models.IntegerField(primary_key=True)
-    tipo_usuario = models.CharField(max_length=100)
-
-    class Meta:
-        managed = False
-        db_table = 'tipousuario'
-
-
-class Ubicacion(models.Model):
-    id_ubicacion = models.IntegerField(primary_key=True)
-    direccion = models.CharField(max_length=100)
-    sector = models.CharField(max_length=100)
-
-    class Meta:
-        managed = False
-        db_table = 'ubicacion'
-
-
 class Usuario(models.Model):
     cedula = models.CharField(primary_key=True, max_length=100)
     nombre = models.CharField(max_length=100)
@@ -256,3 +139,44 @@ class Usuario(models.Model):
 
     def __str__(self):
         return f"{self.cedula}, {self.nombre}, {self.telefono}, {self.email}, {self.tipo_documento}"
+
+
+class Libro(models.Model):
+    id_libro = models.AutoField(primary_key=True)
+    titulo = models.CharField(max_length=100)
+    genero = models.CharField(max_length=100)
+    autor = models.CharField(max_length=100)
+    editor = models.CharField(max_length=100)
+    editorial = models.CharField(max_length=100)
+    isbn = models.CharField(max_length=100)
+    ano_publicacion = models.CharField(max_length=100)
+    numero_paginas = models.IntegerField()
+    descripcion = models.CharField(max_length=100)
+    venta = models.CharField(max_length=100)
+    renta = models.CharField(max_length=100)
+    intercambio = models.CharField(max_length=100)
+    precio_venta = models.DecimalField(max_digits=15, decimal_places=2)
+    precio_renta = models.DecimalField(max_digits=15, decimal_places=2)
+    id_vendedor = models.ForeignKey(
+        Usuario, models.DO_NOTHING, db_column='email')
+
+    class Meta:
+        managed = False
+        db_table = "libro"
+
+
+class Transaccion(models.Model):
+    id_transaccion = models.AutoField(primary_key=True)
+    id_comprador = models.ForeignKey(
+        Usuario, models.DO_NOTHING, db_column='comprador_email', related_name="comprador")
+    id_vendedor = models.ForeignKey(
+        Usuario, models.DO_NOTHING, db_column='vendedor_email', related_name="vendedor")
+    id_libro = models.ForeignKey(
+        Libro, models.DO_NOTHING, db_column='id_libro')
+    tipo_transaccion = models.CharField(max_length=100)
+    fecha = models.DateField()
+    monto_pagado = models.DecimalField(max_digits=15, decimal_places=2)
+
+    class Meta:
+        managed = False
+        db_table = "transaccion"

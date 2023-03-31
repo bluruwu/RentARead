@@ -7,7 +7,7 @@ from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
 from django.utils.decorators import method_decorator
-from loginPage.models import Usuario, Tipousuario, Inmueble, Factura
+from loginPage.models import Usuario, Libro, Transaccion
 import geocoder
 import requests  # npm i requests [si sale error]
 

@@ -5,28 +5,35 @@ import { Box } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 // components
 import { darken } from 'polished';
-import Logo from "../logo/Logo";
+
 
 // Este componente representa la barra de navegación que 
 // se muestra en la parte superior de la página y contiene un 
 // logo y un botón de login.
-export default function NavBar() {
+export default function NavBar2() {
   const navigate = useNavigate();
 
   // Direcionamiento
   const handleClick = () => {
-    navigate('/login', { replace: true });
+    navigate('/register', { replace: true });
   };
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', m: { xs: "0.5rem", md: "0" }, mx: { xs: "1rem", md: "5rem" } }}>
-      <Logo />
+    <Box sx={{ marginLeft: '0.5rem' , fontSize: '0.5rem' }}>
+     
       <LoadingButton
         variant="contained"
         onClick={handleClick}
-        sx={{ backgroundColor: darken(0.0, 'rgb(251, 131, 36)')  }} // aquí se crea un tono más oscuro color orange
+        sx={{ backgroundColor: darken(0.0, 'rgb(251, 131, 36)'),
+        height: '20px',
+        width: '100%',
+        maxWidth: '480px'
+      }
+        
+            } // aquí se crea un tono más oscuro color orange
+        
       >
-        Login
+        Crear una cuenta
       </LoadingButton>
     </Box>
   );

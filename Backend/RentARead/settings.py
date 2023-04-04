@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'loginPage',
+    'libros',
     'rest_framework',
     'authentication',
     'corsheaders',

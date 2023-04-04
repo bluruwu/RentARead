@@ -65,15 +65,14 @@ export default function LoginPage() {
               RentARead
               <Typography sx={{ color: 'text.secondary' }}>
                 <p>
-                  Nos complace darle la bienvenida a RentARead, nuestra página web de alquiler de libros en línea,
-                  nos apasiona la lectura y creemos que todos deberían tener acceso a una amplia variedad de libros.
-                  Nuestro servicio de alquiler de libros en línea ofrece una experiencia de lectura única y cómoda 
-                  que le permitirá acceder a una amplia selección de libros desde la comodidad de su hogar.
+                  Somos una empresa colombiana que desarrolla software para el manejo de clientes, facturación y recaudo
+                  por medio de Internet para empresas de energía eléctrica. Tenemos como proposito facilitar la vida a
+                  las empresas y sus clientes ofreciendo software de alta calidad, seguro y fácil de usar.
                 </p>{' '}
                 <p>
-                  Le invitamos a explorar nuestra colección de libros y a experimentar todo lo que RentARead tiene que ofrecer. 
-                  Esperamos ser su destino número uno para la lectura en línea y ayudarle a descubrir nuevos títulos y 
-                  autores que le apasionarán. ¡Gracias por elegir RentARead!
+                  Al año 2025 tenemos como propósito proveer de nuestros servicios a otras empresas de energía eléctrica
+                  en Latinoamérica y Europa, buscando cumplir con las necesidades y expectativas de las empresas en el
+                  exterior.
                 </p>
               </Typography>
             </Typography>
@@ -92,11 +91,12 @@ export default function LoginPage() {
           {mdUp && (
             <Avatar
               variant="rounded"
-              alt="login"
+              alt="Login"
               src={'/static/HomePage2.jpg'}
               style={{
                 width: 'auto',
                 height: '50vh',
+                border: '2px solid red' // Aquí se establece el borde en color rojo
               }}
             />
           )}

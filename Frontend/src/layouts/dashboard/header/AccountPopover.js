@@ -6,7 +6,6 @@ import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
 // mocks_
 import account from '../../../_mock/account';
-import CSRFToken from '../../../components/csrftoken';
 
 // ----------------------------------------------------------------------
 
@@ -58,10 +57,10 @@ export default function AccountPopover() {
       })
         .then((response) => response.json())
         .then((data) => {
+          console.log(data);
           if ('success' in data) {
             setGoToInicio(true);
           }
-          console.log(data);
         });
     } catch (error) {
       console.warn(error);

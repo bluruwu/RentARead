@@ -39,6 +39,7 @@ import account from '../_mock/account';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
+
   { id: 'billID', label: 'ID', alignRight: false },
   { id: 'expeditionDate', label: 'Fecha de expedición', alignRight: false },
   { id: 'expirationDate', label: 'Fecha de vencimiento', alignRight: false },
@@ -65,6 +66,7 @@ function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
+
 function applySortFilter(array, comparator, query) {
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
@@ -79,10 +81,13 @@ function applySortFilter(array, comparator, query) {
 }
 
 BillsPage.defaultProps = {
-  customer: true,
-};
+  customer: true
+
+}
 
 export default function BillsPage(props) {
+
+
   const [open, setOpen] = useState(null);
 
   const [page, setPage] = useState(0);
@@ -117,12 +122,12 @@ export default function BillsPage(props) {
 
   const errorAlert = () => {
     swal({
-      title: 'No se puede pagar',
-      text: 'La factura ya está paga',
-      icon: 'warning',
-      button: 'Aceptar',
+      title: "No se puede pagar",
+      text: "La factura ya está paga",
+      icon: "warning",
+      button: "Aceptar"
     });
-  };
+  }
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -155,72 +160,60 @@ export default function BillsPage(props) {
   };
 
   function goBackButton(customer) {
-    const buttonback = (
-      <Button
-        variant="contained"
-        startIcon={<Iconify icon="ri:arrow-go-back-fill" />}
-        onClick={() => {
-          setGoBack(true);
-        }}
-      >
-        Volver a Clientes
-      </Button>
-    );
 
-    if (!customer) return buttonback;
-    return null;
+    const buttonback = <Button variant="contained" startIcon={<Iconify icon="ri:arrow-go-back-fill" />}
+      onClick={() => {
+        setGoBack(true);
+      }}
+    >Volver a Clientes</Button>
+
+    if (!customer)
+      return buttonback;
+    return null
+
   }
 
   function payButton(customer) {
-    const buttonPay1 = (
-      <MenuItem
-        onClick={() => {
-          if (billStatus === 'pendiente') {
-            setGoToPay(true);
-          } else {
-            errorAlert();
-          }
-        }}
-      >
-        <Iconify icon={'fluent:payment-28-filled'} sx={{ mr: 2 }} />
-        Pagar
-      </MenuItem>
-    );
+    const buttonPay1 = <MenuItem
+      onClick={() => {
+        if (billStatus === 'pendiente') {
+          setGoToPay(true);
+        }
+        else {
+          errorAlert();
+        }
+      }}>
+      <Iconify icon={'fluent:payment-28-filled'} sx={{ mr: 2 }} />
+      Pagar
+    </MenuItem>
 
-    const buttonPay2 = (
-      <MenuItem
-        onClick={() => {
-          if (billStatus === 'pendiente') {
-            setGoToPayOnline(true);
-          } else {
-            errorAlert();
-          }
-        }}
-      >
-        <Iconify icon={'fluent:payment-28-filled'} sx={{ mr: 2 }} />
-        Pagar
-      </MenuItem>
-    );
+    const buttonPay2 = <MenuItem
+      onClick={() => {
+        if (billStatus === 'pendiente') {
+          setGoToPayOnline(true);
+        }
+        else {
+          errorAlert();
+        }
+      }}
+    >
+      <Iconify icon={'fluent:payment-28-filled'} sx={{ mr: 2 }} />
+      Pagar
+    </MenuItem>
 
-    if (!customer) return buttonPay1;
-    return buttonPay2;
+    if (!customer)
+      return buttonPay1;
+    return buttonPay2
+
   }
 
   function Title(name) {
-    const title1 = (
-      <Typography variant="h4" gutterBottom>
-        {' '}
-        Recomendaciones
-      </Typography>
-    );
-    const title2 = (
-      <Typography variant="h4" gutterBottom>
-        {' '}
-        Facturas de {name}
-      </Typography>
-    );
-    if (name === undefined) return title1;
-    return title2;
+    const title1 = <Typography variant="h4" gutterBottom> Mis Facturas</Typography>
+    const title2 = <Typography variant="h4" gutterBottom> Facturas de {name}</Typography>
+    if (name === undefined)
+      return title1
+    return title2
+
   }
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -253,10 +246,10 @@ export default function BillsPage(props) {
   }
 
   if (goToPayOnline) {
-    return <PaymentPage idBill={billSelected} />;
+    return <PaymentPage idBill={billSelected} />
   }
-
-  const estado = 'success';
+  
+    const estado = 'success';
   return (
     <>
       <Helmet>
@@ -272,6 +265,7 @@ export default function BillsPage(props) {
         </Stack>
 
         <Card>
+
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
@@ -285,56 +279,45 @@ export default function BillsPage(props) {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {account.facturas.map((celda) => (
-                    <TableRow
-                      hover
-                      key={celda.id_factura}
-                      tabIndex={-1}
-                      role="checkbox"
-                      selected={selected.indexOf(celda.id_factura) !== -1}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={selected.indexOf(celda.id_factura) !== -1}
-                          onChange={(event) => handleClick(event, celda.id_factura)}
-                        />
-                      </TableCell>
+                  {account.facturas.map(celda => 
+                      <TableRow hover key={celda.id_factura} tabIndex={-1} role="checkbox" selected={selected.indexOf(celda.id_factura) !== -1}>
+                        <TableCell padding="checkbox">
+                          <Checkbox checked={selected.indexOf(celda.id_factura) !== -1} onChange={(event) => handleClick(event, celda.id_factura)} />
+                        </TableCell>
 
-                      <TableCell component="th" scope="row" padding="2rem">
-                        <Stack direction="row" alignItems="center" spacing={2}>
-                          <Typography variant="subtitle2" noWrap>
-                            {celda.id_factura}
-                          </Typography>
-                        </Stack>
-                      </TableCell>
+                        <TableCell component="th" scope="row" padding="2rem" >
+                          <Stack direction="row" alignItems="center" spacing={2}>
+                            <Typography variant="subtitle2" noWrap>
+                              {celda.id_factura}
+                            </Typography>
+                          </Stack>
+                        </TableCell>
 
-                      <TableCell align="left">{celda.fecha_vencimiento}</TableCell>
+                        <TableCell align="left">{celda.fecha_vencimiento}</TableCell>
 
-                      <TableCell align="left">{celda.fecha_corte}</TableCell>
+                        <TableCell align="left">{celda.fecha_corte}</TableCell>
 
-                      <TableCell align="left">{celda.costo}</TableCell>
+                        <TableCell align="left">{celda.costo}</TableCell>
 
-                      <TableCell align="left">
-                        <Label color={(estado === 'pendiente' && 'error') || 'success'}>{sentenceCase(estado)}</Label>
-                      </TableCell>
 
-                      <TableCell align="right">
-                        <IconButton
-                          size="large"
-                          color="inherit"
-                          onClick={(event) => handleOpenMenu(event, celda.id_factura, estado)}
-                        >
-                          <Iconify icon={'eva:more-vertical-fill'} />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                        <TableCell align="left">
+                          <Label color={(estado === 'pendiente' && 'error') || 'success'}>{sentenceCase(estado)}</Label>
+                        </TableCell>
+
+                        <TableCell align="right">
+                          <IconButton size="large" color="inherit" onClick={(event) => handleOpenMenu(event, celda.id_factura, estado)}>
+                            <Iconify icon={'eva:more-vertical-fill'} />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                  )}
                   {emptyRows > 0 && (
                     <TableRow style={{ height: 53 * emptyRows }}>
                       <TableCell colSpan={6} />
                     </TableRow>
                   )}
                 </TableBody>
+
               </Table>
             </TableContainer>
           </Scrollbar>
@@ -371,7 +354,7 @@ export default function BillsPage(props) {
       >
         {payButton(props.customer)}
 
-        <MenuItem>
+        <MenuItem >
           <Iconify icon={'material-symbols:content-paste-search'} sx={{ mr: 2 }} />
           Ver
         </MenuItem>

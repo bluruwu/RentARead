@@ -1,18 +1,21 @@
 import { Button, Grid, MenuItem, Stack, TextField } from '@mui/material';
 import { func } from 'prop-types';
 import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
 import swal from 'sweetalert';
 import { intlFormat } from 'date-fns';
 import CSRFToken from '../csrftoken';
 
 export default function RegisterForm() {
+  const navigate = useNavigate();
   const confirmacion = () => {
     swal({
       text: 'El usuario ha sido creado.',
       icon: 'success',
       button: 'Aceptar',
-    });
+      onClose: () => navigate('/login', { replace: true }),
+    })
   };
 
   const fallo = () => {

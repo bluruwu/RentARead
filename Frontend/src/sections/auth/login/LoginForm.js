@@ -7,9 +7,11 @@ import { Link, Stack, IconButton, InputAdornment, TextField } from '@mui/materia
 import { LoadingButton } from '@mui/lab';
 // components
 import swal from 'sweetalert';
+import NavBar2 from '../../../components/nav-section/NavBar2';
 import Iconify from '../../../components/iconify';
 import CSRFToken from '../../../components/csrftoken';
 import account from '../../../_mock/account';
+
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
@@ -193,19 +195,19 @@ export default function LoginForm() {
                 <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
                   <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
                 </IconButton>
+                
               </InputAdornment>
             ),
           }}
         />
       </Stack>
+      
+          
+     
 
-      <Stack direction="row" alignItems="center" justifyContent="end" sx={{ my: 2 }}>
-        <Link variant="subtitle2" underline="hover" onClick={() => setGoToRegister(true)}>
-          Crea tu cuenta aquí
-        </Link>
-      </Stack>
+      
 
-      <Stack alignItems="center" className="g-recaptcha" sx={{ pb: '1rem' }}>
+      <Stack alignItems="center" className="g-recaptcha" sx={{ pb: '1rem' ,marginTop: '1rem' }}>
         <ReCAPTCHA sitekey="6Lf5qt8jAAAAAAARz5DGg9H46anFT4cAd03eZ3Ig" onChange={handleRecaptcha} />
       </Stack>
       <LoadingButton
@@ -215,9 +217,11 @@ export default function LoginForm() {
         size="large"
         type="submit"
         variant="contained"
+        sx={{ mb: '1rem' }}
       >
         Iniciar Sesión
       </LoadingButton>
+      <NavBar2  sx={{ mb: '1rem' }}/>  
     </>
   );
 }

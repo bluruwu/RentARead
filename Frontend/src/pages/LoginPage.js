@@ -56,7 +56,8 @@ export default function LoginPage() {
   return (
     <>
       <Helmet>
-        <title> Login | RentARead </title>
+        <title > Login | RentARead </title>
+        
       </Helmet>
 
       <StyledRoot>

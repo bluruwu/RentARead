@@ -1,6 +1,7 @@
 import { Box, Container } from "@mui/system";
 import { Helmet } from "react-helmet-async";
 import { styled } from '@mui/material/styles';
+
 import useResponsive from "../hooks/useResponsive";
 import RegisterPublicityForm from "../components/registerPublicityForm/RegisterPublicityForm";
 
@@ -27,7 +28,8 @@ const StyledRoot2 = styled('div')(({ theme }) => ({
     <Container maxWidth='sm' class="container-sm">
         <StyledRoot2>
         <Box style = {{position: 'absolute', left: '50%', top: '50%',
-        transform: 'translate(-50%, -50%)' }}>
+        transform: 'translate(-50%, -50%)' }}
+       >
 
         <h1>Registrar Publicidad </h1>
         <RegisterPublicityForm/>

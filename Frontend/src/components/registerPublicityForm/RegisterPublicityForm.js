@@ -1,6 +1,7 @@
 import { Button, Grid, MenuItem, Stack, TextField } from "@mui/material";
 import { useState } from "react";
 import Cookies from "js-cookie";
+import { darken } from 'polished';
 import swal from "sweetalert";
 import CSRFToken from "../csrftoken";
 
@@ -121,7 +122,22 @@ export default function RegisterPublicityForm (){
         </Grid>
         <Stack spacing={2}> 
         <input type="file" name="file" onChange={e => convert2base64(e.target.files)}/>
-        <Button variant="contained" onClick={(e)=> submit(e)}> Registrar Publicidad</Button>   
+        <Button variant="contained" 
+         sx={{
+              
+            backgroundColor: darken(0.0, 'rgb(251, 131, 36)'),
+            '&:active': {
+              backgroundColor: 'rgb(251, 131, 36)',
+            },
+            '&:focus': {
+              backgroundColor: darken(0.0, 'rgb(251, 131, 36)'),
+            },
+            '&:hover': {
+              backgroundColor: darken(0.0, 'rgb(251, 131, 36)'),
+            
+            }}}
+          
+        onClick={(e)=> submit(e)}> Registrar Publicidad</Button>   
         </Stack>               
 
         </Stack>

@@ -4,6 +4,7 @@ import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
 import { useState } from 'react';
 import Cookies from 'js-cookie';
+import { darken } from 'polished';
 
 // @mui
 import {
@@ -176,6 +177,19 @@ export default function UserPage() {
             }}
             variant="contained"
             startIcon={<Iconify icon="eva:plus-fill" />}
+            sx={{
+              
+              backgroundColor: darken(0.0, 'rgb(251, 131, 36)'),
+              '&:active': {
+                backgroundColor: 'rgb(251, 131, 36)',
+              },
+              '&:focus': {
+                backgroundColor: darken(0.0, 'rgb(251, 131, 36)'),
+              },
+              '&:hover': {
+                backgroundColor: darken(0.0, 'rgb(251, 131, 36)'),
+              
+              }}}
           >
             Agregar Nuevo Libro
           </Button>

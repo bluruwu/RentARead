@@ -24,13 +24,23 @@ export default function NavBar2() {
       <LoadingButton
         variant="contained"
         onClick={handleClick}
-        sx={{ backgroundColor: darken(0.0, 'rgb(251, 131, 36)'),
-        height: '20px',
-        width: '100%',
-        maxWidth: '480px'
-      }
-        
-            } // aquí se crea un tono más oscuro color orange
+        sx={{
+          height: '20px',
+          width: '100%',
+          maxWidth: '480px',
+          backgroundColor: darken(0.0, 'rgb(251, 131, 36)'),
+          '&:active': {
+            backgroundColor: 'rgb(251, 131, 36)',
+          },
+          '&:focus': {
+            backgroundColor: darken(0.0, 'rgb(251, 131, 36)'),
+          },
+          '&:hover': {
+            backgroundColor: darken(0.0, 'rgb(251, 131, 36)'),
+          
+          }
+
+        }} // aquí se crea un tono más oscuro color orange
         
       >
         Crear una cuenta

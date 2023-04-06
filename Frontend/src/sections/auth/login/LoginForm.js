@@ -7,10 +7,13 @@ import { Link, Stack, IconButton, InputAdornment, TextField } from '@mui/materia
 import { LoadingButton } from '@mui/lab';
 // components
 import swal from 'sweetalert';
+import { darken } from 'polished';
 import NavBar2 from '../../../components/nav-section/NavBar2';
 import Iconify from '../../../components/iconify';
 import CSRFToken from '../../../components/csrftoken';
+
 import account from '../../../_mock/account';
+
 
 // ----------------------------------------------------------------------
 
@@ -217,7 +220,19 @@ export default function LoginForm() {
         size="large"
         type="submit"
         variant="contained"
-        sx={{ mb: '1rem' }}
+        sx={{ mb: '1rem' ,
+        backgroundColor: darken(0.0, 'rgb(251, 131, 36)'),
+    '&:active': {
+      backgroundColor: 'rgb(251, 131, 36)',
+    },
+    '&:focus': {
+      backgroundColor: darken(0.0, 'rgb(251, 131, 36)'),
+    },
+    '&:hover': {
+      backgroundColor: darken(0.0, 'rgb(251, 131, 36)'),
+    }
+      
+          }}
       >
         Iniciar Sesión
       </LoadingButton>

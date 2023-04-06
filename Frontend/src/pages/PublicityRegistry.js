@@ -29,7 +29,7 @@ const StyledRoot2 = styled('div')(({ theme }) => ({
         <Box style = {{position: 'absolute', left: '50%', top: '50%',
         transform: 'translate(-50%, -50%)' }}>
 
-        <h1>Registrar Publicidad</h1>
+        <h1>Registrar Publicidad </h1>
         <RegisterPublicityForm/>
 
 

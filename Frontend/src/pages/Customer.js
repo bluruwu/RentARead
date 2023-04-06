@@ -283,7 +283,7 @@ export default function UserPage() {
       >
         <MenuItem>
           <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-          Editar
+          Editar 
         </MenuItem>
 
         <MenuItem 

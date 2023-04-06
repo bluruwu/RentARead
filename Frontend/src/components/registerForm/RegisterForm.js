@@ -9,12 +9,16 @@ import CSRFToken from '../csrftoken';
 
 export default function RegisterForm() {
   const navigate = useNavigate();
+  const handleClick = () => {
+    navigate('/login', { replace: true });
+  };
+
   const confirmacion = () => {
     swal({
       text: 'El usuario ha sido creado.',
       icon: 'success',
       button: 'Aceptar',
-      onClose: () => navigate('/login', { replace: true }),
+      
     })
   };
 
@@ -84,6 +88,8 @@ export default function RegisterForm() {
       .then((data) => {
         if (String(data.success) === 'El usuario ha sido creado') {
           confirmacion();
+          handleClick  (); 
+           
         } else if (String(data.error) === 'Las contraseñas no coinciden') {
           fallo();
         } else if (

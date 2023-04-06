@@ -20,6 +20,7 @@ import PropertyRegistry from './pages/PropertyRegistry';
 import PublicityRegistry from './pages/PublicityRegistry';
 import MapView from './pages/MapView';
 import EditUser from './pages/EditUser';
+import InterfaceBook from './pages/InterfaceBook';
 
 // ----------------------------------------------------------------------
 
@@ -80,6 +81,12 @@ export default function Router() {
       path: 'edituser',
       element: <EditUser/>
     },
+    {
+      path: 'book',
+      element: <InterfaceBook/>
+    },
+   
+
   ]);
 
   return routes;

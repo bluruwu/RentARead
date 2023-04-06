@@ -134,7 +134,7 @@ export default function AccountPopover() {
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <MenuItem onClick={(handleClose, (e) => submit(e))} sx={{ m: 1 }}>
-          Cerrar sesión
+          Cerrar sesión 
         </MenuItem>
       </Popover>
     </>

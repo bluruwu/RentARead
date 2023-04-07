@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 // @mui
+
 import { styled } from '@mui/material/styles';
 import { Container, Typography, Avatar, Box, List, ListItemText } from '@mui/material';
 // components
@@ -17,10 +18,10 @@ const StyledRoot = styled('div')(({ theme }) => ({
 const StyledRoot2 = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
     display: 'flex',
-    width: '40%',
+    width: '45%',
     flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'justify',
+    justifyContent: 'content-distribution',
     boxShadow: theme.customShadows.card,
   },
 }));
@@ -32,7 +33,7 @@ const StyledSection = styled('div')(({ theme }) => ({
   maxWidth: 480,
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'center',
+  justifyContent: 'content-distribution',
   boxShadow: theme.customShadows.card,
   backgroundColor: theme.palette.background.default,
 }));
@@ -40,11 +41,11 @@ const StyledSection = styled('div')(({ theme }) => ({
 const StyledContent = styled('div')(({ theme }) => ({
   maxWidth: 480,
   margin: 'auto',
-  minHeight: '100vh',
+  minHeight: '40vh',
   display: 'flex',
-  justifyContent: 'space-between',
+  justifyContent: 'normal',
   flexDirection: 'column',
-  padding: theme.spacing(12, 0),
+  padding: theme.spacing(10, 0),
 }));
 
 // ----------------------------------------------------------------------
@@ -55,33 +56,32 @@ export default function LoginPage() {
   return (
     <>
       <Helmet>
-        <title> Home | RentARead </title>
+        <title> RentARead - Home</title>
       </Helmet>
       <NavBar />
       <StyledRoot>
         <Container maxWidth="sm">
-          <StyledContent sx={{ textAlign: 'center', alignItems: 'center' }}>
-            <Typography variant="h2" paragraph>
+          <StyledContent sx={{ textAlign: 'justify', alignItems: 'center' }}>
+            <Typography variant="h2" paragraph sx={{ mb: '1rem' }}>
               RentARead
-              <Typography sx={{ color: 'text.secondary' }}>
+              <Typography sx={{ color: 'text.secondary', marginTop: '2rem' }}>
                 <p>
-                  Somos una empresa colombiana que desarrolla software para el manejo de clientes, facturación y recaudo
-                  por medio de Internet para empresas de energía eléctrica. Tenemos como proposito facilitar la vida a
-                  las empresas y sus clientes ofreciendo software de alta calidad, seguro y fácil de usar.
+                  Nos complace darle la bienvenida a RentARead, nuestra página web de renta, venta e intercambio de
+                  libros en línea, nos apasiona la lectura y creemos que todos deberían tener acceso a una amplia
+                  variedad de libros. Nuestro servicio de alquiler de libros en línea ofrece una experiencia de lectura
+                  única y cómoda que le permitirá acceder a una amplia selección de libros desde la comodidad de su
+                  hogar.
                 </p>{' '}
                 <p>
-                  Al año 2025 tenemos como propósito proveer de nuestros servicios a otras empresas de energía eléctrica
-                  en Latinoamérica y Europa, buscando cumplir con las necesidades y expectativas de las empresas en el
-                  exterior.
+                  Le invitamos a explorar nuestra colección de libros y a experimentar todo lo que RentARead tiene que
+                  ofrecer. Esperamos ser su destino número uno para la lectura en línea y ayudarle a descubrir nuevos
+                  títulos y autores que le apasionarán. ¡Gracias por elegir RentARead!
                 </p>
               </Typography>
             </Typography>
-            <Box sx={{ width: '100%', maxWidth: 360 }}>
+            <Box sx={{ width: '150%', maxWidth: '100%' }}>
               <List>
-                <ListItemText primary="CONTACTO" />
-                <ListItemText primary="Teléfono: 602-4552330" />
-                <ListItemText primary="Email: rentaread@gmail.com" />
-                <ListItemText primary="GitHub: https://github.com/bluruwu/RentARead" />
+                <ListItemText primary="https://github.com/bluruwu/RentARead" />
               </List>
             </Box>
           </StyledContent>
@@ -95,8 +95,8 @@ export default function LoginPage() {
               src={'/static/HomePage2.jpg'}
               style={{
                 width: 'auto',
-                height: '50vh',
-                border: '2px solid red' // Aquí se establece el borde en color rojo
+                height: '90%',
+                border: '2px solid red', // Aquí se establece el borde en color rojo
               }}
             />
           )}

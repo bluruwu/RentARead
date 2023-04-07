@@ -1,7 +1,7 @@
 import { Button, Grid, MenuItem, Stack, TextField } from '@mui/material';
 import { func } from 'prop-types';
 import { useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import swal from 'sweetalert';
 import { intlFormat } from 'date-fns';
@@ -18,8 +18,7 @@ export default function RegisterForm() {
       text: 'El usuario ha sido creado.',
       icon: 'success',
       button: 'Aceptar',
-      
-    })
+    });
   };
 
   const fallo = () => {
@@ -88,8 +87,7 @@ export default function RegisterForm() {
       .then((data) => {
         if (String(data.success) === 'El usuario ha sido creado') {
           confirmacion();
-          handleClick  (); 
-           
+          handleClick();
         } else if (String(data.error) === 'Las contraseñas no coinciden') {
           fallo();
         } else if (

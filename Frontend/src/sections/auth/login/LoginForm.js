@@ -14,7 +14,6 @@ import CSRFToken from '../../../components/csrftoken';
 
 import account from '../../../_mock/account';
 
-
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
@@ -198,19 +197,13 @@ export default function LoginForm() {
                 <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
                   <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
                 </IconButton>
-                
               </InputAdornment>
             ),
           }}
         />
       </Stack>
-      
-          
-     
 
-      
-
-      <Stack alignItems="center" className="g-recaptcha" sx={{ pb: '1rem' ,marginTop: '1rem' }}>
+      <Stack alignItems="center" className="g-recaptcha" sx={{ pb: '1rem', marginTop: '1rem' }}>
         <ReCAPTCHA sitekey="6Lf5qt8jAAAAAAARz5DGg9H46anFT4cAd03eZ3Ig" onChange={handleRecaptcha} />
       </Stack>
       <LoadingButton
@@ -220,23 +213,23 @@ export default function LoginForm() {
         size="large"
         type="submit"
         variant="contained"
-        sx={{ mb: '1rem' ,
-        backgroundColor: darken(0.0, 'rgb(251, 131, 36)'),
-    '&:active': {
-      backgroundColor: 'rgb(251, 131, 36)',
-    },
-    '&:focus': {
-      backgroundColor: darken(0.0, 'rgb(251, 131, 36)'),
-    },
-    '&:hover': {
-      backgroundColor: darken(0.0, 'rgb(251, 131, 36)'),
-    }
-      
-          }}
+        sx={{
+          mb: '1rem',
+          backgroundColor: darken(0.0, 'rgb(251, 131, 36)'),
+          '&:active': {
+            backgroundColor: 'rgb(251, 131, 36)',
+          },
+          '&:focus': {
+            backgroundColor: darken(0.0, 'rgb(179,97,25)'),
+          },
+          '&:hover': {
+            backgroundColor: darken(0.0, 'rgb(179,97,25)'),
+          },
+        }}
       >
         Iniciar Sesión
       </LoadingButton>
-      <NavBar2  sx={{ mb: '1rem' }}/>  
+      <NavBar2 sx={{ mb: '2rem' }} />
     </>
   );
 }

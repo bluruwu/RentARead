@@ -87,12 +87,12 @@ export default function Cliente() {
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={4}>
         <Typography variant="h4" gutterBottom>
-          Datos
+          Mi Perfil
         </Typography>
       </Stack>
       <StyledContentimg>
         <Avatar
-          src={''}
+          src={account.photoURL}
           style={{
             width: '200px',
             height: '200px',
@@ -103,24 +103,16 @@ export default function Cliente() {
       <StyledContent sx={{ textAlign: 'left', alignItems: 'center' }}>
         <div className="contenedor-text">
           <p className="nombre"> Nombre: {account.displayName}</p>
-          <p className="direccion"> Direccion: {account.direccion}</p>
-          <p className="ciudad"> Ciudad: {account.ciudad}</p>
+          <p className="cedula">
+            {' '}
+            Cedula: {account.tipoDocumento} {account.cedula}
+          </p>
+          <p className="cedula"> Email: {account.email}</p>
           <p className="telefono"> Telefono: {account.telefono}</p>
-          <p className="cedula"> Cedula: {account.cedula}</p>
-          <p className="estracto"> Estrato: 1</p>
+          <p className="ciudad"> Ciudad: {account.ciudad}</p>
+          <p className="direccion"> Direccion: {account.direccion}</p>
         </div>
       </StyledContent>
-
-      <StyledContentInfo sx={{ textAlign: 'left', alignItems: 'center' }}>
-        <div className="contenedor-text-contrato">
-          <h2 className="Contrato"> Datos de Contrato</h2>
-          <p className="NoContrato"> Numero de contrato: 1582245526</p>
-          <p className="Estado"> Estado de cuenta: {account.mora}</p>
-          <p className="ultimopago"> Fecha de ultimo pago: 10/01/2023</p>
-          <p className="ultimafactura"> Fecha ultima factura: 10/02/2023</p>
-        </div>
-      </StyledContentInfo>
     </div>
   );
 }
-

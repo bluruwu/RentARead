@@ -106,7 +106,7 @@ export default function InterfaceBook() {
        
             
         </Box>
-
+        {mdUp && (
 
         <Box style={{
         position: 'absolute', left: '65%', top: '40%',
@@ -216,6 +216,7 @@ export default function InterfaceBook() {
 
               </Typography> 
         </Box>
+        )}
 
         <Box style={{
         position: 'absolute', left: '98%', top: '5%',

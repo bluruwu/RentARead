@@ -15,8 +15,8 @@ export default function Start({ value }) {
       readOnly
       max={maxStars}
       sx={{
-        top: 250, // eje y   arriba (valores pequeños)
-        left:-20, // eje x
+        position: 'absolute',
+          top : '95%'
       }}
     />
   );

@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Container, Typography, Avatar } from '@mui/material';
+import { Container, Typography, Avatar, Box} from '@mui/material';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -30,32 +30,27 @@ const StyledRoot = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
     display: 'flex',
     width: '100%',
-
-    justifyContent: 'space-between',
   },
 }));
 
 const StyledRoot2 = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
     display: 'flex',
+    width: '100%',
     flexDirection: 'column',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    boxShadow: theme.customShadows.card,
-    flex: 1,
-    backgroundColor: 'transparent',
   },
 }));
+
+
 
 const StyledSection = styled('div')(({ theme }) => ({
   width: '100%',
   height: '100%',
 
-  maxWidth: 120,
+  maxWidth: 480,
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'flex-start',
-  justifyContent: 'flex-start',
+  justifyContent: 'center',
   boxShadow: theme.customShadows.card,
   backgroundColor: theme.palette.background.default,
 }));
@@ -79,57 +74,50 @@ export default function InterfaceBook() {
     setRating(newRating);
   }
 
+   
 
-
-  return (
+    return( 
     <>
-      <Helmet>
-      
+    <Helmet>
         <title> Book | RentARead </title>
-      </Helmet>
-    
+    </Helmet>
+    <Nav />
+    <Container maxWidth='sm' class="container-sm">
+    <StyledRoot2> 
+   
+<Box style={{
+        position: 'absolute', left: '35%', top: '40%',
+        transform: 'translate(-50%, -50%)',
+        padding: '500px'
+        }}>
+         <div style={{ marginBottom: '10px' }}>
+
+           <Avatar
+        variant="rounded"
+        alt="Login"
+        src={'/static/exampleC.jpg'}
+        style={{
+          width: 'auto',
+          height: '50vh',
+          border: '2px solid red' // Aquí se establece el borde en color rojo
+        }}/>
+         </div>
+         <div style={{ marginBottom: '10px' }}><NavBook/></div>
        
-      <StyledRoot>
-        <Nav />
-        
-        
-      
-      
-        
-        <Container maxWidth="100%">
-        
-                       
-          {/* Zona de la imagen del libro */}
-          {/* implementar fucion donde reciba la url del libro */}
-          {/* hay que definir un formato de la portadas 425x560 */}
-          <StyledContent sx={{ position: 'relative'}}>
-          { /* Portada del libro */ }
-            <Avatar
-              variant="rounded"
-              alt="Login"
+            
+        </Box>
 
-              src={'/static/exampleC.jpg'} // ruta de la imagen implementar  que cambie depiendo del libro
-              style={{
-                width: 'auto',  // ancho
-                height: '50vh',  // largo
-                border: '2px solid red',
-                position: 'absolute',
-                top: 40,    // Posicion en el eje y 
-                left: -270, // posicion en el eje x
-                margin: '20px'
-              }}
-            />
 
-              { /* Titulo del libro */ }
-            <Typography variant="h2" paragraph
-              sx={{
-                position: 'absolute',
-                top: 50, // Posicion y
-                left: -10, // posision x
-              }}
+        <Box style={{
+        position: 'absolute', left: '65%', top: '40%',
+        transform: 'translate(-50%, -50%)'
+        }}>
+          
+          <Typography variant="h2" paragraph
+              
             >
               THE FIRST DAYS
-              <Typography sx={{ color: 'text.secondary' }}>
+              <Typography sx={{ color: 'text.secondary'}}>
                 <p>
                   Rhiannon Frate
                 </p>
@@ -156,25 +144,28 @@ export default function InterfaceBook() {
                 borderRadius: "50%",
                 objectFit: "cover",
                 position: 'absolute',
-                top: 104,
-                left: 130,
+                top: '15%',
+                left: '30%'
+                
 
               }}
             />
 
-            {/* ...otros componentes */}
-            <NavBook />
+            
             {/*  .. seccion de calificacion del libro */}
-            <Start value={rating} onChange={() => handleRatingChange()} />
+            <Start value={rating} onChange={() => handleRatingChange()} 
+               
+            />
             <Typography 
               sx={{
                 position: 'absolute',
-                top: 340, // valores grandes baja el texto
-                 left: 100,
+                
                  fontSize: '24px', // tamaño de la letra
                  fontStyle: 'Comic Sans MS', // estilo de la letra
                  fontWeight: 'bold', // grosor de la letra
                  fontFamily: 'Book Antiqua', // fuente de la letra
+                 top:'94%',
+                 left : '30%'                
                 }}>
                 <p>{rating} </p>
 
@@ -188,8 +179,8 @@ export default function InterfaceBook() {
               <Typography  variant="h5" paragraph
               sx={{
                 position: 'absolute',
-                top:370,
-                 left: -10,
+                top: '102%',
+                
                  
                 }}>
                 <p>Acerca del vendedor </p>
@@ -198,50 +189,68 @@ export default function InterfaceBook() {
               { /* Nombre del vendedor   */ }
               <Typography sx={{ color: 'text.secondary',
                       position: 'absolute',
-                      top:393,
-                       left: -10,
+                      top: '109%',
+                      
                         }}>
                  < Link  to="/otra-pagina"> Estibaliz Baeza</ Link >
                 
               </Typography> 
               <Typography sx={{ color: 'text.secondary',
                       position: 'absolute',
-                      top:415,
-                       left: -10,
+                      top:'114%'
+                     
                         }}>
                 <p>
                 Calle 45#12-34
                 </p>
-
+                          
               </Typography> 
               <Typography sx={{ color: 'text.secondary',
                       position: 'absolute',
-                      top:440,
-                       left: -10,
+                      top: '120%'
+                     
                         }}>
                 <p>
                 Cali
                 </p>
 
-              </Typography>   
+              </Typography> 
+        </Box>
 
-              
+        <Box style={{
+        position: 'absolute', left: '98%', top: '5%',
+        transform: 'translate(-50%, -50%)'
+        }}>
+           {mdUp && (
+         <AccountPopover  />)}
 
+        </Box>
 
-  
-          </StyledContent>
-
-         
+          
           
 
-        </Container>
-        <StyledRoot2 >
-        <AccountPopover />
-         
-        </StyledRoot2>                
+       
+
+    </StyledRoot2>
+       
+    
+    </Container>
+    
+	
+	
+	
 
 
-      </StyledRoot>
+
+
+     
+
+             
+
+
+    
+   
     </>
+    
   );
 }

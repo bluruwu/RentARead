@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 // @mui
 // import { Box, List, ListItem, ListItemButton } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-
+import { Box } from "@mui/material";
 // components
 import { darken } from 'polished';
 
@@ -27,21 +27,17 @@ export default function NavBook() {
   };
 
   return (
-    <>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
       <LoadingButton
         variant="contained"
-
         sx={{
           backgroundColor: darken(0.0, 'rgb(251, 131, 36)'),
           color: '#fff',
           fontWeight: 'bold',
           textTransform: 'uppercase',
-          borderRadius: 0,
-          position: 'absolute',
-          top: 410,
-          left: -250,
-          width: '220px', // define el ancho
-          height: '20px', // define el alto  
+          borderRadius: 1,
+          width: '220px',
+          height: '20px',
           py: 1,
           px: 3,
           mr: 1,
@@ -55,18 +51,14 @@ export default function NavBook() {
 
       <LoadingButton
         variant="contained"
-
         sx={{
           backgroundColor: darken(0.0, 'rgb(251, 131, 36)'),
           color: '#fff',
           fontWeight: 'bold',
           textTransform: 'uppercase',
-          borderRadius: 0,
-          position: 'absolute',
-          top: 440,
-          left: -250,
-          width: '220px', // define el ancho
-          height: '20px', // define el alto    
+          borderRadius: 1,
+          width: '220px',
+          height: '20px',
           py: 1,
           px: 3,
           mr: 1,
@@ -77,20 +69,17 @@ export default function NavBook() {
       >
         Rentar por $$
       </LoadingButton>
+
       <LoadingButton
         variant="contained"
-
         sx={{
           backgroundColor: darken(0.0, 'rgb(251, 131, 36)'),
           color: '#fff',
           fontWeight: 'bold',
           textTransform: 'uppercase',
-          borderRadius: 0,
-          position: 'absolute',
-          top: 470,
-          left: -250,
-          width: '220px', // define el ancho
-          height: '20px', // define el alto  
+          borderRadius: 1,
+          width: '220px',
+          height: '20px',
           py: 1,
           px: 3,
           mr: 1,
@@ -101,20 +90,17 @@ export default function NavBook() {
       >
         Intercambiar
       </LoadingButton>
+
       <LoadingButton
         variant="contained"
-
         sx={{
           backgroundColor: darken(0.0, 'rgb(251, 131, 36)'),
           color: '#fff',
           fontWeight: 'bold',
           textTransform: 'uppercase',
-          borderRadius: 0,
-          position: 'absolute',
-          top: 500,
-          left: -250,
-          width: '220px', // define el ancho
-          height: '20px', // define el alto  
+          borderRadius: 1,
+          width: '220px',
+          height: '20px',
           py: 1,
           px: 3,
           mr: 1,
@@ -125,12 +111,9 @@ export default function NavBook() {
       >
         Chat vendedor
       </LoadingButton>
-
-
-    </>
-
-
+    </div>
   );
 }
+
 
 

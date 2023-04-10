@@ -80,12 +80,6 @@ class LoginView(APIView):
         username = data['email']
         password = data['contrasena']
 
-        # peticiones a la base de datos
-        # nombreUsuario = str((Usuario.objects.filter(
-        #     email=username).values().first())['nombre'])
-
-        # lista = list(Usuario.objects.all().values())
-
         # listaC = list(Usuario.objects.filter(
         #     id_tipo_usuario_id=3).values())
         # print(lista)
@@ -124,22 +118,34 @@ class LoginView(APIView):
         #     email=username).values().first())['id_tipo_usuario_id']
         # print(tipo)
 
-        # direccion = str((Inmueble.objects.filter(
-        #     id_inmueble='1007').values().first())['direccion'])
-
-        # ciudad = str((Inmueble.objects.filter(
-        #     id_inmueble='1007').values().first())['ciudad'])
-
-        # # geolocalizacion
-        # loc = geocoder.osm(direccion+ciudad+'colombia')
-        # coordenadas = loc.latlng
-
         user = auth.authenticate(username=username, password=password)
         print(user)
+        email = None
+        nombre = None
+        tipoDocumento = None
+        cedula = None
+        telefono = None
+        ciudad = None
+        direccion = None
 
         if user is not None:
             auth.login(request, user)
-            return Response({'success': "Usuario autenticado exitosamente"})
+            for usuario in Usuario.objects.all():
+                if str(user) == usuario.email:
+                    email = usuario.email
+                    nombre = usuario.nombre
+                    tipoDocumento = usuario.tipo_documento
+                    cedula = usuario.cedula
+                    telefono = usuario.telefono
+                    ciudad = usuario.ciudad
+                    direccion = usuario.direccion
+
+                    # geolocalizacion
+                    loc = geocoder.osm(direccion+","+ciudad+', Colombia')
+                    coordenadas = loc.latlng
+                    print(direccion, ciudad, coordenadas, loc)
+
+            return Response({'success': "Usuario autenticado exitosamente", "email": email, "nombre": nombre, "tipoDocumento": tipoDocumento, "cedula": cedula, "telefono": telefono, "ciudad": ciudad, "direccion": direccion})
         else:
             return Response({'error': 'Usuario y/o contraseña incorrectas'})
         # except:

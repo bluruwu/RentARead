@@ -89,14 +89,14 @@ export default function LoginForm() {
           if (String(data.success) === 'Usuario autenticado exitosamente') {
             confirmacion();
             setGoToDashboard(true);
-            // if (data.tipo === 3) {
-            //   // guarda los datos recibidos del backend
-            //   account.displayName = String(data.name);
-            //   account.email = String(data.correo);
-            //   account.cedula = String(data.cedula);
-            //   account.telefono = String(data.telefono);
-            //   account.direccion = String(data.direccion);
-            //   account.ciudad = String(data.ciudad);
+            account.displayName = String(data.nombre);
+            account.email = String(data.email);
+            account.cedula = String(data.cedula);
+            account.telefono = String(data.telefono);
+            account.direccion = String(data.direccion);
+            account.ciudad = String(data.ciudad);
+            account.tipoDocumento = String(data.tipoDocumento);
+
             //   account.coordenadas = String(data.coordenadas);
             //   account.tipo = data.tipo;
             //   console.log(account.lista);
@@ -106,21 +106,6 @@ export default function LoginForm() {
             //   account.listaCoordenadas = data.listaLoc;
             //   account.facturas = data.listaFac;
             //   console.log(account);
-            // } else {
-            //   // guarda los datos recibidos del backend
-            //   account.displayName = String(data.name);
-            //   account.email = String(data.correo);
-            //   account.cedula = String(data.cedula);
-            //   account.telefono = String(data.telefono);
-            //   account.tipo = data.tipo;
-            //   console.log(account.lista);
-            //   account.lista = data.lista;
-            //   console.log(account.lista);
-            //   account.listaCliente = data.listaC;
-            //   account.listaCoordenadas = data.listaLoc;
-            //   account.facturas = data.listaFac;
-            //   console.log(account);
-            // }
           } else if ('error' in data) {
             info(String(data.error));
           }

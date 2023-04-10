@@ -11,15 +11,11 @@ import account from '../../../_mock/account';
 
 const MENU_OPTIONS = [
   {
-    label: 'Home',
+    label: 'Avisos',
     icon: 'eva:home-fill',
   },
   {
-    label: 'Profile',
-    icon: 'eva:person-fill',
-  },
-  {
-    label: 'Settings',
+    label: 'Configuración',
     icon: 'eva:settings-2-fill',
   },
 ];
@@ -134,7 +130,7 @@ export default function AccountPopover() {
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <MenuItem onClick={(handleClose, (e) => submit(e))} sx={{ m: 1 }}>
-          Cerrar sesión 
+          Cerrar sesión
         </MenuItem>
       </Popover>
     </>

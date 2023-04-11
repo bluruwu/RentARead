@@ -147,7 +147,7 @@ export default function LoginForm() {
   }
 
   if (goToDashboard) {
-    return <Navigate to="/dashboard/user" />;
+    return <Navigate to="/dashboard/inicio" />;
   }
 
   if (goToRegister) {

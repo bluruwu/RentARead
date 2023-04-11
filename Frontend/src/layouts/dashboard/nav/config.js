@@ -6,27 +6,27 @@ const icon = (name) => <SvgColor src={`/static/icons/navbar/${name}.svg`} sx={{ 
 const navConfig = [
   {
     title: 'Libros Disponibles',
-    path: '/dashboard/user',
-    icon: icon('ic_user'),
+    path: '/dashboard/inicio',
+    icon: icon('books2'),
   },
   {
     title: 'Mapa de Libros',
-    path: '/dashboard/app',
-    icon: icon('ic_analytics'),
+    path: '/dashboard/mapa',
+    icon: icon('near_me'),
   },
   {
     title: 'Mis Compras',
-    path: '/dashboard/bills',
-    icon: icon('ic_bills'),
+    path: '/dashboard/miscompras',
+    icon: icon('shopping_cart'),
   },
   {
     title: 'Mis Ventas',
-    path: '/dashboard/customers',
-    icon: icon('ic_customers'),
+    path: '/dashboard/misventas',
+    icon: icon('receipt'),
   },
   {
     title: 'Mi Perfil',
-    path: '/dashboard/cliente',
+    path: '/dashboard/perfil',
     icon: icon('ic_profile'),
   },
 
@@ -35,31 +35,6 @@ const navConfig = [
     path: '/dashboard/publicityRegistry',
     icon: icon('ic_blog'),
   },
-  /* {
-    title: 'Mapa de clientes',
-    path: '/dashboard/map',
-    icon: icon('ic_customers'),
-  }, */
-  /* {
-    title: 'product',
-    path: '/dashboard/products',
-    icon: icon('ic_cart'),
-  }, */
-  /* {
-    title: 'blog',
-    path: '/dashboard/blog',
-    icon: icon('ic_blog'),
-  }, */
-  /* {
-    title: 'login',
-    path: '/login',
-    icon: icon('ic_lock'),
-  }, */
-  /* {
-    title: 'Not found',
-    path: '/404',
-    icon: icon('ic_disabled'),
-  }, */
 ];
 
 export default navConfig;

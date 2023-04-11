@@ -82,7 +82,7 @@ export default function Cliente() {
   return (
     <div className="Info-cliente">
       <Helmet>
-        <title>Cliente</title>
+        <title>Mi Perfil</title>
       </Helmet>
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={4}>

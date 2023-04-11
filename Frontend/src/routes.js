@@ -3,17 +3,15 @@ import { Navigate, useRoutes } from 'react-router-dom';
 import DashboardLayout from './layouts/dashboard';
 import SimpleLayout from './layouts/simple';
 //
-import BlogPage from './pages/BlogPage';
-import UserPage from './pages/UserPage';
+import Inicio from './pages/Inicio';
 import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
-import ProductsPage from './pages/ProductsPage';
-import DashboardAppPage from './pages/DashboardAppPage';
+import Mapa from './pages/Mapa';
 import Register from './pages/Register';
 import HomePage from './pages/HomePage';
-import Bills from './pages/Bills';
-import Customer from './pages/Customer';
-import Cliente from './pages/Cliente';
+import MisCompras from './pages/MisCompras';
+import MisVentas from './pages/MisVentas';
+import Perfil from './pages/Perfil';
 import Payment from './pages/Payment';
 import PaymentPage from './pages/PaymentPage';
 import PropertyRegistry from './pages/PropertyRegistry';
@@ -30,19 +28,16 @@ export default function Router() {
       path: '/dashboard',
       element: <DashboardLayout />,
       children: [
-        { element: <Navigate to="/dashboard/user" />, index: true },
-        { path: 'app', element: <DashboardAppPage /> },
-        { path: 'user', element: <UserPage /> },
-        { path: 'products', element: <ProductsPage /> },
-        { path: 'blog', element: <BlogPage /> },
-        { path: 'bills', element: <Bills/>},
-        { path: 'customers', element: <Customer/>},
-        { path: 'cliente', element: <Cliente/>},
-        { path: 'payment', element: <Payment/>},
-        { path: 'onlinepayment', element: <PaymentPage/>},
-        { path: 'publicityRegistry', element: <PublicityRegistry/>},
-        
-        
+        { element: <Navigate to="/dashboard/inicio" />, index: true },
+        { path: 'mapa', element: <Mapa /> },
+        { path: 'inicio', element: <Inicio /> },
+        { path: 'miscompras', element: <MisCompras /> },
+        { path: 'misventas', element: <MisVentas /> },
+        { path: 'perfil', element: <Perfil /> },
+        { path: 'payment', element: <Payment /> },
+        { path: 'onlinepayment', element: <PaymentPage /> },
+        { path: 'publicityRegistry', element: <PublicityRegistry /> },
+        { path: 'book', element: <InterfaceBook /> },
       ],
     },
     {
@@ -55,7 +50,7 @@ export default function Router() {
     },
     {
       path: '/home',
-      element: <HomePage/>
+      element: <HomePage />,
     },
     {
       element: <SimpleLayout />,
@@ -71,22 +66,20 @@ export default function Router() {
     },
     {
       path: '/register',
-      element: <Register/>
+      element: <Register />,
     },
     {
       path: '/propertyRegister',
-      element: <PropertyRegistry/>
+      element: <PropertyRegistry />,
     },
     {
       path: 'edituser',
-      element: <EditUser/>
+      element: <EditUser />,
     },
     {
       path: 'book',
-      element: <InterfaceBook/>
+      element: <InterfaceBook />,
     },
-   
-
   ]);
 
   return routes;

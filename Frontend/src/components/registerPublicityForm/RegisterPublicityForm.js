@@ -1,102 +1,131 @@
-import { Button, Grid, MenuItem, Stack, TextField } from '@mui/material';
-import { useState } from 'react';
-import Cookies from 'js-cookie';
+import { Button, Grid, MenuItem, Stack, TextField } from "@mui/material";
+import { useState } from "react";
+import Cookies from "js-cookie";
 import { darken } from 'polished';
-import swal from 'sweetalert';
-import CSRFToken from '../csrftoken';
+import swal from "sweetalert";
+import CSRFToken from "../csrftoken";
 
-export default function RegisterPublicityForm() {
+
+export default function RegisterPublicityForm (){
+
     const confirmacion = () => {
-      swal({
-        text: 'Se ha registrado la publicidad exitosamente',
-        icon: 'success',
-        button: 'Aceptar',
-      });
-    };
-
-    const convert2base64 = (archivos) => {
-        Array.from(archivos).forEach((archivo) => {
-          const reader = new FileReader();
-          reader.readAsDataURL(archivo);
-          reader.onload = function () {
-            let arrayAuxiliar = [];
-            const base64 = reader.result;
-            arrayAuxiliar = base64.split(',');
-            // No funciona
-            publicidad.file = atob(arrayAuxiliar[1]);
-            console.log(arrayAuxiliar[1]);
-          };
-        });
-      };
-    
-      const [publicidad, setPublicidad] = useState({
-        empresa_encargada: '',
-        precio_publicidad: '',
-        file: '',
-      });
-    
-      const frecuencia = [
-        { value: '5500000', label: 'Frecuente - $5.500.000' },
-        { value: '1000000', label: 'A veces - $1.000.000' },
-      ];
-    
-      function handle(e, select = 1) {
-        const newdata = { ...publicidad };
-        if (select === 2) {
-          newdata.precio_publicidad = e.target.value;
-        } else {
-          newdata[e.target.id] = e.target.value;
-        }
-        setPublicidad(newdata);
-        console.log(newdata);
-      }
-      const url = 'http://127.0.0.1:8000/api/registrarPublicidad';
-      function submit(e) {
-        const formData = new FormData();
-        formData.append('file', publicidad);
-        formData.append('empresa_encargada', publicidad);
-        formData.append('precio_publicidad', publicidad);
-        fetch(url, {
-          method: 'POST',
-          credentials: 'same-origin',
-          headers: {
-            'X-CSRFToken': Cookies.get('csrftoken'),
-            Accept: 'aplication/json',
-            'Content-type': 'aplication/json',
-          },
-          body: formData,
+        swal({
+            text: 'La informacion del libro se ha registrado exitosamente',
+            icon: 'success',
+            button: 'Aceptar',
         })
-          .then((response) => response.json())
-          .then((data) => {
+    }
+    
+    const convert2base64=(archivos)=>{
+        Array.from(archivos).forEach(archivo=>{
+            const reader = new FileReader();
+            reader.readAsDataURL(archivo)
+            reader.onload=function(){
+                let arrayAuxiliar=[]
+                const base64= reader.result
+                arrayAuxiliar = base64.split(',')
+                // No funciona
+                dataLibro.file = atob(arrayAuxiliar[1]) 
+                console.log(arrayAuxiliar[1])
+            }
+        })
+    }
+
+    const [dataLibro, setDataLibro] = useState({
+        nombre_libro : '',
+        numero_paginas : '',
+        codigo_ISBN : '',
+        nombre_autor : '',
+        genero_libro : '',
+        estado_libro : '',
+        uso_libro : '',
+        uso_libro_opcion : '',
+        editorial_libro : '',
+        fecha_libro : '',
+        descripcion_libro : '',
+        file: '',
+    });
+
+    const estadoLibro = [
+        {value: "1", label: "Excelente"},
+        {value: "2", label: "Bueno"},
+        {value: "3", label: "Regular"},
+        {value: "4", label: "Deficiente"},
+    ]
+
+    const genero = [
+        {value: "1", label: "Terror"},
+        {value: "2", label: "Ciencia ficcion"},
+        {value: "3", label: "Romance"},
+        {value: "4", label: "Drama"},
+        {value: "5", label: "Misterio"},
+    ]
+
+    const usoLibro = [
+        {value: "Precio de venta",            label: "Venta"},
+        {value: "Precio de renta por semana", label: "Renta"},
+        {value: "Intercambio?",               label: "Intercambio"},
+    ]
+
+    function handle(e,select=1){
+        const newdata = { ...dataLibro};
+        if(select === 2){
+            newdata.uso_libro=e.target.value
+        }
+        if(select === 3){
+            newdata.genero_libro=e.target.value
+        }
+        if(select === 4){
+            newdata.estado_libro=e.target.value
+        }
+        else{
+            newdata[e.target.id]=e.target.value;
+        }
+        setDataLibro(newdata);
+        console.log(newdata);
+    }
+    const url = 'http://127.0.0.1:8000/api/registrarLibro';
+    function submit(e){
+        const formData = new FormData ();
+        formData.append('file', dataLibro)
+        formData.append('uso_libro', dataLibro)
+        formData.append('genero_libro', dataLibro)
+        formData.append('estado_libro', dataLibro)
+        fetch(url, {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'X-CSRFToken': Cookies.get('csrftoken'),
+                Accept: 'aplication/json',
+                'Content-type': 'aplication/json',
+            },
+            body: formData,
+        })
+        .then((response) => response.json())
+        .then((data) => {
             console.log(data);
             return data;
-          })
-          .then((data) => {
-            if (String(data.success) === 'Publicidad registrada') {
-              confirmacion();
+        })
+        .then((data) => {
+            if (String(data.success) === 'Libro registrada'){
+                confirmacion();
             }
-          })
-          .catch((error) => console.warn(error));
-      }    
+        })
+        .catch((error) => console.warn(error));
+    }
 
-      return (
+
+    return (
+        
         <>
-          <Stack
-            spacing={2}
-            sx={{
-              '& .MuiTextField-root': { m: 5, width: '37ch' },
-            }}
-          >
-            <Grid
-              container
-              columns={4}
-              spacing={2}
-              sx={{
-                '& .MuiTextField-root': { m: 1, width: '16ch' },
-              }}
-            >
-              <CSRFToken />
-          <Grid item lg={2} xs={2} md={2} >
+        <Stack spacing={2} sx={{
+        '& .MuiTextField-root' : {m: 5, width: '37ch'},
+        }}>
+          <Grid container columns={4} spacing={2} sx={{
+        '& .MuiTextField-root': {m: 1, width: '16ch'},
+        }}>
+           <CSRFToken />
+           <Grid item lg={2} xs={2} md={2} >
 
            <TextField
            onChange={(e)=>handle(e)}
@@ -175,12 +204,11 @@ export default function RegisterPublicityForm() {
             <MenuItem key={optione.value} value={optione.value}>
             {optione.label}    
             </MenuItem>    
-            ))} 
+            ))}    
             </TextField>
-            </Grid>
-
-            <Grid item lg={2} xs={2} md={2} >
-            <TextField
+           </Grid>
+           <Grid item lg={2} xs={2} md={2} >
+           <TextField
             id="uso_libro"
             select
             label="Uso"
@@ -251,8 +279,9 @@ export default function RegisterPublicityForm() {
            InputProps={{ style: { width: 300 } }}
            />
            </Grid>
+        </Grid>
         <Stack spacing={2}>
-          <input type="file" name="file" onChange={(e) => convert2base64(e.target.files)} />
+          <input type="file" name="file" accept="image/*" onChange={(e) => convert2base64(e.target.files)} />
           <Button
             variant="contained"
             sx={{
@@ -270,12 +299,13 @@ export default function RegisterPublicityForm() {
             onClick={(e) => submit(e)}
           >
             {' '}
-            Registrar Publicidad
+            Registrar Libro
           </Button>
+        </Stack>               
+
         </Stack>
 
-</Grid>
-</Stack>
-</>
-);    
+
+        </>
+    );
 }

@@ -178,6 +178,79 @@ export default function RegisterPublicityForm() {
             ))} 
             </TextField>
             </Grid>
+
+            <Grid item lg={2} xs={2} md={2} >
+            <TextField
+            id="uso_libro"
+            select
+            label="Uso"
+            size='medium'
+            onChange={(e)=>handle(e,2)}
+            value={dataLibro.uso_libro}
+            InputProps={{ style: { width: 300 } }}
+            >
+            {usoLibro.map((optione) => (
+            <MenuItem key={optione.value} value={optione.value}>
+            {optione.label}    
+            </MenuItem>    
+            ))}    
+            </TextField>
+           </Grid>
+           <Grid item lg={2} xs={2} md={2} >
+
+           <TextField
+           onChange={(e)=>handle(e)}
+           value={dataLibro.uso_libro_opcion}
+           size='medium'
+           label={dataLibro.uso_libro}
+           id="uso_libro2"
+           variant="outlined"
+           InputProps={{ style: { width: 300 } }}
+           >
+            {usoLibro.map((optione) => (
+            <MenuItem key={optione.value} value={optione.value}>
+            {optione.label}    
+            </MenuItem>    
+            ))}
+            </TextField>
+           </Grid>
+
+           <Grid item lg={2} xs={2} md={2} >
+
+           <TextField
+           onChange={(e)=>handle(e)}
+           value={dataLibro.editorial_libro}
+           size='medium'
+           label="Editorial"
+           id="editorial_libro"
+           variant="outlined"
+           InputProps={{ style: { width: 300 } }}
+           />
+           </Grid>
+           <Grid item lg={2} xs={2} md={2} >
+
+           <TextField
+           onChange={(e)=>handle(e)}
+           value={dataLibro.fecha_libro}
+           size='medium'
+           label="Año de publicacion"
+           id="fecha_libro"
+           variant="outlined"
+           InputProps={{ style: { width: 300 } }}
+           />
+           </Grid>
+           <Grid item lg={2} xs={2} md={2} >
+
+           <TextField
+           onChange={(e)=>handle(e)}
+           value={dataLibro.descripcion_libro}
+           size='medium'
+           label="Descripcion"
+           id="descripcion_libro"
+           variant="outlined"
+           InputProps={{ style: { width: 300 } }}
+           />
+           </Grid>
         <Stack spacing={2}>
           <input type="file" name="file" onChange={(e) => convert2base64(e.target.files)} />
           <Button

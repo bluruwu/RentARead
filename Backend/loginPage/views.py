@@ -73,16 +73,12 @@ class LoginView(APIView):
 
     def post(self, request, format=None):
 
-        # try:
+        # try
 
         data = self.request.data
 
         username = data['email']
         password = data['contrasena']
-
-        # listaC = list(Usuario.objects.filter(
-        #     id_tipo_usuario_id=3).values())
-        # print(lista)
 
         # inmueb = list(Inmueble.objects.all().values())
         # print(inmueb)
@@ -102,21 +98,9 @@ class LoginView(APIView):
         #     listaL.append(localC)
         #     i += 1
 
-        # print(listaL)
-
         # listaFac = list(Factura.objects.filter(
         #     id_inmueble='1007').values())
         # print(listaFac)
-
-        # cedulaUsuario = str((Usuario.objects.filter(
-        #     email=username).values().first())['cedula'])
-
-        # telefonoUsuario = str((Usuario.objects.filter(
-        #     email=username).values().first())['telefono'])
-
-        # tipo = (Usuario.objects.filter(
-        #     email=username).values().first())['id_tipo_usuario_id']
-        # print(tipo)
 
         user = auth.authenticate(username=username, password=password)
         print(user)
@@ -131,6 +115,9 @@ class LoginView(APIView):
         if user is not None:
             auth.login(request, user)
             for usuario in Usuario.objects.all():
+                lista_coordenadas = []
+                lista_coordenadas.append([])
+
                 if str(user) == usuario.email:
                     email = usuario.email
                     nombre = usuario.nombre
@@ -143,9 +130,10 @@ class LoginView(APIView):
                     # geolocalizacion
                     loc = geocoder.osm(direccion+","+ciudad+', Colombia')
                     coordenadas = loc.latlng
-                    print(direccion, ciudad, coordenadas, loc)
+                    latitud = coordenadas[0]
+                    longitud = coordenadas[1]
 
-            return Response({'success': "Usuario autenticado exitosamente", "email": email, "nombre": nombre, "tipoDocumento": tipoDocumento, "cedula": cedula, "telefono": telefono, "ciudad": ciudad, "direccion": direccion})
+            return Response({'success': "Usuario autenticado exitosamente", "email": email, "nombre": nombre, "tipoDocumento": tipoDocumento, "cedula": cedula, "telefono": telefono, "ciudad": ciudad, "direccion": direccion, "latitud": latitud, "longitud": longitud})
         else:
             return Response({'error': 'Usuario y/o contraseña incorrectas'})
         # except:

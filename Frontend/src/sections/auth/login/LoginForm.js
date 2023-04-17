@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import ReCAPTCHA from 'react-google-recaptcha';
 // @mui
-import { Link, Stack, IconButton, InputAdornment, TextField } from '@mui/material';
+import { Stack, IconButton, InputAdornment, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // components
 import swal from 'sweetalert';
@@ -96,9 +96,8 @@ export default function LoginForm() {
             account.direccion = String(data.direccion);
             account.ciudad = String(data.ciudad);
             account.tipoDocumento = String(data.tipoDocumento);
-
-            //   account.coordenadas = String(data.coordenadas);
-            //   account.tipo = data.tipo;
+            account.latitud = String(data.latitud);
+            account.longitud = String(data.longitud);
             //   console.log(account.lista);
             //   account.lista = data.lista;
             //   console.log(account.lista);

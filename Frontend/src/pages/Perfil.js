@@ -2,9 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { styled } from '@mui/material/styles';
 import { Stack, Avatar, Typography } from '@mui/material';
-
 import account from '../_mock/account';
-import Visits from './Visits';
 
 const StyledContent = styled('div')(({ theme }) => ({
   maxWidth: 400,
@@ -44,38 +42,6 @@ const StyledContentInfo = styled('div')(({ theme }) => ({
   justifyContent: 'space-between',
   flexDirection: 'column',
   padding: theme.spacing(2, 2),
-}));
-
-const StyledContentGra = styled('div')(({ theme }) => ({
-  maxWidth: 600,
-  margin: 'auto',
-
-  float: 'left',
-  position: 'relative',
-  left: '-400px',
-  minHeight: '5vh',
-  display: 'flex',
-  top: '280px',
-
-  justifyContent: 'space-between',
-  flexDirection: 'column',
-  padding: theme.spacing(1, 1),
-}));
-
-const StyledContentMap = styled('div')(({ theme }) => ({
-  maxWidth: 600,
-  margin: 'auto',
-
-  float: 'left',
-  position: 'relative',
-  left: '400px',
-  minHeight: '5vh',
-  display: 'flex',
-  top: '280px',
-
-  justifyContent: 'space-between',
-  flexDirection: 'column',
-  padding: theme.spacing(1, 1),
 }));
 
 export default function Cliente() {

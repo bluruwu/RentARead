@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Container, Typography,Avatar, Box } from '@mui/material';
+import { Container, Typography, Avatar, Box } from '@mui/material';
 // hooks
 import useResponsive from '../hooks/useResponsive';
 // components
@@ -26,18 +26,6 @@ const StyledRoot2 = styled('div')(({ theme }) => ({
   },
 }));
 
-const StyledSection = styled('div')(({ theme }) => ({
-  width: '100%',
-  height: '100%',
-
-  maxWidth: 480,
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  boxShadow: theme.customShadows.card,
-  backgroundColor: theme.palette.background.default,
-}));
-
 const StyledContent = styled('div')(({ theme }) => ({
   maxWidth: 480,
   margin: 'auto',
@@ -56,8 +44,7 @@ export default function LoginPage() {
   return (
     <>
       <Helmet>
-        <title > Login | RentARead </title>
-        
+        <title> Login | RentARead </title>
       </Helmet>
 
       <StyledRoot>

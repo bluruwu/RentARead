@@ -9,7 +9,8 @@ const account = {
   telefono: '',
   ciudad: '',
   direccion: '',
-  coordenadas: '',
+  latitud: '',
+  longitud: '',
   lista: [
     {
       cedula: '1002343456',

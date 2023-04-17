@@ -26,18 +26,6 @@ const StyledRoot2 = styled('div')(({ theme }) => ({
   },
 }));
 
-const StyledSection = styled('div')(({ theme }) => ({
-  width: '100%',
-  height: '100%',
-
-  maxWidth: 480,
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'content-distribution',
-  boxShadow: theme.customShadows.card,
-  backgroundColor: theme.palette.background.default,
-}));
-
 const StyledContent = styled('div')(({ theme }) => ({
   maxWidth: 480,
   margin: 'auto',

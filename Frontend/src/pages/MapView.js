@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import markerIconPng from 'leaflet/dist/images/marker-icon.png';
 import { Icon } from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import { Button, Stack } from '@mui/material';
-import Iconify from '../components/iconify';
 import 'leaflet/dist/leaflet.css';
+import account from '../_mock/account';
 
 export default function MapView() {
   const [places, setPlaces] = useState([
@@ -44,9 +43,9 @@ export default function MapView() {
   return (
     <MapContainer
       style={{ height: '80vh', width: '72vw' }}
-      center={[3.43722, -76.5225]}
-      zoom={11}
-      scrollWheelZoom={false}
+      center={[String(account.latitud), String(account.longitud)]}
+      zoom={14}
+      scrollWheelZoom
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

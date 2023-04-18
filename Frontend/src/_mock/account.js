@@ -11,6 +11,7 @@ const account = {
   direccion: '',
   latitud: '',
   longitud: '',
+
   lista: [
     {
       cedula: '1002343456',
@@ -60,7 +61,7 @@ const account = {
       tipo_documento: 'CC',
     },
   ],
-  listaCoordenadas: [],
+  listaCoordenadas: 0,
   facturas: [],
 };
 

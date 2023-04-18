@@ -98,6 +98,7 @@ export default function LoginForm() {
             account.tipoDocumento = String(data.tipoDocumento);
             account.latitud = String(data.latitud);
             account.longitud = String(data.longitud);
+            account.listaCoordenadas = data.listaCoordenadas;
             //   console.log(account.lista);
             //   account.lista = data.lista;
             //   console.log(account.lista);

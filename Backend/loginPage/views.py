@@ -112,11 +112,16 @@ class LoginView(APIView):
         ciudad = None
         direccion = None
 
+        lista_libros_coordenadas = []
+
         if user is not None:
             auth.login(request, user)
+
             for usuario in Usuario.objects.all():
-                lista_coordenadas = []
-                lista_coordenadas.append([])
+                # direccion = usuario.direccion
+                # ciudad = usuario.ciudad
+                # localizacion = geocoder.osm(direccion+","+ciudad+', Colombia')
+                # coordenadas = localizacion.latlng
 
                 if str(user) == usuario.email:
                     email = usuario.email
@@ -127,13 +132,20 @@ class LoginView(APIView):
                     ciudad = usuario.ciudad
                     direccion = usuario.direccion
 
-                    # geolocalizacion
-                    loc = geocoder.osm(direccion+","+ciudad+', Colombia')
-                    coordenadas = loc.latlng
-                    latitud = coordenadas[0]
-                    longitud = coordenadas[1]
+                    latitud = usuario.latitud
+                    longitud = usuario.longitud
 
-            return Response({'success': "Usuario autenticado exitosamente", "email": email, "nombre": nombre, "tipoDocumento": tipoDocumento, "cedula": cedula, "telefono": telefono, "ciudad": ciudad, "direccion": direccion, "latitud": latitud, "longitud": longitud})
+            for libro in Libro.objects.all():
+                latitud_libro = libro.email.latitud
+                longitud_libro = libro.email.longitud
+                nombre_libro = libro.titulo
+                id_libro = libro.id_libro
+                lista_libros_coordenadas.append(
+                    {"lat": usuario.latitud, "lng": usuario.longitud, "nombre_libro": nombre_libro, "id_libro": id_libro})
+
+            print(lista_libros_coordenadas)
+
+            return Response({'success': "Usuario autenticado exitosamente", "email": email, "nombre": nombre, "tipoDocumento": tipoDocumento, "cedula": cedula, "telefono": telefono, "ciudad": ciudad, "direccion": direccion, "latitud": latitud, "longitud": longitud, "listaCoordenadas": lista_libros_coordenadas})
         else:
             return Response({'error': 'Usuario y/o contraseña incorrectas'})
         # except:

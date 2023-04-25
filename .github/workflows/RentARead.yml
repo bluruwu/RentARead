@@ -45,8 +45,8 @@ jobs:
     - name: Iniciar proyecto
       run: |
         cd Backend && python manage.py runserver &
-
+        
     - name: Ejecutar pruebas de humo con Cypress
       run: |
-      cd Frontend
-      npx cypress run --spec cypress/e2e/pruebahumo.cy.js
+        cd Frontend
+        npx cypress run --spec cypress/e2e/pruebahumo.cy.js

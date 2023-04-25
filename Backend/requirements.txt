@@ -6,3 +6,4 @@ authentication==1.1.0
 pipreqs==0.4.13
 django-cors-headers==3.13.0
 geocoder==1.38.1
+psycopg2==2.9.5

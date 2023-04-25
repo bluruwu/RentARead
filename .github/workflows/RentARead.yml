@@ -22,7 +22,7 @@ jobs:
     - name: Install dependencies
       run: |
         cd Frontend
-        npm install
+        npm install --save react-credit-cards --legacy-peer-deps
         
     - name: Build frontend
       run: |

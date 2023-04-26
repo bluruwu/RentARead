@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-    CI: false
-    
+      CI: false
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -44,9 +44,9 @@ jobs:
     
     - name: Iniciar proyecto
       run: |
-        python manage.py runserver
-
-    # - name: Run tests
-    #   run: |
-    #     cd Backend
-    #     python manage.py test
+        cd Backend && python manage.py runserver &
+        
+    - name: Ejecutar pruebas de humo con Cypress
+      run: |
+        cd Frontend
+        npx cypress run --spec cypress/e2e/pruebahumo.cy.js

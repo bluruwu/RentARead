@@ -31,7 +31,7 @@ const navConfig = [
   },
 
   {
-    title: 'Registrar Publicidad',
+    title: 'Registrar Libro',
     path: '/dashboard/publicityRegistry',
     icon: icon('ic_blog'),
   },

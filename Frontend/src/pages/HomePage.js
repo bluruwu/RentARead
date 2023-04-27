@@ -22,7 +22,6 @@ const StyledRoot2 = styled('div')(({ theme }) => ({
     flexDirection: 'column',
     alignItems: 'justify',
     justifyContent: 'content-distribution',
-    boxShadow: theme.customShadows.card,
   },
 }));
 
@@ -84,7 +83,6 @@ export default function LoginPage() {
               style={{
                 width: 'auto',
                 height: '90%',
-                border: '2px solid red', // Aquí se establece el borde en color rojo
               }}
             />
           )}

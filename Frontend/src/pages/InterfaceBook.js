@@ -35,8 +35,6 @@ const StyledRoot2 = styled('div')(({ theme }) => ({
   },
 }));
 
-
-
 const StyledSection = styled('div')(({ theme }) => ({
   width: '100%',
   height: '100%',
@@ -195,6 +193,5 @@ export default function InterfaceBook() {
         </StyledRoot2>
       </Container>
     </>
-    
   );
 }

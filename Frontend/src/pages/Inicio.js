@@ -1,11 +1,10 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
 import { useState } from 'react';
 import Cookies from 'js-cookie';
 import { darken } from 'polished';
-
 // @mui
 import {
   Card,
@@ -42,12 +41,13 @@ import account from '../_mock/account';
 
 // ----------------------------------------------------------------------
 const TABLE_HEAD = [
-  { id: 'nombre', label: 'Nombre', alignRight: false },
-  { id: 'userID', label: 'ID', alignRight: false },
-  { id: 'role', label: 'Tipo', alignRight: false },
-  { id: 'isInMora', label: 'En Mora', alignRight: false },
-  { id: 'status', label: 'Estado', alignRight: false },
+ 
+  { id: 'nombre', label: 'Titulo', alignRight: false },
+  { id: 'userID', label: 'Género ', alignRight: false },
   { id: '' },
+  { id: 'role', label: ' Autor', alignRight: false },
+  { id: 'status', label: 'Disponible para', alignRight: false },
+  { id: '' }, // Último objeto sin espacio adicional
 ];
 
 // ----------------------------------------------------------------------
@@ -157,7 +157,7 @@ export default function UserPage() {
   const [goToRegister, setGoToRegister] = useState(false);
 
   if (goToRegister) {
-    return <Navigate to="/register" />;
+    return <Navigate to="/nuevoLibro" />;
   }
 
   return (
@@ -216,17 +216,23 @@ export default function UserPage() {
                     const selectedUser = selected.indexOf(name) !== -1;
 
                     return (
-                      <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                      <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser} sx={{ '& > *': { padding: '8px' } }}>
                         <TableCell padding="checkbox">
                           <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, name)} />
                         </TableCell>
 
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={name} src={avatarUrl} />
+                            <Avatar alt={name} src={avatarUrl} variant="rounded"
+                            alt="Login" style={{
+                              width: 'auto',
+                              height: '15vh',
+                              
+                            }}/>
                             <Typography variant="subtitle2" noWrap>
-                              {name}
-                            </Typography>
+                            <Link to="/otra-pagina"> {name}</Link>
+                          </Typography> 
+                           
                           </Stack>
                         </TableCell>
 
@@ -234,17 +240,13 @@ export default function UserPage() {
 
                         <TableCell align="left">{role}</TableCell>
 
-                        <TableCell align="left">{isInMora ? 'Si' : 'No'}</TableCell>
+                        <TableCell align="left">{isInMora}</TableCell>
 
                         <TableCell align="left">
-                          <Label color={(status === 'inactivo' && 'error') || 'success'}>{sentenceCase(status)}</Label>
+                        <Label color={(status === 'inactivo' && 'error') || 'success'}>{sentenceCase(status)}</Label>
                         </TableCell>
 
-                        <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
-                            <Iconify icon={'eva:more-vertical-fill'} />
-                          </IconButton>
-                        </TableCell>
+                        
                       </TableRow>
                     );
                   })}

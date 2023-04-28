@@ -69,6 +69,10 @@ export default function Router() {
       element: <Register />,
     },
     {
+      path: '/nuevoLibro',
+      element: <PublicityRegistry />,
+    },
+    {
       path: '/propertyRegister',
       element: <PropertyRegistry />,
     },

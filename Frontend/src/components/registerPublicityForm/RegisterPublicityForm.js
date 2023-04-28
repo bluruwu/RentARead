@@ -1,9 +1,10 @@
 import { Button, Grid, MenuItem, Stack, TextField } from '@mui/material';
-import { useState } from 'react';
+import { useState, Fragment } from 'react';
 import Cookies from 'js-cookie';
 import { darken } from 'polished';
 import swal from 'sweetalert';
 import CSRFToken from '../csrftoken';
+
 
 export default function RegisterPublicityForm() {
   const confirmacion = () => {
@@ -53,16 +54,22 @@ export default function RegisterPublicityForm() {
 
   const genero = [
     { value: '1', label: 'Terror' },
-    { value: '2', label: 'Ciencia ficcion' },
+    { value: '2', label: 'Ciencia ficción' },
     { value: '3', label: 'Romance' },
     { value: '4', label: 'Drama' },
     { value: '5', label: 'Misterio' },
+    { value: '6', label: 'Novela' },
+    { value: '7', label: 'Clásico' },
+    { value: '8', label: 'Suspenso' },
+    { value: '9', label: 'Psicología' },
+
   ];
 
   const usoLibro = [
     { value: 'Precio de venta', label: 'Venta' },
     { value: 'Precio de renta por semana', label: 'Renta' },
     { value: 'Intercambio?', label: 'Intercambio' },
+   
   ];
 
   function handle(e, select = 1) {
@@ -71,10 +78,10 @@ export default function RegisterPublicityForm() {
       newdata.uso_libro = e.target.value;
     }
     if (select === 3) {
-      newdata.genero_libro = e.target.value;
+      newdata.uso_libro = e.target.value;
     }
     if (select === 4) {
-      newdata.estado_libro = e.target.value;
+      newdata.uso_libro = e.target.value;
     } else {
       newdata[e.target.id] = e.target.value;
     }
@@ -136,6 +143,10 @@ export default function RegisterPublicityForm() {
               label="Nombre del libro"
               id="nombre_libro"
               variant="outlined"
+              InputLabelProps={{
+                shrink: true,
+                style: { fontSize: 14 }
+              }}
               InputProps={{ style: { width: 300 } }}
             />
           </Grid>
@@ -144,10 +155,15 @@ export default function RegisterPublicityForm() {
               onChange={(e) => handle(e)}
               value={dataLibro.numero_paginas}
               size="medium"
-              label="Numero de paginas"
+              label="Numero de paginas (Opcional)"
+              
               id="numero_paginas"
               variant="outlined"
               InputProps={{ style: { width: 300 } }}
+              InputLabelProps={{
+                shrink: true,
+                style: { fontSize: 12 }
+              }}
             />
           </Grid>
           <Grid item lg={2} xs={2} md={2}>
@@ -155,7 +171,12 @@ export default function RegisterPublicityForm() {
               onChange={(e) => handle(e)}
               value={dataLibro.codigo_ISBN}
               size="medium"
-              label="ISBN"
+              label="ISBN (Opcional)"
+              InputLabelProps={{
+                shrink: true,
+                style: { fontSize: 14 }
+              }}
+              
               id="codigo_ISBN"
               variant="outlined"
               InputProps={{ style: { width: 300 } }}
@@ -169,6 +190,10 @@ export default function RegisterPublicityForm() {
               label="Autor"
               id="nombre_autor"
               variant="outlined"
+              InputLabelProps={{
+                shrink: true,
+                style: { fontSize: 14 }
+              }}
               InputProps={{ style: { width: 300 } }}
             />
           </Grid>
@@ -178,6 +203,10 @@ export default function RegisterPublicityForm() {
               select
               label="Genero"
               size="medium"
+              InputLabelProps={{
+                shrink: true,
+                style: { fontSize: 14 }
+              }}
               onChange={(e) => handle(e, 3)}
               value={dataLibro.genero_libro}
               InputProps={{ style: { width: 300 } }}
@@ -189,6 +218,7 @@ export default function RegisterPublicityForm() {
               ))}
             </TextField>
           </Grid>
+          
           <Grid item lg={2} xs={2} md={2}>
             <TextField
               id="estado_libro"
@@ -197,6 +227,10 @@ export default function RegisterPublicityForm() {
               size="medium"
               onChange={(e) => handle(e, 4)}
               value={dataLibro.estado_libro}
+              InputLabelProps={{
+                shrink: true,
+                style: { fontSize: 14 }
+              }}
               InputProps={{ style: { width: 300 } }}
             >
               {estadoLibro.map((optione) => (
@@ -206,40 +240,9 @@ export default function RegisterPublicityForm() {
               ))}
             </TextField>
           </Grid>
-          <Grid item lg={2} xs={2} md={2}>
-            <TextField
-              id="uso_libro"
-              select
-              label="Uso"
-              size="medium"
-              onChange={(e) => handle(e, 2)}
-              value={dataLibro.uso_libro}
-              InputProps={{ style: { width: 300 } }}
-            >
-              {usoLibro.map((optione) => (
-                <MenuItem key={optione.value} value={optione.value}>
-                  {optione.label}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-          <Grid item lg={2} xs={2} md={2}>
-            <TextField
-              onChange={(e) => handle(e)}
-              value={dataLibro.uso_libro_opcion}
-              size="medium"
-              label={dataLibro.uso_libro}
-              id="uso_libro2"
-              variant="outlined"
-              InputProps={{ style: { width: 300 } }}
-            >
-              {usoLibro.map((optione) => (
-                <MenuItem key={optione.value} value={optione.value}>
-                  {optione.label}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
+          
+
+          
 
           <Grid item lg={2} xs={2} md={2}>
             <TextField
@@ -249,6 +252,10 @@ export default function RegisterPublicityForm() {
               label="Editorial"
               id="editorial_libro"
               variant="outlined"
+              InputLabelProps={{
+                shrink: true,
+                style: { fontSize: 14 }
+              }}
               InputProps={{ style: { width: 300 } }}
             />
           </Grid>
@@ -260,8 +267,74 @@ export default function RegisterPublicityForm() {
               label="Año de publicacion"
               id="fecha_libro"
               variant="outlined"
+              InputLabelProps={{
+                shrink: true,
+                style: { fontSize: 14 }
+              }}
               InputProps={{ style: { width: 300 } }}
             />
+          </Grid>
+          <Grid item lg={2} xs={2} md={2}>
+            <TextField
+              id="uso_libro"
+              select
+              label="Disponible para"
+              size="medium"
+              InputLabelProps={{
+                shrink: true,
+                style: { fontSize: 14 }
+              }}
+              onChange={(e) => handle(e, 2)}
+              value={dataLibro.uso_libro}
+              InputProps={{ style: { width: 300 } }}
+            >
+              {usoLibro.map((optione) => (
+                <MenuItem key={optione.value} value={optione.value}>
+                  {optione.label}
+                </MenuItem>
+              ))}
+            </TextField>
+            {dataLibro.uso_libro === 'Precio de renta por semana' && (
+              <TextField
+                id="otro_campo"
+                label="Precio Renta"
+                size="medium"
+                onChange={(e) => handle(e, 5)}
+                value={dataLibro.otro_campo}
+                InputProps={{ style: { width: 300 } }}
+              />
+            )}
+             {dataLibro.uso_libro === 'Intercambio?' && (
+              <TextField
+                id="otro_campo"
+                label="Duración del intercambio"
+                InputLabelProps={{
+                  shrink: true,
+                  style: { fontSize: 12 } // establecer el tamaño de fuente deseado
+                }}
+                size="medium"
+                onChange={(e) => handle(e, 5)}
+                value={dataLibro.otro_campo}
+                InputProps={{ style: { width: 300 } }}
+              />
+            )}
+
+            {dataLibro.uso_libro === 'Precio de venta' && (
+              <TextField
+                id="otro_campo"
+                label="Precio Venta"
+                size="medium"
+                onChange={(e) => handle(e, 5)}
+                value={dataLibro.otro_campo}
+                InputProps={{ style: { width: 300 } }}
+              />
+            )}
+            
+
+
+
+
+
           </Grid>
           <Grid item lg={2} xs={2} md={2}>
             <TextField
@@ -271,10 +344,19 @@ export default function RegisterPublicityForm() {
               label="Descripcion"
               id="descripcion_libro"
               variant="outlined"
+              InputLabelProps={{
+                shrink: true,
+                style: { fontSize: 14 }
+              }}
               InputProps={{ style: { width: 300 } }}
             />
           </Grid>
+
+
+
         </Grid>
+
+        
         <Stack spacing={2}>
           <input type="file" name="file" accept="image/*" onChange={(e) => convert2base64(e.target.files)} />
           <Button

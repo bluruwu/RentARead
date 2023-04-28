@@ -1,10 +1,11 @@
 import { Button, Grid, MenuItem, Stack, TextField } from '@mui/material';
 import { useState, Fragment } from 'react';
+import { Navigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { darken } from 'polished';
 import swal from 'sweetalert';
 import CSRFToken from '../csrftoken';
-
+import account from '../../_mock/account';
 
 export default function RegisterPublicityForm() {
   const confirmacion = () => {
@@ -14,6 +15,16 @@ export default function RegisterPublicityForm() {
       button: 'Aceptar',
     });
   };
+
+  const info = (msg) => {
+    swal({
+      text: msg,
+      icon: 'info',
+      button: 'Aceptar',
+    });
+  };
+
+  const [goToCatalogo, setGoToCatalogo] = useState(false);
 
   const convert2base64 = (archivos) => {
     Array.from(archivos).forEach((archivo) => {
@@ -43,6 +54,7 @@ export default function RegisterPublicityForm() {
     fecha_libro: '',
     descripcion_libro: '',
     file: '',
+    email: account.email,
   });
 
   const estadoLibro = [
@@ -62,14 +74,12 @@ export default function RegisterPublicityForm() {
     { value: '7', label: 'Clásico' },
     { value: '8', label: 'Suspenso' },
     { value: '9', label: 'Psicología' },
-
   ];
 
   const usoLibro = [
     { value: 'Precio de venta', label: 'Venta' },
     { value: 'Precio de renta por semana', label: 'Renta' },
     { value: 'Intercambio?', label: 'Intercambio' },
-   
   ];
 
   function handle(e, select = 1) {
@@ -78,44 +88,48 @@ export default function RegisterPublicityForm() {
       newdata.uso_libro = e.target.value;
     }
     if (select === 3) {
-      newdata.uso_libro = e.target.value;
+      newdata.genero_libro = e.target.value;
     }
     if (select === 4) {
-      newdata.uso_libro = e.target.value;
+      newdata.estado_libro = e.target.value;
     } else {
       newdata[e.target.id] = e.target.value;
     }
     setDataLibro(newdata);
     console.log(newdata);
   }
+
   const url = 'http://127.0.0.1:8000/api/registrarLibro';
+
   function submit(e) {
-    const formData = new FormData();
-    formData.append('file', dataLibro);
-    formData.append('uso_libro', dataLibro);
-    formData.append('genero_libro', dataLibro);
-    formData.append('estado_libro', dataLibro);
-    fetch(url, {
-      method: 'POST',
-      credentials: 'same-origin',
-      headers: {
-        'X-CSRFToken': Cookies.get('csrftoken'),
-        Accept: 'aplication/json',
-        'Content-type': 'aplication/json',
-      },
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        return data;
+    e.preventDefault();
+    try {
+      fetch(url, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+          'X-CSRFToken': Cookies.get('csrftoken'),
+          Accept: 'application/json',
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify(dataLibro),
       })
-      .then((data) => {
-        if (String(data.success) === 'Libro registrada') {
-          confirmacion();
-        }
-      })
-      .catch((error) => console.warn(error));
+        .then((response) => response.json())
+        .then((dataLibro) => {
+          if ('success' in dataLibro) {
+            confirmacion();
+            setGoToCatalogo(true);
+          } else if ('error' in dataLibro) {
+            info(String(dataLibro.error));
+          }
+        });
+    } catch (error) {
+      console.warn(error);
+    }
+  }
+
+  if (goToCatalogo) {
+    return <Navigate to="/dashboard/inicio" />;
   }
 
   return (
@@ -145,9 +159,9 @@ export default function RegisterPublicityForm() {
               variant="outlined"
               InputLabelProps={{
                 shrink: true,
-                style: { fontSize: 14 }
+                style: { fontSize: 14 },
               }}
-              InputProps={{ style: { width: 300 } }}
+              InputProps={{ style: { width: '225%' } }}
             />
           </Grid>
           <Grid item lg={2} xs={2} md={2}>
@@ -156,13 +170,12 @@ export default function RegisterPublicityForm() {
               value={dataLibro.numero_paginas}
               size="medium"
               label="Numero de paginas (Opcional)"
-              
               id="numero_paginas"
               variant="outlined"
-              InputProps={{ style: { width: 300 } }}
+              InputProps={{ style: { width: '225%' } }}
               InputLabelProps={{
                 shrink: true,
-                style: { fontSize: 12 }
+                style: { fontSize: 12 },
               }}
             />
           </Grid>
@@ -174,12 +187,11 @@ export default function RegisterPublicityForm() {
               label="ISBN (Opcional)"
               InputLabelProps={{
                 shrink: true,
-                style: { fontSize: 14 }
+                style: { fontSize: 14 },
               }}
-              
               id="codigo_ISBN"
               variant="outlined"
-              InputProps={{ style: { width: 300 } }}
+              InputProps={{ style: { width: '225%' } }}
             />
           </Grid>
           <Grid item lg={2} xs={2} md={2}>
@@ -192,9 +204,9 @@ export default function RegisterPublicityForm() {
               variant="outlined"
               InputLabelProps={{
                 shrink: true,
-                style: { fontSize: 14 }
+                style: { fontSize: 14 },
               }}
-              InputProps={{ style: { width: 300 } }}
+              InputProps={{ style: { width: '225%' } }}
             />
           </Grid>
           <Grid item lg={2} xs={2} md={2}>
@@ -203,13 +215,13 @@ export default function RegisterPublicityForm() {
               select
               label="Genero"
               size="medium"
-              InputLabelProps={{
-                shrink: true,
-                style: { fontSize: 14 }
-              }}
+              // InputLabelProps={{
+              //   shrink: true,
+              //   style: { fontSize: 14 },
+              // }}
               onChange={(e) => handle(e, 3)}
               value={dataLibro.genero_libro}
-              InputProps={{ style: { width: 300 } }}
+              InputProps={{ style: { width: '225%' } }}
             >
               {genero.map((optione) => (
                 <MenuItem key={optione.value} value={optione.value}>
@@ -218,7 +230,7 @@ export default function RegisterPublicityForm() {
               ))}
             </TextField>
           </Grid>
-          
+
           <Grid item lg={2} xs={2} md={2}>
             <TextField
               id="estado_libro"
@@ -229,9 +241,9 @@ export default function RegisterPublicityForm() {
               value={dataLibro.estado_libro}
               InputLabelProps={{
                 shrink: true,
-                style: { fontSize: 14 }
+                style: { fontSize: 14 },
               }}
-              InputProps={{ style: { width: 300 } }}
+              InputProps={{ style: { width: '225%' } }}
             >
               {estadoLibro.map((optione) => (
                 <MenuItem key={optione.value} value={optione.value}>
@@ -240,9 +252,6 @@ export default function RegisterPublicityForm() {
               ))}
             </TextField>
           </Grid>
-          
-
-          
 
           <Grid item lg={2} xs={2} md={2}>
             <TextField
@@ -254,9 +263,9 @@ export default function RegisterPublicityForm() {
               variant="outlined"
               InputLabelProps={{
                 shrink: true,
-                style: { fontSize: 14 }
+                style: { fontSize: 14 },
               }}
-              InputProps={{ style: { width: 300 } }}
+              InputProps={{ style: { width: '225%' } }}
             />
           </Grid>
           <Grid item lg={2} xs={2} md={2}>
@@ -269,9 +278,9 @@ export default function RegisterPublicityForm() {
               variant="outlined"
               InputLabelProps={{
                 shrink: true,
-                style: { fontSize: 14 }
+                style: { fontSize: 14 },
               }}
-              InputProps={{ style: { width: 300 } }}
+              InputProps={{ style: { width: '225%' } }}
             />
           </Grid>
           <Grid item lg={2} xs={2} md={2}>
@@ -282,11 +291,11 @@ export default function RegisterPublicityForm() {
               size="medium"
               InputLabelProps={{
                 shrink: true,
-                style: { fontSize: 14 }
+                style: { fontSize: 14 },
               }}
               onChange={(e) => handle(e, 2)}
               value={dataLibro.uso_libro}
-              InputProps={{ style: { width: 300 } }}
+              InputProps={{ style: { width: '225%' } }}
             >
               {usoLibro.map((optione) => (
                 <MenuItem key={optione.value} value={optione.value}>
@@ -299,23 +308,23 @@ export default function RegisterPublicityForm() {
                 id="otro_campo"
                 label="Precio Renta"
                 size="medium"
-                onChange={(e) => handle(e, 5)}
+                onChange={(e) => handle(e, 6)}
                 value={dataLibro.otro_campo}
-                InputProps={{ style: { width: 300 } }}
+                InputProps={{ style: { width: '225%' } }}
               />
             )}
-             {dataLibro.uso_libro === 'Intercambio?' && (
+            {dataLibro.uso_libro === 'Intercambio?' && (
               <TextField
                 id="otro_campo"
                 label="Duración del intercambio"
                 InputLabelProps={{
                   shrink: true,
-                  style: { fontSize: 12 } // establecer el tamaño de fuente deseado
+                  style: { fontSize: 12 }, // establecer el tamaño de fuente deseado
                 }}
                 size="medium"
                 onChange={(e) => handle(e, 5)}
                 value={dataLibro.otro_campo}
-                InputProps={{ style: { width: 300 } }}
+                InputProps={{ style: { width: '225%' } }}
               />
             )}
 
@@ -326,15 +335,9 @@ export default function RegisterPublicityForm() {
                 size="medium"
                 onChange={(e) => handle(e, 5)}
                 value={dataLibro.otro_campo}
-                InputProps={{ style: { width: 300 } }}
+                InputProps={{ style: { width: '225%' } }}
               />
             )}
-            
-
-
-
-
-
           </Grid>
           <Grid item lg={2} xs={2} md={2}>
             <TextField
@@ -346,17 +349,13 @@ export default function RegisterPublicityForm() {
               variant="outlined"
               InputLabelProps={{
                 shrink: true,
-                style: { fontSize: 14 }
+                style: { fontSize: 14 },
               }}
-              InputProps={{ style: { width: 300 } }}
+              InputProps={{ style: { width: '225%' } }}
             />
           </Grid>
-
-
-
         </Grid>
 
-        
         <Stack spacing={2}>
           <input type="file" name="file" accept="image/*" onChange={(e) => convert2base64(e.target.files)} />
           <Button

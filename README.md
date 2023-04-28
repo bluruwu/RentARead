@@ -1,4 +1,0 @@
-# RentARead
-
-Prueba
-Prueba2

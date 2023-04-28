@@ -31,7 +31,7 @@ const StyledRoot2 = styled('div')(({ theme }) => ({
         transform: 'translate(-50%, -50%)' }}
        >
 
-        <h1>Registrar Publicidad </h1>
+        <h1>Registrar Libro </h1>
         <RegisterPublicityForm/>
 
 

@@ -13,8 +13,8 @@ import Button from '@mui/material/Button';
 import { Container } from '@mui/system';
 import swal from 'sweetalert';
 import Iconify from '../components/iconify';
-import Customer from './Customer';
-import Bills from './Bills';
+import Customer from './MisVentas';
+import Bills from './MisCompras';
 
 export default function PaymentPage(props) {
   const confirmacion = () => {

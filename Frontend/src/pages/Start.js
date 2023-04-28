@@ -16,7 +16,8 @@ export default function Start({ value }) {
       max={maxStars}
       sx={{
         position: 'absolute',
-      top: '95%'}}
+          top : '95%'
+      }}
     />
   );
 }

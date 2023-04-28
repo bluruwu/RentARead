@@ -22,20 +22,7 @@ const StyledRoot2 = styled('div')(({ theme }) => ({
     flexDirection: 'column',
     alignItems: 'justify',
     justifyContent: 'content-distribution',
-    boxShadow: theme.customShadows.card,
   },
-}));
-
-const StyledSection = styled('div')(({ theme }) => ({
-  width: '100%',
-  height: '100%',
-
-  maxWidth: 480,
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'content-distribution',
-  boxShadow: theme.customShadows.card,
-  backgroundColor: theme.palette.background.default,
 }));
 
 const StyledContent = styled('div')(({ theme }) => ({
@@ -96,7 +83,6 @@ export default function LoginPage() {
               style={{
                 width: 'auto',
                 height: '90%',
-                border: '2px solid red', // Aquí se establece el borde en color rojo
               }}
             />
           )}

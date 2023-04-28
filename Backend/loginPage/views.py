@@ -73,22 +73,12 @@ class LoginView(APIView):
 
     def post(self, request, format=None):
 
-        # try:
+        # try
 
         data = self.request.data
 
         username = data['email']
         password = data['contrasena']
-
-        # peticiones a la base de datos
-        # nombreUsuario = str((Usuario.objects.filter(
-        #     email=username).values().first())['nombre'])
-
-        # lista = list(Usuario.objects.all().values())
-
-        # listaC = list(Usuario.objects.filter(
-        #     id_tipo_usuario_id=3).values())
-        # print(lista)
 
         # inmueb = list(Inmueble.objects.all().values())
         # print(inmueb)
@@ -108,38 +98,54 @@ class LoginView(APIView):
         #     listaL.append(localC)
         #     i += 1
 
-        # print(listaL)
-
         # listaFac = list(Factura.objects.filter(
         #     id_inmueble='1007').values())
         # print(listaFac)
 
-        # cedulaUsuario = str((Usuario.objects.filter(
-        #     email=username).values().first())['cedula'])
-
-        # telefonoUsuario = str((Usuario.objects.filter(
-        #     email=username).values().first())['telefono'])
-
-        # tipo = (Usuario.objects.filter(
-        #     email=username).values().first())['id_tipo_usuario_id']
-        # print(tipo)
-
-        # direccion = str((Inmueble.objects.filter(
-        #     id_inmueble='1007').values().first())['direccion'])
-
-        # ciudad = str((Inmueble.objects.filter(
-        #     id_inmueble='1007').values().first())['ciudad'])
-
-        # # geolocalizacion
-        # loc = geocoder.osm(direccion+ciudad+'colombia')
-        # coordenadas = loc.latlng
-
         user = auth.authenticate(username=username, password=password)
         print(user)
+        email = None
+        nombre = None
+        tipoDocumento = None
+        cedula = None
+        telefono = None
+        ciudad = None
+        direccion = None
+
+        lista_libros_coordenadas = []
 
         if user is not None:
             auth.login(request, user)
-            return Response({'success': "Usuario autenticado exitosamente"})
+
+            for usuario in Usuario.objects.all():
+                # direccion = usuario.direccion
+                # ciudad = usuario.ciudad
+                # localizacion = geocoder.osm(direccion+","+ciudad+', Colombia')
+                # coordenadas = localizacion.latlng
+
+                if str(user) == usuario.email:
+                    email = usuario.email
+                    nombre = usuario.nombre
+                    tipoDocumento = usuario.tipo_documento
+                    cedula = usuario.cedula
+                    telefono = usuario.telefono
+                    ciudad = usuario.ciudad
+                    direccion = usuario.direccion
+
+                    latitud = usuario.latitud
+                    longitud = usuario.longitud
+
+            for libro in Libro.objects.all():
+                latitud_libro = libro.email.latitud
+                longitud_libro = libro.email.longitud
+                nombre_libro = libro.titulo
+                id_libro = libro.id_libro
+                lista_libros_coordenadas.append(
+                    {"lat": usuario.latitud, "lng": usuario.longitud, "nombre_libro": nombre_libro, "id_libro": id_libro})
+
+            print(lista_libros_coordenadas)
+
+            return Response({'success': "Usuario autenticado exitosamente", "email": email, "nombre": nombre, "tipoDocumento": tipoDocumento, "cedula": cedula, "telefono": telefono, "ciudad": ciudad, "direccion": direccion, "latitud": latitud, "longitud": longitud, "listaCoordenadas": lista_libros_coordenadas})
         else:
             return Response({'error': 'Usuario y/o contraseña incorrectas'})
         # except:

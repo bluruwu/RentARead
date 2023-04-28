@@ -125,20 +125,23 @@ class DjangoSession(models.Model):
 
 
 class Usuario(models.Model):
-    cedula = models.CharField(primary_key=True, max_length=100)
+    cedula = models.CharField(max_length=100)
     nombre = models.CharField(max_length=100)
     telefono = models.CharField(max_length=100)
-    email = models.CharField(max_length=100)
+    email = models.CharField(primary_key=True, max_length=100)
     ciudad = models.CharField(max_length=100)
     direccion = models.CharField(max_length=100)
     tipo_documento = models.CharField(max_length=100)
+    latitud = models.CharField(max_length=100)
+    longitud = models.CharField(max_length=100)
+    localizacion = models.CharField(max_length=100)
 
     class Meta:
         managed = False
         db_table = 'usuario'
 
     def __str__(self):
-        return f"{self.cedula}, {self.nombre}, {self.telefono}, {self.email}, {self.tipo_documento}"
+        return f"{self.cedula}, {self.nombre}, {self.telefono}, {self.email}, {self.tipo_documento}, {self.latitud},{self.longitud}"
 
 
 class Libro(models.Model):
@@ -157,7 +160,7 @@ class Libro(models.Model):
     intercambio = models.CharField(max_length=100)
     precio_venta = models.DecimalField(max_digits=15, decimal_places=2)
     precio_renta = models.DecimalField(max_digits=15, decimal_places=2)
-    id_vendedor = models.ForeignKey(
+    email = models.ForeignKey(
         Usuario, models.DO_NOTHING, db_column='email')
 
     class Meta:

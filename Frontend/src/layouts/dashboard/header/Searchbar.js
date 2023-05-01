@@ -13,7 +13,6 @@ const HEADER_MOBILE = 64;
 const HEADER_DESKTOP = 92;
 
 const StyledSearchbar = styled('div')(({ theme }) => ({
-  ...bgBlur({ color: theme.palette.background.default }),
   top: 0,
   left: 0,
   zIndex: 99,

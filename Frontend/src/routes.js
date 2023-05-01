@@ -15,7 +15,7 @@ import Perfil from './pages/Perfil';
 import Payment from './pages/Payment';
 import PaymentPage from './pages/PaymentPage';
 import PropertyRegistry from './pages/PropertyRegistry';
-import PublicityRegistry from './pages/PublicityRegistry';
+import AgregarLibro from './pages/AgregarLibro';
 import MapView from './pages/MapView';
 import EditUser from './pages/EditUser';
 import InterfaceBook from './pages/InterfaceBook';
@@ -36,7 +36,7 @@ export default function Router() {
         { path: 'perfil', element: <Perfil /> },
         { path: 'payment', element: <Payment /> },
         { path: 'onlinepayment', element: <PaymentPage /> },
-        { path: 'publicityRegistry', element: <PublicityRegistry /> },
+        { path: 'agregarlibro', element: <AgregarLibro /> },
         { path: 'book', element: <InterfaceBook /> },
       ],
     },
@@ -68,10 +68,7 @@ export default function Router() {
       path: '/register',
       element: <Register />,
     },
-    {
-      path: '/nuevoLibro',
-      element: <PublicityRegistry />,
-    },
+
     {
       path: '/propertyRegister',
       element: <PropertyRegistry />,

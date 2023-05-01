@@ -24,3 +24,53 @@ class PruebaView(APIView):
                 return Response({'success': "El nombre del usuario es: " + usuario.nombre})
             else:
                 return Response({'error': "No hay usuarios con este email"})
+
+
+class RegistrarLibroView(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request, format=None):
+        data = self.request.data
+
+        email = Usuario.objects.get(pk=data['email'])
+
+        titulo = data["nombre_libro"]
+        numero_paginas = data["numero_paginas"]
+        isbn = data["codigo_ISBN"]
+        autor = data["nombre_autor"]
+        genero = data["genero_libro"]
+        estado = data["estado_libro"]
+        editorial = data["editorial_libro"]
+        ano_publicacion = data["fecha_libro"]
+        uso = data["uso_libro"]
+        descripcion = data["descripcion_libro"]
+        precio_venta_o_renta = data["otro_campo"]
+
+        venta = None
+        renta = None
+        intercambio = None
+        precio_venta = None
+        precio_renta = None
+
+        if uso == "Venta":
+            venta = "Si"
+            renta = "No"
+            intercambio = "No"
+            precio_venta = precio_venta_o_renta
+        elif uso == "Renta":
+            venta = "No"
+            renta = "Si"
+            intercambio = "No"
+            precio_renta = precio_venta_o_renta
+        elif uso == "Intercambio":
+            venta = "No"
+            renta = "No"
+            intercambio = "Si"
+
+        Libro.objects.create(titulo=titulo, genero=genero, autor=autor, editorial=editorial, isbn=isbn, ano_publicacion=ano_publicacion,
+                             numero_paginas=numero_paginas, descripcion=descripcion, estado=estado, venta=venta, renta=renta, intercambio=intercambio, precio_renta=precio_renta, precio_venta=precio_venta, email=email)
+
+        # precio_venta = data[]
+        # precio_renta = data[]
+
+        return Response({'success': "Libro agregado"})

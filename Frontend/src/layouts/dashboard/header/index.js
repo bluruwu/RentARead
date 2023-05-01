@@ -36,7 +36,7 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 }));
 
 // ----------------------------------------------------------------------
-          
+
 // para agregar la campanita, agregar <NotificationsPopover /> después de <LanguagePopover />
 
 Header.propTypes = {
@@ -58,7 +58,6 @@ export default function Header({ onOpenNav }) {
           <Iconify icon="eva:menu-2-fill" />
         </IconButton>
 
-        <Searchbar />
         <Box sx={{ flexGrow: 1 }} />
 
         <Stack

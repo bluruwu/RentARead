@@ -41,7 +41,6 @@ import account from '../_mock/account';
 
 // ----------------------------------------------------------------------
 const TABLE_HEAD = [
- 
   { id: 'nombre', label: 'Titulo', alignRight: false },
   { id: 'userID', label: 'Género ', alignRight: false },
   { id: '' },
@@ -154,10 +153,10 @@ export default function UserPage() {
 
   const isNotFound = !filteredUsers.length && !!filterName;
 
-  const [goToRegister, setGoToRegister] = useState(false);
+  const [goToAgregarLibro, setGoToAgregarLibro] = useState(false);
 
-  if (goToRegister) {
-    return <Navigate to="/nuevoLibro" />;
+  if (goToAgregarLibro) {
+    return <Navigate to="/dashboard/agregarlibro" />;
   }
 
   return (
@@ -173,12 +172,11 @@ export default function UserPage() {
           </Typography>
           <Button
             onClick={() => {
-              setGoToRegister(true);
+              setGoToAgregarLibro(true);
             }}
             variant="contained"
             startIcon={<Iconify icon="eva:plus-fill" />}
             sx={{
-              
               backgroundColor: darken(0.0, 'rgb(251, 131, 36)'),
               '&:active': {
                 backgroundColor: 'rgb(251, 131, 36)',
@@ -188,8 +186,8 @@ export default function UserPage() {
               },
               '&:hover': {
                 backgroundColor: darken(0.0, 'rgb(251, 131, 36)'),
-              
-              }}}
+              },
+            }}
           >
             Agregar Nuevo Libro
           </Button>
@@ -216,23 +214,32 @@ export default function UserPage() {
                     const selectedUser = selected.indexOf(name) !== -1;
 
                     return (
-                      <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser} sx={{ '& > *': { padding: '8px' } }}>
+                      <TableRow
+                        hover
+                        key={id}
+                        tabIndex={-1}
+                        role="checkbox"
+                        selected={selectedUser}
+                        sx={{ '& > *': { padding: '8px' } }}
+                      >
                         <TableCell padding="checkbox">
                           <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, name)} />
                         </TableCell>
 
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={name} src={avatarUrl} variant="rounded"
-                            alt="Login" style={{
-                              width: 'auto',
-                              height: '15vh',
-                              
-                            }}/>
+                            <Avatar
+                              alt={name}
+                              src={avatarUrl}
+                              variant="rounded"
+                              style={{
+                                width: 'auto',
+                                height: '15vh',
+                              }}
+                            />
                             <Typography variant="subtitle2" noWrap>
-                            <Link to="/otra-pagina"> {name}</Link>
-                          </Typography> 
-                           
+                              <Link to="/otra-pagina"> {name}</Link>
+                            </Typography>
                           </Stack>
                         </TableCell>
 
@@ -243,10 +250,8 @@ export default function UserPage() {
                         <TableCell align="left">{isInMora}</TableCell>
 
                         <TableCell align="left">
-                        <Label color={(status === 'inactivo' && 'error') || 'success'}>{sentenceCase(status)}</Label>
+                          <Label color={(status === 'inactivo' && 'error') || 'success'}>{sentenceCase(status)}</Label>
                         </TableCell>
-
-                        
                       </TableRow>
                     );
                   })}

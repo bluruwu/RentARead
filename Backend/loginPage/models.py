@@ -151,6 +151,7 @@ class Libro(models.Model):
     autor = models.CharField(max_length=100)
     editor = models.CharField(max_length=100)
     editorial = models.CharField(max_length=100)
+    estado = models.CharField(max_length=100)
     isbn = models.CharField(max_length=100)
     ano_publicacion = models.CharField(max_length=100)
     numero_paginas = models.IntegerField()

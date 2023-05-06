@@ -44,7 +44,7 @@ class RegistrarLibroView(APIView):
         ano_publicacion = data["fecha_libro"]
         uso = data["uso_libro"]
         descripcion = data["descripcion_libro"]
-        precio_venta_o_renta = data["otro_campo"]
+        precio_o_intercambio = data["otro_campo"]
 
         venta = None
         renta = None
@@ -53,22 +53,16 @@ class RegistrarLibroView(APIView):
         precio_renta = None
 
         if uso == "Venta":
-            venta = "Si"
-            renta = "No"
             intercambio = "No"
-            precio_venta = precio_venta_o_renta
+            precio_venta = precio_o_intercambio
         elif uso == "Renta":
-            venta = "No"
-            renta = "Si"
             intercambio = "No"
-            precio_renta = precio_venta_o_renta
+            precio_renta = precio_o_intercambio
         elif uso == "Intercambio":
-            venta = "No"
-            renta = "No"
-            intercambio = "Si"
+            intercambio = precio_o_intercambio
 
         Libro.objects.create(titulo=titulo, genero=genero, autor=autor, editorial=editorial, isbn=isbn, ano_publicacion=ano_publicacion,
-                             numero_paginas=numero_paginas, descripcion=descripcion, estado=estado, venta=venta, renta=renta, intercambio=intercambio, precio_renta=precio_renta, precio_venta=precio_venta, email=email)
+                             numero_paginas=numero_paginas, descripcion=descripcion, estado=estado, intercambio=intercambio, precio_renta=precio_renta, precio_venta=precio_venta, email=email)
 
         # precio_venta = data[]
         # precio_renta = data[]

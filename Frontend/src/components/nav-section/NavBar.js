@@ -29,23 +29,7 @@ export default function NavBar() {
       }}
     >
       <Logo />
-      <LoadingButton
-        variant="contained"
-        onClick={handleClick}
-        height="100rem"
-        sx={{
-          backgroundColor: darken(0.0, 'rgb(251, 131, 36)'),
-          '&:active': {
-            backgroundColor: 'rgb(251, 131, 36)',
-          },
-          '&:focus': {
-            backgroundColor: darken(0.0, 'rgb(251, 131, 36)'),
-          },
-          '&:hover': {
-            backgroundColor: darken(0.0, 'rgb(251, 131, 36)'),
-          },
-        }} // aquí se crea un tono más oscuro color orange
-      >
+      <LoadingButton variant="contained" onClick={handleClick} height="100rem">
         Login
       </LoadingButton>
     </Box>

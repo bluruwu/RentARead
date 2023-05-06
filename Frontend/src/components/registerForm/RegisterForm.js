@@ -228,7 +228,7 @@ export default function RegisterForm() {
           </Grid>
         </Grid>
         <Stack spacing={2}>
-          <Button style={{ backgroundColor: '#FFA500', color: '#fff' }} onClick={(e) => submit(e)} variant="contained">
+          <Button onClick={(e) => submit(e)} variant="contained">
             {' '}
             Registrarse{' '}
           </Button>

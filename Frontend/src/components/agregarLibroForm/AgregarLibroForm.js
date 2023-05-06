@@ -1,4 +1,5 @@
-import { Button, Grid, MenuItem, Stack, TextField, Box, Container } from '@mui/material';
+import { Button, MenuItem, TextField, Box, Container } from '@mui/material';
+import { Helmet } from 'react-helmet-async';
 import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
@@ -86,11 +87,9 @@ export default function AgregarLibroForm() {
     const newdata = { ...dataLibro };
     if (select === 2) {
       newdata.uso_libro = e.target.value;
-    }
-    if (select === 3) {
+    } else if (select === 3) {
       newdata.genero_libro = e.target.value;
-    }
-    if (select === 4) {
+    } else if (select === 4) {
       newdata.estado_libro = e.target.value;
     } else {
       newdata[e.target.id] = e.target.value;
@@ -134,160 +133,149 @@ export default function AgregarLibroForm() {
 
   return (
     <>
-      <Container style={{ height: '60vh' }}>
-        <Grid container columns={2} item lg={20} xs={20} md={20}>
-          <Stack
-            spacing={5}
-            sx={{
-              '& .MuiTextField-root': { m: 1, width: '35ch' },
-            }}
-          >
-            <Grid
-              container
-              columns={2}
-              spacing={2}
-              sx={{
-                '& .MuiTextField-root': { m: 1, width: '35ch' },
-              }}
-            >
-              <CSRFToken />
-              <Grid>
-                <TextField
-                  onChange={(e) => handle(e)}
-                  value={dataLibro.nombre_libro}
-                  size="medium"
-                  label="Nombre del libro"
-                  id="nombre_libro"
-                  InputLabelProps={{
-                    style: { fontSize: 14 },
-                  }}
-                  InputProps={{ style: { width: '100%' } }}
-                />
-              </Grid>
-              <Grid>
-                <TextField
-                  onChange={(e) => handle(e)}
-                  value={dataLibro.nombre_autor}
-                  size="medium"
-                  label="Autor"
-                  id="nombre_autor"
-                  InputLabelProps={{
-                    style: { fontSize: 14 },
-                  }}
-                  InputProps={{ style: { width: '100%' } }}
-                />
-              </Grid>
-              <Grid>
-                <TextField
-                  id="genero_libro"
-                  select
-                  label="Género"
-                  size="medium"
-                  InputLabelProps={{
-                    style: { fontSize: 14 },
-                  }}
-                  onChange={(e) => handle(e, 3)}
-                  value={dataLibro.genero_libro}
-                  InputProps={{ style: { width: '100%' } }}
-                >
-                  {genero.map((optione) => (
-                    <MenuItem key={optione.value} value={optione.value}>
-                      {optione.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
+      <Helmet>
+        <title> Añadir Libro </title>
+      </Helmet>
 
-              <Grid>
-                <TextField
-                  onChange={(e) => handle(e)}
-                  value={dataLibro.numero_paginas}
-                  size="medium"
-                  label="Numero de páginas (Opcional)"
-                  id="numero_paginas"
-                  inputMode="numeric"
-                  InputProps={{ style: { width: '100%' } }}
-                  InputLabelProps={{
-                    style: { fontSize: 12 },
-                  }}
-                />
-              </Grid>
+      <Container>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', mt: '1rem' }}>
+          <CSRFToken />
+          <div>
+            <div>
+              <TextField
+                onChange={(e) => handle(e)}
+                value={dataLibro.nombre_libro}
+                size="medium"
+                label="Nombre del libro"
+                id="nombre_libro"
+                sx={{ m: 1, width: '35ch' }}
+                InputLabelProps={{
+                  style: { fontSize: 14 },
+                }}
+                InputProps={{ style: { width: '100%' } }}
+              />
+              <TextField
+                onChange={(e) => handle(e)}
+                value={dataLibro.nombre_autor}
+                size="medium"
+                label="Autor"
+                id="nombre_autor"
+                sx={{ m: 1, width: '35ch' }}
+                InputLabelProps={{
+                  style: { fontSize: 14 },
+                }}
+                InputProps={{ style: { width: '100%' } }}
+              />
+            </div>
+            <div>
+              <TextField
+                id="genero_libro"
+                select
+                label="Género"
+                size="medium"
+                sx={{ m: 1, width: '35ch' }}
+                InputLabelProps={{
+                  style: { fontSize: 14 },
+                }}
+                onChange={(e) => handle(e, 3)}
+                value={dataLibro.genero_libro}
+                InputProps={{ style: { width: '100%' } }}
+              >
+                {genero.map((optione) => (
+                  <MenuItem key={optione.value} value={optione.label}>
+                    {optione.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <TextField
+                onChange={(e) => handle(e)}
+                value={dataLibro.numero_paginas}
+                size="medium"
+                label="Numero de páginas (Opcional)"
+                id="numero_paginas"
+                inputMode="numeric"
+                sx={{ m: 1, width: '35ch' }}
+                InputProps={{ style: { width: '100%' } }}
+                InputLabelProps={{
+                  style: { fontSize: 12 },
+                }}
+              />
+            </div>
+            <div>
+              <TextField
+                onChange={(e) => handle(e)}
+                value={dataLibro.codigo_ISBN}
+                size="medium"
+                label="ISBN (Opcional)"
+                InputLabelProps={{
+                  style: { fontSize: 14 },
+                }}
+                id="codigo_ISBN"
+                sx={{ m: 1, width: '35ch' }}
+                InputProps={{ style: { width: '100%' } }}
+              />
+              <TextField
+                id="estado_libro"
+                select
+                label="Estado"
+                size="medium"
+                onChange={(e) => handle(e, 4)}
+                value={dataLibro.estado_libro}
+                sx={{ m: 1, width: '35ch' }}
+                InputLabelProps={{
+                  style: { fontSize: 14 },
+                }}
+                InputProps={{ style: { width: '100%' } }}
+              >
+                {estadoLibro.map((optione) => (
+                  <MenuItem key={optione.value} value={optione.label}>
+                    {optione.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </div>
+            <div>
+              <TextField
+                onChange={(e) => handle(e)}
+                value={dataLibro.editorial_libro}
+                size="medium"
+                label="Editorial"
+                id="editorial_libro"
+                sx={{ m: 1, width: '35ch' }}
+                InputLabelProps={{
+                  style: { fontSize: 14 },
+                }}
+                InputProps={{ style: { width: '100%' } }}
+              />
+              <TextField
+                onChange={(e) => handle(e)}
+                value={dataLibro.descripcion_libro}
+                size="medium"
+                label="Descripción"
+                id="descripcion_libro"
+                sx={{ m: 1, width: '35ch' }}
+                InputLabelProps={{
+                  style: { fontSize: 14 },
+                }}
+                InputProps={{ style: { width: '100%' } }}
+              />
+            </div>
+            <div>
+              <TextField
+                onChange={(e) => handle(e)}
+                value={dataLibro.fecha_libro}
+                size="medium"
+                label="Año de publicación"
+                id="fecha_libro"
+                sx={{ m: 1, width: '35ch' }}
+                InputLabelProps={{
+                  style: { fontSize: 14 },
+                }}
+                InputProps={{ style: { width: '100%' } }}
+              />
+            </div>
 
-              <Grid>
-                <TextField
-                  onChange={(e) => handle(e)}
-                  value={dataLibro.codigo_ISBN}
-                  size="medium"
-                  label="ISBN (Opcional)"
-                  InputLabelProps={{
-                    style: { fontSize: 14 },
-                  }}
-                  id="codigo_ISBN"
-                  InputProps={{ style: { width: '100%' } }}
-                />
-              </Grid>
-
-              <Grid>
-                <TextField
-                  id="estado_libro"
-                  select
-                  label="Estado"
-                  size="medium"
-                  onChange={(e) => handle(e, 4)}
-                  value={dataLibro.estado_libro}
-                  InputLabelProps={{
-                    style: { fontSize: 14 },
-                  }}
-                  InputProps={{ style: { width: '100%' } }}
-                >
-                  {estadoLibro.map((optione) => (
-                    <MenuItem key={optione.value} value={optione.value}>
-                      {optione.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid>
-                <TextField
-                  onChange={(e) => handle(e)}
-                  value={dataLibro.editorial_libro}
-                  size="medium"
-                  label="Editorial"
-                  id="editorial_libro"
-                  InputLabelProps={{
-                    style: { fontSize: 14 },
-                  }}
-                  InputProps={{ style: { width: '100%' } }}
-                />
-              </Grid>
-              <Grid>
-                <TextField
-                  onChange={(e) => handle(e)}
-                  value={dataLibro.descripcion_libro}
-                  size="medium"
-                  label="Descripción"
-                  id="descripcion_libro"
-                  InputLabelProps={{
-                    style: { fontSize: 14 },
-                  }}
-                  InputProps={{ style: { width: '100%' } }}
-                />
-              </Grid>
-              <Grid>
-                <TextField
-                  onChange={(e) => handle(e)}
-                  value={dataLibro.fecha_libro}
-                  size="medium"
-                  label="Año de publicación"
-                  id="fecha_libro"
-                  InputLabelProps={{
-                    style: { fontSize: 14 },
-                  }}
-                  InputProps={{ style: { width: '100%' } }}
-                />
-              </Grid>
-              <Grid item xs={1} />
-
+            <div>
               <TextField
                 id="uso_libro"
                 select
@@ -297,29 +285,32 @@ export default function AgregarLibroForm() {
                   style: { fontSize: 14 },
                 }}
                 onChange={(e) => handle(e, 2)}
+                sx={{ m: 1, width: '35ch' }}
                 value={dataLibro.uso_libro}
                 InputProps={{ style: { width: '100%' } }}
               >
                 {usoLibro.map((optione) => (
-                  <MenuItem key={optione.value} value={optione.value}>
+                  <MenuItem key={optione.value} value={optione.label}>
                     {optione.label}
                   </MenuItem>
                 ))}
               </TextField>
-              {dataLibro.uso_libro === 'Precio de renta por semana' && (
+
+              {dataLibro.uso_libro === 'Renta' && (
                 <TextField
                   id="otro_campo"
-                  label="Precio Renta"
+                  label="Precio de Renta"
                   size="medium"
                   onChange={(e) => handle(e, 6)}
                   value={dataLibro.otro_campo}
                   InputProps={{ style: { width: '100%' } }}
+                  sx={{ m: 1, width: '35ch' }}
                 />
               )}
-              {dataLibro.uso_libro === 'Intercambio?' && (
+              {dataLibro.uso_libro === 'Intercambio' && (
                 <TextField
                   id="otro_campo"
-                  label="Duración del intercambio"
+                  label="¿Por cuál tipo de libro lo intercambiarías?"
                   InputLabelProps={{
                     style: { fontSize: 12 }, // establecer el tamaño de fuente deseado
                   }}
@@ -327,10 +318,11 @@ export default function AgregarLibroForm() {
                   onChange={(e) => handle(e, 5)}
                   value={dataLibro.otro_campo}
                   InputProps={{ style: { width: '100%' } }}
+                  sx={{ m: 1, width: '35ch' }}
                 />
               )}
 
-              {dataLibro.uso_libro === 'Precio de venta' && (
+              {dataLibro.uso_libro === 'Venta' && (
                 <TextField
                   id="otro_campo"
                   label="Precio Venta"
@@ -338,35 +330,23 @@ export default function AgregarLibroForm() {
                   onChange={(e) => handle(e, 5)}
                   value={dataLibro.otro_campo}
                   InputProps={{ style: { width: '100%' } }}
+                  sx={{ m: 1, width: '35ch' }}
                 />
               )}
-            </Grid>
+            </div>
 
-            <Stack spacing={1}>
-              <input type="file" name="file" accept="image/*" onChange={(e) => convert2base64(e.target.files)} />
-              <Button
-                variant="contained"
-                sx={{
-                  marginBottom: '10px',
-                  backgroundColor: darken(0.0, 'rgb(251, 131, 36)'),
-                  '&:active': {
-                    backgroundColor: 'rgb(251, 131, 36)',
-                  },
-                  '&:focus': {
-                    backgroundColor: darken(0.0, 'rgb(179,97,25)'),
-                  },
-                  '&:hover': {
-                    backgroundColor: darken(0.0, 'rgb(179,97,25)'),
-                  },
-                }}
-                onClick={(e) => submit(e)}
-              >
-                {' '}
+            <div>
+              <Box sx={{ margin: '10px' }}>
+                <input type="file" name="file" accept="image/*" onChange={(e) => convert2base64(e.target.files)} />
+              </Box>
+            </div>
+            <Box sx={{ display: 'flex' }}>
+              <Button variant="contained" sx={{ m: 1 }} onClick={(e) => submit(e)} fullWidth>
                 Registrar Libro
               </Button>
-            </Stack>
-          </Stack>
-        </Grid>
+            </Box>
+          </div>
+        </Box>
       </Container>
     </>
   );

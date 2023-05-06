@@ -200,16 +200,6 @@ export default function LoginForm() {
         variant="contained"
         sx={{
           mb: '1rem',
-          backgroundColor: darken(0.0, 'rgb(251, 131, 36)'),
-          '&:active': {
-            backgroundColor: 'rgb(251, 131, 36)',
-          },
-          '&:focus': {
-            backgroundColor: darken(0.0, 'rgb(179,97,25)'),
-          },
-          '&:hover': {
-            backgroundColor: darken(0.0, 'rgb(179,97,25)'),
-          },
         }}
       >
         Iniciar Sesión

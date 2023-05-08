@@ -54,6 +54,8 @@ export default function LoginForm() {
 
   // Login
   const url = 'http://127.0.0.1:8000/api/login';
+  const url2 = 'http://127.0.0.1:8000/api/catalogolibros';
+
   const [showPassword, setShowPassword] = useState(false);
   const [goToDashboard, setGoToDashboard] = useState(false);
   const [goToRegister, setGoToRegister] = useState(false);
@@ -87,8 +89,6 @@ export default function LoginForm() {
         .then((response) => response.json())
         .then((data) => {
           if (String(data.success) === 'Usuario autenticado exitosamente') {
-            confirmacion();
-            setGoToDashboard(true);
             account.displayName = String(data.nombre);
             account.email = String(data.email);
             account.cedula = String(data.cedula);
@@ -99,13 +99,6 @@ export default function LoginForm() {
             account.latitud = String(data.latitud);
             account.longitud = String(data.longitud);
             account.listaCoordenadas = data.listaCoordenadas;
-            //   console.log(account.lista);
-            //   account.lista = data.lista;
-            //   console.log(account.lista);
-            //   account.listaCliente = data.listaC;
-            //   account.listaCoordenadas = data.listaLoc;
-            //   account.facturas = data.listaFac;
-            //   console.log(account);
           } else if ('error' in data) {
             info(String(data.error));
           }
@@ -113,37 +106,38 @@ export default function LoginForm() {
     } catch (error) {
       console.warn(error);
     }
+    console.log(data);
+    try {
+      fetch(url2, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+          'X-CSRFToken': Cookies.get('csrftoken'),
+          Accept: 'application/json',
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if ('success' in data) {
+            console.log('DATA', data);
 
-    // data.cedula = account.cedula;
-    // try {
-    //   fetch(urll, {
-    //     method: 'POST',
-    //     credentials: 'same-origin',
-    //     headers: {
-    //       'X-CSRFToken': Cookies.get('csrftoken'),
-    //       Accept: 'application/json',
-    //       'Content-type': 'application/json',
-    //     },
-    //     body: JSON.stringify(data),
-    //   })
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //       if (String(data.success) === 'En mora') {
-    //         confirmacion();
-    //         //   account.mora = 'En mora';
-    //         // } else if (String(data.success) === 'Facturas al día') {
-    //         //   account.mora = 'Facturas al dia';
-    //         // } else if (String(data.success) === 'Facturas pendientes') {
-    //         //   account.mora = 'Facturas pendientes';
-    //         // }
-    //       }
-    //       else {
+            data.success.forEach((libro) => {
+              account.listalibros.push(libro);
+            });
 
-    //       }
-    //     });
-    // } catch (error) {
-    //   console.warn(error);
-    // }
+            console.log(account.listalibros);
+            confirmacion();
+            setGoToDashboard(true);
+            // }
+          } else {
+            info(String(data.error));
+          }
+        });
+    } catch (error) {
+      console.warn(error);
+    }
   }
 
   if (goToDashboard) {

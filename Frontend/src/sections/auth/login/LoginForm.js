@@ -76,50 +76,50 @@ export default function LoginForm() {
   function submit(e) {
     e.preventDefault();
     try {
-      Promise.all([
-        fetch(url1, {
-          method: 'POST',
-          credentials: 'same-origin',
-          headers: {
-            'X-CSRFToken': Cookies.get('csrftoken'),
-            Accept: 'application/json',
-            'Content-type': 'application/json',
-          },
-          body: JSON.stringify(data),
-        }),
-        fetch(url2, {
-          method: 'POST',
-          credentials: 'same-origin',
-          headers: {
-            'X-CSRFToken': Cookies.get('csrftoken'),
-            Accept: 'application/json',
-            'Content-type': 'application/json',
-          },
-          body: JSON.stringify(data),
-        }),
-      ])
-        .then(([response1, response2]) => Promise.all([response1.json(), response2.json()]))
-        .then(([data1, data2]) => {
-          if (String(data1.success) === 'Usuario autenticado exitosamente') {
-            account.displayName = String(data1.nombre);
-            account.email = String(data1.email);
-            account.cedula = String(data1.cedula);
-            account.telefono = String(data1.telefono);
-            account.direccion = String(data1.direccion);
-            account.ciudad = String(data1.ciudad);
-            account.tipoDocumento = String(data1.tipoDocumento);
-            account.latitud = String(data1.latitud);
-            account.longitud = String(data1.longitud);
-            account.listaCoordenadas = data1.listaCoordenadas;
-          } else if ('error' in data1) {
-            info(String(data1.error));
+      fetch(url1, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+          'X-CSRFToken': Cookies.get('csrftoken'),
+          Accept: 'application/json',
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (String(data.success) === 'Usuario autenticado exitosamente') {
+            account.displayName = String(data.nombre);
+            account.email = String(data.email);
+            account.cedula = String(data.cedula);
+            account.telefono = String(data.telefono);
+            account.direccion = String(data.direccion);
+            account.ciudad = String(data.ciudad);
+            account.tipoDocumento = String(data.tipoDocumento);
+            account.latitud = String(data.latitud);
+            account.longitud = String(data.longitud);
+            account.listaCoordenadas = data.listaCoordenadas;
+          } else if ('error' in data) {
+            info(String(data.error));
           }
-
-          if ('success' in data2) {
-            console.log('DATA', data2);
+          return fetch(url2, {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+              'X-CSRFToken': Cookies.get('csrftoken'),
+              Accept: 'application/json',
+              'Content-type': 'application/json',
+            },
+            body: JSON.stringify(data),
+          });
+        })
+        .then((response) => response.json())
+        .then((data) => {
+          if ('success' in data) {
+            console.log('DATA', data);
             account.listalibros = [];
 
-            data2.success.forEach((libro) => {
+            data.success.forEach((libro) => {
               account.listalibros.push(libro);
             });
 
@@ -127,8 +127,11 @@ export default function LoginForm() {
             confirmacion();
             setGoToDashboard(true);
           } else {
-            info(String(data2.error));
+            info(String(data.error));
           }
+        })
+        .catch((error) => {
+          console.warn(error);
         });
     } catch (error) {
       console.warn(error);

@@ -19,7 +19,9 @@ export default function DashboardAppPage() {
 
         <Grid container spacing={3}>
           <Grid item xs={12} md={8} lg={12}>
-            <MapView />
+            <div style={{ height: '70vh', maxHeight: '100px' }}>
+              <MapView />
+            </div>
           </Grid>
         </Grid>
       </Container>

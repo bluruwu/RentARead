@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
 import markerIconPng from 'leaflet/dist/images/marker-icon.png';
 import { Icon } from 'leaflet';
@@ -15,7 +16,9 @@ export default function MapView() {
     >
       <Popup>
         <div>
-          <h3>{place.nombre_libro}</h3>
+          <Link to="/dashboard/book">
+            <h3>{place.nombre_libro}</h3>
+          </Link>
           <p>{place.id_libro}</p>
         </div>
       </Popup>
@@ -24,7 +27,7 @@ export default function MapView() {
 
   return (
     <MapContainer
-      style={{ height: '80vh', width: '72vw' }}
+      style={{ height: '70vh', width: '72vw' }}
       center={[String(account.latitud), String(account.longitud)]}
       zoom={13}
       scrollWheelZoom

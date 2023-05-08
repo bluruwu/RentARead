@@ -58,10 +58,15 @@ class SignUpView(APIView):
                     if len(contrasena) < 4:
                         return Response({'error': 'La contraseña es muy corta'})
                     else:
+                        localizacion = geocoder.osm(
+                            direccion+","+ciudad+', Colombia')
+                        # coordenadas = localizacion.latlng
+                        latitud = localizacion.latlng[0]
+                        longitud = localizacion.latlng[1]
                         user = User.objects.create_user(
                             username=email, password=contrasena)
                         Usuario.objects.create(email=email, cedula=cedula, nombre=nombre, telefono=telefono,
-                                               ciudad=ciudad, direccion=direccion, tipo_documento=tipo_documento)
+                                               ciudad=ciudad, direccion=direccion, tipo_documento=tipo_documento, latitud=latitud, longitud=longitud)
                         return Response({'success': 'El usuario ha sido creado'})
         else:
             return Response({'error': 'Las contraseñas no coinciden'})
@@ -73,34 +78,12 @@ class LoginView(APIView):
 
     def post(self, request, format=None):
 
-        # try
+        # try:
 
         data = self.request.data
 
         username = data['email']
         password = data['contrasena']
-
-        # inmueb = list(Inmueble.objects.all().values())
-        # print(inmueb)
-        # listaL = []
-        # i = 0
-        # while i < len(inmueb):
-        #     namess = str((Inmueble.objects.all().values()[i])['cedula_id'])
-        #     direccions = str((Inmueble.objects.all().values()[i])['direccion'])
-        #     ciudads = str((Inmueble.objects.all().values()[i])['ciudad'])
-        #     loc = geocoder.osm(direccions+','+ciudads+','+'colombia')
-        #     print(loc)
-        #     localC = {
-        #         'nombre': str((Usuario.objects.filter(
-        #             cedula='1002545432').values().first())['nombre']),
-        #         'coordenadas': loc.latlng
-        #     }
-        #     listaL.append(localC)
-        #     i += 1
-
-        # listaFac = list(Factura.objects.filter(
-        #     id_inmueble='1007').values())
-        # print(listaFac)
 
         user = auth.authenticate(username=username, password=password)
         print(user)
@@ -117,31 +100,23 @@ class LoginView(APIView):
         if user is not None:
             auth.login(request, user)
 
-            for usuario in Usuario.objects.all():
-                # direccion = usuario.direccion
-                # ciudad = usuario.ciudad
-                # localizacion = geocoder.osm(direccion+","+ciudad+', Colombia')
-                # coordenadas = localizacion.latlng
-
-                if str(user) == usuario.email:
-                    email = usuario.email
-                    nombre = usuario.nombre
-                    tipoDocumento = usuario.tipo_documento
-                    cedula = usuario.cedula
-                    telefono = usuario.telefono
-                    ciudad = usuario.ciudad
-                    direccion = usuario.direccion
-
-                    latitud = usuario.latitud
-                    longitud = usuario.longitud
+            usuario = Usuario.objects.get(pk=data['email'])
+            email = usuario.email
+            nombre = usuario.nombre
+            tipoDocumento = usuario.tipo_documento
+            cedula = usuario.cedula
+            telefono = usuario.telefono
+            ciudad = usuario.ciudad
+            direccion = usuario.direccion
+            latitud = usuario.latitud
+            longitud = usuario.longitud
 
             for libro in Libro.objects.all():
-                latitud_libro = libro.email.latitud
-                longitud_libro = libro.email.longitud
-                nombre_libro = libro.titulo
-                id_libro = libro.id_libro
-                lista_libros_coordenadas.append(
-                    {"lat": usuario.latitud, "lng": usuario.longitud, "nombre_libro": nombre_libro, "id_libro": id_libro})
+                if libro.email != usuario:
+                    nombre_libro = libro.titulo
+                    id_libro = libro.id_libro
+                    lista_libros_coordenadas.append(
+                        {"lat": libro.email.latitud, "lng": libro.email.longitud, "nombre_libro": nombre_libro, "id_libro": id_libro})
 
             print(lista_libros_coordenadas)
 
@@ -149,7 +124,7 @@ class LoginView(APIView):
         else:
             return Response({'error': 'Usuario y/o contraseña incorrectas'})
         # except:
-           # return Response({'error': 'Usuario no existe, o credenciales incorrectas'})
+        #     return Response({'error': 'Usuario no existe, o credenciales incorrectas'})
 
 
 class LogoutView(APIView):

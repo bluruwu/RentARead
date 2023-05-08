@@ -63,7 +63,7 @@ const account = {
       tipo_documento: 'CC',
     },
   ],
-  listaCoordenadas: 0,
+  listaCoordenadas: [],
   facturas: [],
 };
 

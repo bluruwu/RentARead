@@ -207,7 +207,7 @@ export default function UserPage() {
                         sx={{ '& > *': { padding: '8px' } }}
                       >
                         <TableCell align="left">
-                          <Link to="/otra-pagina"> {titulo}</Link>
+                          <Link to={`/${idlibro}`}>{titulo}</Link>
                         </TableCell>
 
                         <TableCell align="left">{genero}</TableCell>

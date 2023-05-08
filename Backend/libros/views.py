@@ -89,6 +89,6 @@ class CatalogoLibrosView(APIView):
                     uso = "Intercambio"
 
                 listadolibros.append(
-                    {"id_libro": libro.id_libro, "titulo": libro.titulo, "genero": libro.genero, "autor": libro.autor, "uso": uso})
+                    {"idlibro": libro.id_libro, "titulo": libro.titulo, "genero": libro.genero, "autor": libro.autor, "uso": uso})
 
         return Response({'success': list(listadolibros)})

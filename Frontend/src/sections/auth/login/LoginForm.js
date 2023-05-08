@@ -53,7 +53,7 @@ export default function LoginForm() {
   };
 
   // Login
-  const url = 'http://127.0.0.1:8000/api/login';
+  const url1 = 'http://127.0.0.1:8000/api/login';
   const url2 = 'http://127.0.0.1:8000/api/catalogolibros';
 
   const [showPassword, setShowPassword] = useState(false);
@@ -76,68 +76,64 @@ export default function LoginForm() {
   function submit(e) {
     e.preventDefault();
     try {
-      fetch(url, {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: {
-          'X-CSRFToken': Cookies.get('csrftoken'),
-          Accept: 'application/json',
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (String(data.success) === 'Usuario autenticado exitosamente') {
-            account.displayName = String(data.nombre);
-            account.email = String(data.email);
-            account.cedula = String(data.cedula);
-            account.telefono = String(data.telefono);
-            account.direccion = String(data.direccion);
-            account.ciudad = String(data.ciudad);
-            account.tipoDocumento = String(data.tipoDocumento);
-            account.latitud = String(data.latitud);
-            account.longitud = String(data.longitud);
-            account.listaCoordenadas = data.listaCoordenadas;
-          } else if ('error' in data) {
-            info(String(data.error));
+      Promise.all([
+        fetch(url1, {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: {
+            'X-CSRFToken': Cookies.get('csrftoken'),
+            Accept: 'application/json',
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        }),
+        fetch(url2, {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: {
+            'X-CSRFToken': Cookies.get('csrftoken'),
+            Accept: 'application/json',
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        }),
+      ])
+        .then(([response1, response2]) => Promise.all([response1.json(), response2.json()]))
+        .then(([data1, data2]) => {
+          if (String(data1.success) === 'Usuario autenticado exitosamente') {
+            account.displayName = String(data1.nombre);
+            account.email = String(data1.email);
+            account.cedula = String(data1.cedula);
+            account.telefono = String(data1.telefono);
+            account.direccion = String(data1.direccion);
+            account.ciudad = String(data1.ciudad);
+            account.tipoDocumento = String(data1.tipoDocumento);
+            account.latitud = String(data1.latitud);
+            account.longitud = String(data1.longitud);
+            account.listaCoordenadas = data1.listaCoordenadas;
+          } else if ('error' in data1) {
+            info(String(data1.error));
           }
-        });
-    } catch (error) {
-      console.warn(error);
-    }
-    console.log(data);
-    try {
-      fetch(url2, {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: {
-          'X-CSRFToken': Cookies.get('csrftoken'),
-          Accept: 'application/json',
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if ('success' in data) {
-            console.log('DATA', data);
 
-            data.success.forEach((libro) => {
+          if ('success' in data2) {
+            console.log('DATA', data2);
+            account.listalibros = [];
+
+            data2.success.forEach((libro) => {
               account.listalibros.push(libro);
             });
 
             console.log(account.listalibros);
             confirmacion();
             setGoToDashboard(true);
-            // }
           } else {
-            info(String(data.error));
+            info(String(data2.error));
           }
         });
     } catch (error) {
       console.warn(error);
     }
+    console.log(data);
   }
 
   if (goToDashboard) {

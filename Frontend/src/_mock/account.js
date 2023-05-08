@@ -12,6 +12,8 @@ const account = {
   latitud: '',
   longitud: '',
 
+  listalibros: [],
+
   lista: [
     {
       cedula: '1002343456',

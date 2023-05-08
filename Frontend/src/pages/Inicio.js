@@ -14,7 +14,6 @@ import {
   Avatar,
   Button,
   Popover,
-  Checkbox,
   TableRow,
   MenuItem,
   TableBody,
@@ -41,12 +40,10 @@ import account from '../_mock/account';
 
 // ----------------------------------------------------------------------
 const TABLE_HEAD = [
-  { id: 'nombre', label: 'Titulo', alignRight: false },
-  { id: 'userID', label: 'Género ', alignRight: false },
-  { id: '' },
-  { id: 'role', label: ' Autor', alignRight: false },
-  { id: 'status', label: 'Disponible para', alignRight: false },
-  { id: '' }, // Último objeto sin espacio adicional
+  { id: 'titulo', label: 'Titulo', alignRight: false },
+  { id: 'genero', label: 'Género ', alignRight: false },
+  { id: 'autor', label: ' Autor', alignRight: false },
+  { id: 'uso', label: 'Disponible para', alignRight: false },
 ];
 
 // ----------------------------------------------------------------------
@@ -75,7 +72,7 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(array, (_user) => _user.idlibro.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
@@ -89,7 +86,7 @@ export default function UserPage() {
 
   const [selected, setSelected] = useState([]);
 
-  const [orderBy, setOrderBy] = useState('name');
+  const [orderBy, setOrderBy] = useState('idlibro');
 
   const [filterName, setFilterName] = useState('');
 
@@ -111,18 +108,18 @@ export default function UserPage() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
+      const newSelecteds = USERLIST.map((n) => n.idlibro);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (event, idlibro) => {
+    const selectedIndex = selected.indexOf(idlibro);
     let newSelected = [];
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, idlibro);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -197,49 +194,25 @@ export default function UserPage() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, role, status, userID, avatarUrl, isInMora } = row;
-                    const selectedUser = selected.indexOf(name) !== -1;
+                  {account.listalibros.map((row) => {
+                    const { idlibro, titulo, genero, autor, uso } = row;
+                    const selectedUser = selected.indexOf(idlibro) !== -1;
 
                     return (
                       <TableRow
                         hover
-                        key={id}
+                        key={row.id}
                         tabIndex={-1}
-                        role="checkbox"
                         selected={selectedUser}
                         sx={{ '& > *': { padding: '8px' } }}
                       >
-                        <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, name)} />
-                        </TableCell>
-
-                        <TableCell component="th" scope="row" padding="none">
-                          <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar
-                              alt={name}
-                              src={avatarUrl}
-                              variant="rounded"
-                              style={{
-                                width: 'auto',
-                                height: '15vh',
-                              }}
-                            />
-                            <Typography variant="subtitle2" noWrap>
-                              <Link to="/otra-pagina"> {name}</Link>
-                            </Typography>
-                          </Stack>
-                        </TableCell>
-
-                        <TableCell align="left">{userID}</TableCell>
-
-                        <TableCell align="left">{role}</TableCell>
-
-                        <TableCell align="left">{isInMora}</TableCell>
-
                         <TableCell align="left">
-                          <Label color={(status === 'inactivo' && 'error') || 'success'}>{sentenceCase(status)}</Label>
+                          <Link to={`/${idlibro}`}>{titulo}</Link>
                         </TableCell>
+
+                        <TableCell align="left">{genero}</TableCell>
+                        <TableCell align="left">{autor}</TableCell>
+                        <TableCell align="left">{uso}</TableCell>
                       </TableRow>
                     );
                   })}

@@ -64,7 +64,31 @@ class RegistrarLibroView(APIView):
         Libro.objects.create(titulo=titulo, genero=genero, autor=autor, editorial=editorial, isbn=isbn, ano_publicacion=ano_publicacion,
                              numero_paginas=numero_paginas, descripcion=descripcion, estado=estado, intercambio=intercambio, precio_renta=precio_renta, precio_venta=precio_venta, email=email)
 
-        # precio_venta = data[]
-        # precio_renta = data[]
-
         return Response({'success': "Libro agregado"})
+
+
+class CatalogoLibrosView(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request, format=None):
+        data = self.request.data
+
+        email = Usuario.objects.get(pk=data['email'])
+        print("--->", email)
+
+        listadolibros = []
+
+        for libro in Libro.objects.all():
+            if libro.email != email:
+                uso = None
+                if libro.precio_venta is not None:
+                    uso = "Venta"
+                elif libro.precio_renta is not None:
+                    uso = "Renta"
+                else:
+                    uso = "Intercambio"
+
+                listadolibros.append(
+                    {"idlibro": libro.id_libro, "titulo": libro.titulo, "genero": libro.genero, "autor": libro.autor, "uso": uso})
+
+        return Response({'success': list(listadolibros)})

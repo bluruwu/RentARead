@@ -172,14 +172,11 @@ class Libro(models.Model):
 class Transaccion(models.Model):
     id_transaccion = models.AutoField(primary_key=True)
     id_comprador = models.ForeignKey(
-        Usuario, models.DO_NOTHING, db_column='comprador_email', related_name="comprador")
-    id_vendedor = models.ForeignKey(
-        Usuario, models.DO_NOTHING, db_column='vendedor_email', related_name="vendedor")
+        Usuario, models.DO_NOTHING, db_column='id_comprador')
     id_libro = models.ForeignKey(
         Libro, models.DO_NOTHING, db_column='id_libro')
     tipo_transaccion = models.CharField(max_length=100)
     fecha = models.DateField()
-    monto_pagado = models.DecimalField(max_digits=15, decimal_places=2)
 
     class Meta:
         managed = False

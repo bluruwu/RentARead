@@ -63,7 +63,8 @@ class RegistrarLibroView(APIView):
         cadenab64 = data["file"]
         datos_base64 = cadenab64.split(",")[1]
         imagen_binaria = base64.b64decode(datos_base64)
-        nombre_usuario = str(email.nombre)
+        partes = str(email.email).split("@")
+        nombre_usuario = partes[0] + "@" + partes[1].split(".")[0]
         nombre_imagen = str(titulo) + "-" + nombre_usuario + ".jpg"
         ruta_imagen = 'media/'+ nombre_imagen
         with open(ruta_imagen, 'wb') as archivo_imagen:

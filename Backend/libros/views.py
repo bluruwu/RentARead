@@ -6,7 +6,7 @@ from rest_framework import permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.conf import settings
-from django.utils import timezone
+from datetime import datetime, timedelta
 from loginPage.models import Usuario, Libro, Transaccion
 import base64
 
@@ -169,22 +169,24 @@ class RentarLibroView(APIView):
         id_libro = data["id_libro"]
         tipo_transaccion = "Renta"
         libro = Libro.objects.get(pk=id_libro)
-        fecha = timezone.localdate()
+        fecha_actual = datetime.now().date()
 
         print(user)
         Transaccion.objects.create(id_comprador=id_comprador, id_libro=libro,
-                                   tipo_transaccion=tipo_transaccion, fecha=fecha)
+                                   tipo_transaccion=tipo_transaccion, fecha=fecha_actual)
 
         # DATOS DE ENVIO
         titulo = Libro.objects.get(pk=id_libro).titulo
         direccion = Usuario.objects.get(pk=user).direccion
+        fecha_devolucion = fecha_actual + timedelta(days=14)
+        fecha_devolucion = fecha_devolucion.strftime("%d de %B de %Y")
 
         if libro.precio_renta > 0:
-            mensaje = "Tu pago ha sido aprobado. {} llegará a tu dirección: {} en máximo 3 a 5 días hábiles".format(
-                titulo, direccion)
+            mensaje = "Tu pago ha sido aprobado. {} llegará a tu dirección: {} en máximo 3 a 5 días hábiles. Recuerda regresarlo el día {}".format(
+                titulo, direccion, fecha_devolucion)
         else:
-            mensaje = "Renta realizada. {} llegará a tu dirección: {} en máximo 3 a 5 días hábiles".format(
-                titulo, direccion)
+            mensaje = "Renta realizada. {} llegará a tu dirección: {} en máximo 3 a 5 días hábiles. Recuerda regresarlo el día {}".format(
+                titulo, direccion, fecha_devolucion)
 
         return Response({'success': mensaje})
 

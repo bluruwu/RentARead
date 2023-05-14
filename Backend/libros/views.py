@@ -86,7 +86,7 @@ class RegistrarLibroView(APIView):
         partes = str(email.email).split("@")
         nombre_usuario = partes[0] + "@" + partes[1].split(".")[0]
         nombre_imagen = str(titulo) + "-" + nombre_usuario + ".jpg"
-        ruta_imagen = 'media/'+ nombre_imagen
+        ruta_imagen = 'media/' + nombre_imagen
         with open(ruta_imagen, 'wb') as archivo_imagen:
             archivo_imagen.write(imagen_binaria)
 
@@ -191,3 +191,19 @@ class RentarLibroView(APIView):
 
 class IntercambiarLibroView(APIView):
     pass
+
+
+class PerfilVendedorView(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request, format=None):
+        data = self.request.data
+
+        id_libro = data["id_libro"]
+        vendedor = Libro.objects.get(pk=id_libro).email
+        nombre = vendedor.nombre
+        telefono = vendedor.telefono
+        ciudad = vendedor.ciudad
+        direccion = vendedor.direccion
+
+        return Response({"nombre": nombre, "telefono": telefono, "ciudad": ciudad, "direccion": direccion})

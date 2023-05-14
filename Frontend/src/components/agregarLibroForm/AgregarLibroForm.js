@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet-async';
 import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import { darken } from 'polished';
 import swal from 'sweetalert';
 import CSRFToken from '../csrftoken';
 import account from '../../_mock/account';
@@ -25,22 +24,21 @@ export default function AgregarLibroForm() {
     });
   };
 
-  const [goToCatalogo, setGoToCatalogo] = useState(false);
+  // Imagen
+  function enviarImagen(e) {
+    const imagen = e.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = function() {
+      const imagenData = reader.result;
+      setDataLibro((dataLibro) => ({
+        ...dataLibro,
+        file: imagenData,
+      }));
+    };
+    reader.readAsDataURL(imagen);
+  }
 
-  const convert2base64 = (archivos) => {
-    Array.from(archivos).forEach((archivo) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(archivo);
-      reader.onload = function () {
-        let arrayAuxiliar = [];
-        const base64 = reader.result;
-        arrayAuxiliar = base64.split(',');
-        // No funciona
-        dataLibro.file = atob(arrayAuxiliar[1]);
-        console.log(arrayAuxiliar[1]);
-      };
-    });
-  };
+  const [goToCatalogo, setGoToCatalogo] = useState(false);
 
   const [dataLibro, setDataLibro] = useState({
     nombre_libro: '',
@@ -54,7 +52,6 @@ export default function AgregarLibroForm() {
     editorial_libro: '',
     fecha_libro: '',
     descripcion_libro: '',
-    file: '',
     email: account.email,
   });
 
@@ -337,7 +334,7 @@ export default function AgregarLibroForm() {
 
             <div>
               <Box sx={{ margin: '10px' }}>
-                <input type="file" name="file" accept="image/*" onChange={(e) => convert2base64(e.target.files)} />
+                <input type="file" name="file" accept="image/*" onChange={enviarImagen}/>
               </Box>
             </div>
             <Box sx={{ display: 'flex' }}>

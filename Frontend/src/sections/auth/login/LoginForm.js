@@ -17,14 +17,6 @@ import account from '../../../_mock/account';
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
-  const confirmacion = () => {
-    swal({
-      text: 'Te has logeado con exito',
-      icon: 'success',
-      button: 'Aceptar',
-    });
-  };
-
   const info = (msg) => {
     swal({
       text: msg,
@@ -124,7 +116,6 @@ export default function LoginForm() {
             });
 
             console.log(account.listalibros);
-            confirmacion();
             setGoToDashboard(true);
           } else {
             info(String(data.error));

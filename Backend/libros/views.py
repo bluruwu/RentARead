@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from django.conf import settings
 from django.utils import timezone
 from loginPage.models import Usuario, Libro, Transaccion
+import base64
 
 # OBTENER USUARIO ACTUAL CON LAS COOKIES
 
@@ -65,9 +66,6 @@ class RegistrarLibroView(APIView):
         uso = data["uso_libro"]
         descripcion = data["descripcion_libro"]
         precio_o_intercambio = data["otro_campo"]
-
-        venta = None
-        renta = None
         intercambio = None
         precio_venta = None
         precio_renta = None
@@ -81,8 +79,20 @@ class RegistrarLibroView(APIView):
         elif uso == "Intercambio":
             intercambio = precio_o_intercambio
 
+        # Imagen
+        cadenab64 = data["file"]
+        datos_base64 = cadenab64.split(",")[1]
+        imagen_binaria = base64.b64decode(datos_base64)
+        partes = str(email.email).split("@")
+        nombre_usuario = partes[0] + "@" + partes[1].split(".")[0]
+        nombre_imagen = str(titulo) + "-" + nombre_usuario + ".jpg"
+        ruta_imagen = 'media/'+ nombre_imagen
+        with open(ruta_imagen, 'wb') as archivo_imagen:
+            archivo_imagen.write(imagen_binaria)
+
+        # Final
         Libro.objects.create(titulo=titulo, genero=genero, autor=autor, editorial=editorial, isbn=isbn, ano_publicacion=ano_publicacion,
-                             numero_paginas=numero_paginas, descripcion=descripcion, estado=estado, intercambio=intercambio, precio_renta=precio_renta, precio_venta=precio_venta, email=email)
+                             numero_paginas=numero_paginas, descripcion=descripcion, estado=estado, intercambio=intercambio, precio_renta=precio_renta, precio_venta=precio_venta, email=email, ruta_imagen=ruta_imagen)
 
         return Response({'success': "Libro agregado"})
 

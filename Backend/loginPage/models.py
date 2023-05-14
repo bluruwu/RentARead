@@ -156,14 +156,12 @@ class Libro(models.Model):
     ano_publicacion = models.CharField(max_length=100)
     numero_paginas = models.IntegerField()
     descripcion = models.CharField(max_length=100)
-    venta = models.CharField(max_length=100)
-    renta = models.CharField(max_length=100)
     intercambio = models.CharField(max_length=100)
     precio_venta = models.DecimalField(max_digits=15, decimal_places=2)
     precio_renta = models.DecimalField(max_digits=15, decimal_places=2)
     email = models.ForeignKey(
         Usuario, models.DO_NOTHING, db_column='email')
-
+    ruta_imagen = models.TextField()
     class Meta:
         managed = False
         db_table = "libro"

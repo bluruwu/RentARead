@@ -123,7 +123,7 @@ class CatalogoLibrosView(APIView):
                     uso = "Intercambio"
 
                 listadolibros.append(
-                    {"idlibro": libro.id_libro, "titulo": libro.titulo, "genero": libro.genero, "autor": libro.autor, "uso": uso, "editorial": libro.editorial, "isbn": libro.isbn, "ano_publicacion": libro.ano_publicacion, "numero_paginas": libro.numero_paginas, "descripcion": libro.descripcion, "precio_venta": libro.precio_venta, "precio_renta": libro.precio_renta, "intercambio": libro.intercambio, "estado": libro.estado, "vendedor_nombre": libro.email.nombre, "vendedor_id": libro.email.email, "vendedor_ciudad": libro.email.ciudad})
+                    {"idlibro": libro.id_libro, "titulo": libro.titulo, "genero": libro.genero, "autor": libro.autor, "uso": uso, "editorial": libro.editorial, "isbn": libro.isbn, "anoPublicacion": libro.ano_publicacion, "numeroPaginas": libro.numero_paginas, "descripcion": libro.descripcion, "precioVenta": libro.precio_venta, "precioRenta": libro.precio_renta, "intercambio": libro.intercambio, "estado": libro.estado, "vendedorNombre": libro.email.nombre, "vendedorId": libro.email.email, "vendedorCiudad": libro.email.ciudad})
 
         return Response({'success': list(listadolibros)})
 
@@ -142,7 +142,8 @@ class ComprarLibroView(APIView):
         tipo_transaccion = "Venta"
         libro = Libro.objects.get(pk=id_libro)
         monto_pagado = libro.precio_venta
-        fecha = timezone.localdate()
+        fecha = datetime.now().date()
+        print(fecha)
 
         Transaccion.objects.create(id_comprador=id_comprador, id_libro=libro,
                                    tipo_transaccion=tipo_transaccion, fecha=fecha)

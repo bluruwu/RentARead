@@ -2,9 +2,10 @@ import { Navigate, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { darken } from 'polished';
+import swal from 'sweetalert';
 // @mui
 import {
   Card,
@@ -25,6 +26,7 @@ import {
   TablePagination,
   Modal,
   Box,
+  CircularProgress,
 } from '@mui/material';
 // components
 import EditUserForm from '../components/editUserForm/EditUserForm';
@@ -79,18 +81,13 @@ function applySortFilter(array, comparator, query) {
 
 export default function UserPage() {
   const [open, setOpen] = useState(null);
-
   const [page, setPage] = useState(0);
-
   const [order, setOrder] = useState('asc');
-
   const [selected, setSelected] = useState([]);
-
   const [orderBy, setOrderBy] = useState('idlibro');
-
   const [filterName, setFilterName] = useState('');
-
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -151,6 +148,57 @@ export default function UserPage() {
   const isNotFound = !filteredUsers.length && !!filterName;
 
   const [goToAgregarLibro, setGoToAgregarLibro] = useState(false);
+
+  const [data, setData] = useState({
+    id_libro: '10',
+  });
+
+  const url = 'http://127.0.0.1:8000/api/catalogolibros';
+
+  useEffect(() => {
+    function fetchCatalogo() {
+      setIsLoading(true);
+
+      swal({
+        title: 'Cargando',
+        text: 'Un momento...',
+        icon: 'info',
+        buttons: false,
+        closeOnClickOutside: false,
+        closeOnEsc: false,
+      });
+
+      fetch(url, {
+        method: 'GET',
+        credentials: 'same-origin',
+        headers: {
+          'X-CSRFToken': Cookies.get('csrftoken'),
+          Accept: 'application/json',
+          'Content-type': 'application/json',
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(account);
+
+          if ('success' in data) {
+            account.listalibros = [];
+
+            data.success.forEach((libro) => {
+              account.listalibros.push(libro);
+            });
+
+            console.log(account.listalibros);
+            setIsLoading(false);
+            swal.close();
+          } else if ('error' in data) {
+            console.log(data.error);
+            swal.close();
+          }
+        });
+    }
+    fetchCatalogo();
+  }, []);
 
   if (goToAgregarLibro) {
     return <Navigate to="/dashboard/agregarlibro" />;
@@ -290,6 +338,19 @@ export default function UserPage() {
           Eliminar
         </MenuItem>
       </Popover>
+
+      {isLoading && (
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%',
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
     </>
   );
 }

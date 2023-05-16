@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 // @mui
 import { alpha } from '@mui/material/styles';
@@ -25,6 +25,7 @@ const MENU_OPTIONS = [
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
   const [goToInicio, setGoToInicio] = useState(false);
+  const [userData, setUserData] = useState({});
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -56,12 +57,37 @@ export default function AccountPopover() {
           console.log(data);
           if ('success' in data) {
             setGoToInicio(true);
+            Cookies.remove('ciudad');
+            Cookies.remove('direccion');
+            Cookies.remove('cedula');
+            Cookies.remove('email');
+            Cookies.remove('telefono');
+            Cookies.remove('tipoDocumento');
+            Cookies.remove('nombre');
           }
         });
     } catch (error) {
       console.warn(error);
     }
   }
+
+  useEffect(() => {
+    // Obtener los datos de las cookies
+    const obtenerDatosUsuarioCookie = () => {
+      const nombre = Cookies.get('nombre');
+      const email = Cookies.get('email');
+      // Agrega más llamadas a Cookies.get() para obtener otros datos de las cookies
+
+      return {
+        nombre,
+        email,
+        // Agrega más propiedades para otros datos de las cookies
+      };
+    };
+
+    // Actualizar el estado con los datos de las cookies
+    setUserData(obtenerDatosUsuarioCookie());
+  }, []);
 
   if (goToInicio) {
     return <Navigate to="/home" />;
@@ -110,10 +136,10 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+            {userData.nombre}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {account.email}
+            {userData.email}
           </Typography>
         </Box>
 

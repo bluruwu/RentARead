@@ -51,6 +51,7 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [goToDashboard, setGoToDashboard] = useState(false);
   const [goToRegister, setGoToRegister] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const [data, setData] = useState({
     email: '',
@@ -67,6 +68,17 @@ export default function LoginForm() {
 
   function submit(e) {
     e.preventDefault();
+    setIsLoading(true);
+
+    swal({
+      title: 'Cargando',
+      text: 'Un momento...',
+      icon: 'info',
+      buttons: false,
+      closeOnClickOutside: false,
+      closeOnEsc: false,
+    });
+
     try {
       fetch(url1, {
         method: 'POST',
@@ -81,13 +93,20 @@ export default function LoginForm() {
         .then((response) => response.json())
         .then((data) => {
           if (String(data.success) === 'Usuario autenticado exitosamente') {
-            account.displayName = String(data.nombre);
-            account.email = String(data.email);
-            account.cedula = String(data.cedula);
-            account.telefono = String(data.telefono);
-            account.direccion = String(data.direccion);
-            account.ciudad = String(data.ciudad);
-            account.tipoDocumento = String(data.tipoDocumento);
+            Cookies.set('nombre', String(data.nombre));
+            Cookies.set('email', String(data.email));
+            Cookies.set('cedula', String(data.cedula));
+            Cookies.set('telefono', String(data.telefono));
+            Cookies.set('direccion', String(data.direccion));
+            Cookies.set('ciudad', String(data.ciudad));
+            Cookies.set('tipoDocumento', String(data.tipoDocumento));
+            // account.displayName = String(data.nombre);
+            // account.email = String(data.email);
+            // account.cedula = String(data.cedula);
+            // account.telefono = String(data.telefono);
+            // account.direccion = String(data.direccion);
+            // account.ciudad = String(data.ciudad);
+            // account.tipoDocumento = String(data.tipoDocumento);
             account.latitud = String(data.latitud);
             account.longitud = String(data.longitud);
             account.listaCoordenadas = data.listaCoordenadas;
@@ -95,14 +114,13 @@ export default function LoginForm() {
             info(String(data.error));
           }
           return fetch(url2, {
-            method: 'POST',
+            method: 'GET',
             credentials: 'same-origin',
             headers: {
               'X-CSRFToken': Cookies.get('csrftoken'),
               Accept: 'application/json',
               'Content-type': 'application/json',
             },
-            body: JSON.stringify(data),
           });
         })
         .then((response) => response.json())
@@ -128,6 +146,7 @@ export default function LoginForm() {
       console.warn(error);
     }
     console.log(data);
+    swal.close();
   }
 
   if (goToDashboard) {

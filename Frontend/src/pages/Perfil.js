@@ -99,7 +99,7 @@ export default function Cliente() {
 
       <StyledContent sx={{ textAlign: 'left', alignItems: 'center' }}>
         <div className="contenedor-text">
-          <p className="nombre"> Nombre: {userData.nombre}</p>
+          <p className="nombre"> {userData.nombre}</p>
           <p className="cedula">
             {' '}
             {userData.tipoDocumento} {userData.cedula}

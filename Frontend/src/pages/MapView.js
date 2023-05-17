@@ -1,5 +1,6 @@
+import Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import markerIconPng from 'leaflet/dist/images/marker-icon.png';
 import { Icon } from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
@@ -7,7 +8,23 @@ import 'leaflet/dist/leaflet.css';
 import account from '../_mock/account';
 
 export default function MapView() {
-  const [places, setPlaces] = useState(account.listaCoordenadas);
+  // const [libros, setLibros] = useState([]);
+
+  useEffect(() => {
+    // Obtener los datos de las cookies
+    const obtenerLibrosCookie = () => {
+      const listalibros = Cookies.get('listalibros');
+
+      return {
+        listalibros,
+      };
+    };
+
+    // Actualizar el estado con los datos de las cookies
+    setPlaces(obtenerLibrosCookie());
+  }, []);
+
+  const [places, setPlaces] = useState(places);
 
   const markers = places.map((place) => (
     <Marker

@@ -29,7 +29,7 @@ export default function NavBar() {
       }}
     >
       <Logo />
-      <LoadingButton variant="contained" onClick={handleClick} height="100rem">
+      <LoadingButton id="login" variant="contained" onClick={handleClick} height="100rem">
         Login
       </LoadingButton>
     </Box>

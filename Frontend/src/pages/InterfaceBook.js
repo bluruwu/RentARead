@@ -3,8 +3,9 @@ import { Helmet } from 'react-helmet-async';
 import { styled } from '@mui/material/styles';
 import { Container, Typography, Avatar, Box } from '@mui/material';
 import { useState ,Redirect} from 'react';
-import { Link, useParams ,useNavigate} from 'react-router-dom';
+import { Link, useParams ,useNavigate,Navigate} from 'react-router-dom';
 import { LoadingButton } from "@mui/lab";
+
 
 // components
 import { darken } from 'polished';
@@ -65,6 +66,7 @@ const StyledContent = styled('div')(({ theme }) => ({
 // Interfaz de libro
 
 export default function InterfaceBook() {
+  const [goPagar, setGoPagar] = useState(false);
 
   const { name, autor, vendedorNombre, descripcion, disponible, valor,idlibro,urlImagen } = useParams();
   console.log(name, autor, vendedorNombre, descripcion, disponible, valor,idlibro);
@@ -92,18 +94,13 @@ export default function InterfaceBook() {
     }
    
   }
-  const navigate = useNavigate();
-  
+ 
+  if (goPagar) {
+    return <Navigate to={`/dashboard/onlinepayment/${idlibro}/${valor}/${disponible}`} />;
+  }
 
   // Direcionamiento
-  const handleClick = (disponible2) => {
-    if(disponible2  !== 'Intercambio')
-    {
-      navigate(`/dashboard/onlinepayment/${idlibro}/${valor}/${disponible}`, { replace: true });
-    }
   
-  };
-
  
 
   return (
@@ -204,8 +201,12 @@ export default function InterfaceBook() {
                   backgroundColor: darken(0.05, 'rgb(251, 131, 36)'),
                 },
               }}
-              onClick={handleClick(disponible)}
-            >
+              onClick={() => {
+                if (disponible!=='Intercambio') {
+                  setGoPagar(true);
+                }
+                
+              }}              >
               {getText(disponible)} {valor}
             </LoadingButton>
             

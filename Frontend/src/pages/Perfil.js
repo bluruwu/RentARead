@@ -1,4 +1,5 @@
-import React from 'react';
+import Cookies from 'js-cookie';
+import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { styled } from '@mui/material/styles';
 import { Stack, Avatar, Typography } from '@mui/material';
@@ -45,6 +46,36 @@ const StyledContentInfo = styled('div')(({ theme }) => ({
 }));
 
 export default function Cliente() {
+  const [userData, setUserData] = useState({});
+
+  useEffect(() => {
+    // Obtener los datos de las cookies
+    const obtenerDatosUsuarioCookie = () => {
+      const nombre = Cookies.get('nombre');
+      const cedula = Cookies.get('cedula');
+      const email = Cookies.get('email');
+      const telefono = Cookies.get('telefono');
+      const ciudad = Cookies.get('ciudad');
+      const direccion = Cookies.get('direccion');
+      const tipoDocumento = Cookies.get('tipoDocumento');
+      // Agrega más llamadas a Cookies.get() para obtener otros datos de las cookies
+
+      return {
+        nombre,
+        cedula,
+        email,
+        telefono,
+        ciudad,
+        direccion,
+        tipoDocumento,
+        // Agrega más propiedades para otros datos de las cookies
+      };
+    };
+
+    // Actualizar el estado con los datos de las cookies
+    setUserData(obtenerDatosUsuarioCookie());
+  }, []);
+
   return (
     <div className="Info-cliente">
       <Helmet>
@@ -68,15 +99,15 @@ export default function Cliente() {
 
       <StyledContent sx={{ textAlign: 'left', alignItems: 'center' }}>
         <div className="contenedor-text">
-          <p className="nombre"> Nombre: {account.displayName}</p>
+          <p className="nombre"> {userData.nombre}</p>
           <p className="cedula">
             {' '}
-            Cedula: {account.tipoDocumento} {account.cedula}
+            {userData.tipoDocumento} {userData.cedula}
           </p>
-          <p className="cedula"> Email: {account.email}</p>
-          <p className="telefono"> Telefono: {account.telefono}</p>
-          <p className="ciudad"> Ciudad: {account.ciudad}</p>
-          <p className="direccion"> Direccion: {account.direccion}</p>
+          <p className="cedula"> Email: {userData.email}</p>
+          <p className="telefono"> Telefono: {userData.telefono}</p>
+          <p className="ciudad"> Ciudad: {userData.ciudad}</p>
+          <p className="direccion"> Direccion: {userData.direccion}</p>
         </div>
       </StyledContent>
     </div>

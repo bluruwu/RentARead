@@ -1,11 +1,11 @@
-import { Navigate, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
-import { useState } from 'react';
 import Cookies from 'js-cookie';
 import { darken } from 'polished';
-// @mui
+import swal from 'sweetalert';
 import {
   Card,
   Table,
@@ -25,28 +25,23 @@ import {
   TablePagination,
   Modal,
   Box,
+  CircularProgress,
 } from '@mui/material';
-// components
 import EditUserForm from '../components/editUserForm/EditUserForm';
 import Label from '../components/label';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
-// sections
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
-// mock
 import USERLIST from '../_mock/user';
 import RegisterForm from '../components/registerForm';
 import account from '../_mock/account';
 
-// ----------------------------------------------------------------------
 const TABLE_HEAD = [
   { id: 'titulo', label: 'Titulo', alignRight: false },
-  { id: 'genero', label: 'Género ', alignRight: false },
-  { id: 'autor', label: ' Autor', alignRight: false },
+  { id: 'genero', label: 'Género', alignRight: false },
+  { id: 'autor', label: 'Autor', alignRight: false },
   { id: 'uso', label: 'Disponible para', alignRight: false },
 ];
-
-// ----------------------------------------------------------------------
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -79,18 +74,14 @@ function applySortFilter(array, comparator, query) {
 
 export default function UserPage() {
   const [open, setOpen] = useState(null);
-
   const [page, setPage] = useState(0);
-
   const [order, setOrder] = useState('asc');
-
   const [selected, setSelected] = useState([]);
-
   const [orderBy, setOrderBy] = useState('idlibro');
-
   const [filterName, setFilterName] = useState('');
-
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [isLoading, setIsLoading] = useState(true);
+  const listalibros = JSON.parse(Cookies.get('listalibros') || '[]'); // Leer la cookie listalibros
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -146,11 +137,57 @@ export default function UserPage() {
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(listalibros, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
 
   const [goToAgregarLibro, setGoToAgregarLibro] = useState(false);
+
+  const [data, setData] = useState({
+    id_libro: '10',
+  });
+
+  const url = 'http://127.0.0.1:8000/api/catalogolibros';
+
+  useEffect(() => {
+    function fetchCatalogo() {
+      setIsLoading(true);
+      swal({
+        title: 'Cargando',
+        text: 'Un momento...',
+        icon: 'info',
+        buttons: false,
+        closeOnClickOutside: false,
+        closeOnEsc: false,
+      });
+
+      fetch(url, {
+        method: 'GET',
+        credentials: 'same-origin',
+        headers: {
+          'X-CSRFToken': Cookies.get('csrftoken'),
+          Accept: 'application/json',
+          'Content-type': 'application/json',
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if ('success' in data) {
+            Cookies.set('listalibros', JSON.stringify(data.success)); // Guardar los datos en la cookie listalibros
+            setIsLoading(false);
+            swal.close();
+          } else if ('error' in data) {
+            console.log(data.error);
+            swal.close();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          swal.close();
+        });
+    }
+    fetchCatalogo();
+  }, []);
 
   if (goToAgregarLibro) {
     return <Navigate to="/dashboard/agregarlibro" />;
@@ -159,9 +196,8 @@ export default function UserPage() {
   return (
     <>
       <Helmet>
-        <title> Página Principal </title>
+        <title>Página Principal</title>
       </Helmet>
-
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
@@ -177,7 +213,6 @@ export default function UserPage() {
             Agregar Nuevo Libro
           </Button>
         </Stack>
-
         <Card>
           <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
@@ -194,28 +229,29 @@ export default function UserPage() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {account.listalibros.map((row) => {
+                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                     const { idlibro, titulo, genero, autor, uso } = row;
                     const selectedUser = selected.indexOf(idlibro) !== -1;
 
                     return (
                       <TableRow
                         hover
-                        key={row.id}
+                        key={idlibro}
                         tabIndex={-1}
                         selected={selectedUser}
                         sx={{ '& > *': { padding: '8px' } }}
+                        onClick={(event) => handleClick(event, idlibro)}
                       >
                         <TableCell align="left">
                           <Link to={`/${idlibro}`}>{titulo}</Link>
                         </TableCell>
-
                         <TableCell align="left">{genero}</TableCell>
                         <TableCell align="left">{autor}</TableCell>
                         <TableCell align="left">{uso}</TableCell>
                       </TableRow>
                     );
                   })}
+
                   {emptyRows > 0 && (
                     <TableRow style={{ height: 53 * emptyRows }}>
                       <TableCell colSpan={6} />
@@ -286,7 +322,7 @@ export default function UserPage() {
         </MenuItem>
 
         <MenuItem sx={{ color: 'error.main' }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
+          <Iconify icon={'eva:trash-2-fill'} sx={{ mr: 2 }} />
           Eliminar
         </MenuItem>
       </Popover>

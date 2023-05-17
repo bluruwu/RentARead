@@ -101,7 +101,6 @@ export default function LoginForm() {
             Cookies.set('tipoDocumento', String(data.tipoDocumento));
             Cookies.set('latitud', String(data.latitud));
             Cookies.set('longitud', String(data.longitud));
-            Cookies.set('longitud', String(data.longitud));
             Cookies.set('listaCoordenadas', data.listaCoordenadas);
             setGoToDashboard(true);
             setIsLoading(false);

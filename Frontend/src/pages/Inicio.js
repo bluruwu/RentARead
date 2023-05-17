@@ -81,7 +81,7 @@ export default function UserPage() {
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [isLoading, setIsLoading] = useState(true);
-  const listalibros = JSON.parse(Cookies.get('listalibros') || '[]'); // Leer la cookie listalibros
+  const [listalibros, setListalibros] = useState([]);
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -173,9 +173,14 @@ export default function UserPage() {
         .then((response) => response.json())
         .then((data) => {
           if ('success' in data) {
-            Cookies.set('listalibros', JSON.stringify(data.success)); // Guardar los datos en la cookie listalibros
+            console.log('FILTEREDUSER', filteredUsers);
+            Cookies.set('listalibros', data.success); // Guardar los datos en la cookie listalibros
+            console.log('LISTALIBROS', data.success);
+            setListalibros(data.success);
             setIsLoading(false);
             swal.close();
+            setIsLoading(false);
+            console.log('FILTEREDUSER', filteredUsers);
           } else if ('error' in data) {
             console.log(data.error);
             swal.close();

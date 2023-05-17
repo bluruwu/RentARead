@@ -64,6 +64,10 @@ export default function AccountPopover() {
             Cookies.remove('telefono');
             Cookies.remove('tipoDocumento');
             Cookies.remove('nombre');
+            Cookies.remove('latitud');
+            Cookies.remove('longitud');
+            Cookies.remove('listaCoordenadas');
+            Cookies.remove('listalibros');
           }
         });
     } catch (error) {

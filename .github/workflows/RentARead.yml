@@ -46,7 +46,13 @@ jobs:
       run: |
         cd Backend && python manage.py runserver &
         
-    - name: Ejecutar pruebas de humo con Cypress
+    - name: Ejecutar prueba de humo con Cypress
       run: |
         cd Frontend
         npx cypress run --spec cypress/e2e/pruebahumo.cy.js
+
+    - name: Ejecutar pruebas funcionales con Cypress
+      run: |
+        cd Frontend
+        npx cypress run --spec cypress/e2e/funcionalLogin.cy.js
+        npx cypress run --spec cypress/e2e/funcionalRegister.cy.js

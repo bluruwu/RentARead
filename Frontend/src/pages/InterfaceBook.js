@@ -2,8 +2,12 @@ import { Helmet } from 'react-helmet-async';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Container, Typography, Avatar, Box } from '@mui/material';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState ,Redirect} from 'react';
+import { Link, useParams ,useNavigate} from 'react-router-dom';
+import { LoadingButton } from "@mui/lab";
+
+// components
+import { darken } from 'polished';
 
 // eslint-disable-next-line import/no-unresolved
 import Nav from 'src/layouts/dashboard/nav';
@@ -56,140 +60,192 @@ const StyledContent = styled('div')(({ theme }) => ({
   flexDirection: 'column',
   padding: theme.spacing(12, 0),
 }));
+
+
 // Interfaz de libro
 
 export default function InterfaceBook() {
+
+  const { name, autor, vendedorNombre, descripcion, disponible, valor,idlibro,urlImagen } = useParams();
+  console.log(name, autor, vendedorNombre, descripcion, disponible, valor,idlibro);
+
+
   const mdUp = useResponsive('up', 'md');
-  const [rating, setRating] = useState(3.5); // Valor inicial de la calificación
+  const numero = Math.floor(Math.random() * 6);
+
+  const [rating, setRating] = useState(numero); // Valor inicial de la calificación
 
   function handleRatingChange(newRating) {
     setRating(newRating);
   }
+  function getText(parametro) {
+    console.log(parametro)
+    switch (parametro) {
+      case 'Venta':
+        return 'Comprar por $$';
+      case 'Intercambio':
+        return ' Se intercambia el libro: ';
+      case 'Renta':
+        return 'Rentar por ....';
+      default:
+        return 'Rentar por $$';
+    }
+   
+  }
+  const navigate = useNavigate();
+  
+
+  // Direcionamiento
+  const handleClick = (disponible2) => {
+    if(disponible2  !== 'Intercambio')
+    {
+      navigate(`/dashboard/onlinepayment/${idlibro}/${valor}/${disponible}`, { replace: true });
+    }
+  
+  };
+
+ 
 
   return (
     <>
       <Helmet>
         <title> Book | RentARead </title>
       </Helmet>
-      <Nav />
-      <Container maxWidth="sm" class="container-sm">
-        <StyledRoot2>
+      { /* <Nav /> */}
+      <Container maxWidth='sm' class="container-sm">
+
+        <StyledRoot2 tack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Box
             style={{
               position: 'absolute',
-              left: '35%',
-              top: '40%',
-              transform: 'translate(-50%, -50%)',
-              padding: '500px',
+              left: '25vw',
+              top: '58vh',
+              transform: 'translateY(-50%)',
             }}
           >
             <div style={{ marginBottom: '10px' }}>
               <Avatar
                 variant="rounded"
                 alt="Login"
-                src={'/static/exampleC.jpg'}
+                src={urlImagen}
                 style={{
-                  width: 'auto',
-                  height: '50vh',
-                  border: '2px solid red', // Aquí se establece el borde en color rojo
+                  width: '25vh',
+                  height: '40vh',
                 }}
               />
             </div>
-            <div style={{ marginBottom: '10px' }}>
-              <NavBook />
-            </div>
-          </Box>
 
-          <Box
-            style={{
+            <Typography variant="h2" paragraph style={{
               position: 'absolute',
-              left: '65%',
-              top: '40%',
-              transform: 'translate(-50%, -50%)',
-            }}
-          >
-            <Typography variant="h2" paragraph>
-              THE FIRST DAYS
-              <Typography sx={{ color: 'text.secondary' }}>
-                <p>Rhiannon Frate</p>
-              </Typography>
-              <Typography sx={{ color: 'text.secondary' }}>
+              fontSize: '20px',
+              top: '1vh', // <-- cambiar valor absoluto por unidades de vh
+              left: '15vw',
+              width: '110vh',
+              height: '40vh',
+            }}>
+
+              {name}
+            </Typography>
+            <Typography sx={{
+              color: 'text.secondary', position: 'absolute',
+              top: '7vh', // <-- cambiar valor absoluto por unidades de vh
+              left: '15vw',
+              width: '100vh',
+              height: '30vh',
+            }}>
+              Autor : {autor}
+            </Typography>
+
+            <Typography sx={{ color: 'text.secondary' }}>
+              <p style={{
+                position: 'absolute',
+                top: '12vh', // <-- cambiar valor absoluto por unidades de vh
+                left: '15vw',
+                width: '100vh',
+                height: '30vh'
+              }}>
+                Disponible para : {disponible} </p>
+            </Typography>
+
+
+            <Typography sx={{ color: 'text.secondary' }}>
+              <p style={{
+                position: 'absolute',
+                top: '29vh', // <-- cambiar valor absoluto por unidades de vh
+                left: '15vw',
+                width: '100vh',
+                height: '30vh'
+              }}>
+                Ofrecido Por :    <Link to={`/dashboard/404`}>{vendedorNombre}</Link>
+
+                
+                 </p>
+            </Typography>
+
+            <LoadingButton
+
+
+              variant="contained"
+              sx={{
+                backgroundColor: darken(0.0, 'rgb(251, 131, 36)'),
+                color: '#fff',
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                borderRadius: 1,
+                width: '220px',
+                height: '70px',
+                py: 1,
+                px: 3,
+                mr: 1,
+                position: 'absolute',
+                top: '17vh', // <-- cambiar valor absoluto por unidades de vh
+                left: '15vw',
+                '&:hover': {
+                  backgroundColor: darken(0.05, 'rgb(251, 131, 36)'),
+                },
+              }}
+              onClick={handleClick(disponible)}
+            >
+              {getText(disponible)} {valor}
+            </LoadingButton>
+            
+
+
+            <Start value={rating} onChange={() => handleRatingChange()} style={{
+              position: 'absolute',
+              top: '30vh', // <-- cambiar valor absoluto por unidades de vh
+              left: '30vw',
+              width: '10vh',
+              height: '10vh'
+            }} />
+
+
+
+
+            <Typography sx={{ color: 'text.secondary' }} style={{
+              position: 'absolute',
+              top: '32vh', // <-- cambiar valor absoluto por unidades de vh
+              left: '25vw',
+              width: '100vh',
+              height: '30vh'
+            }}>
+
+
+
+              {rating}
+            </Typography>
+            <Typography sx={{ color: 'text.secondary' }}>
                 <p>
-                  Katie is driving to work one beautiful day when a dead man jumps into her car and tries to eat her.
-                  That same morning, Jenni opens a bedroom door to find her husband devouring their toddler son. Fate
-                  puts Jenni and Katie—total strangers—together in a pickup, fleeing the suddenly zombie-filled streets
-                  of the Texas city in which they live. Before the sun has set, they have become more than just friends
-                  and allies—they are bonded as tightly as any two people who have been to war together.
+                  {descripcion}
                 </p>
               </Typography>
-            </Typography>
-            {/* Icono de pluma */}
-            <Avatar
-              variant='rounded"'
-              alt="Login"
-              src={'/static/iconE.png'}
-              style={{
-                width: '30px',
-                height: '30px',
-                borderRadius: '50%',
-                objectFit: 'cover',
-                position: 'absolute',
-                top: '15%',
-                left: '30%',
-              }}
-            />
 
-            {/*  .. seccion de calificacion del libro */}
-            <Start value={rating} onChange={() => handleRatingChange()} />
-            <Typography
-              sx={{
-                position: 'absolute',
 
-                fontSize: '24px', // tamaño de la letra
-                fontStyle: 'Comic Sans MS', // estilo de la letra
-                fontWeight: 'bold', // grosor de la letra
-                fontFamily: 'Book Antiqua', // fuente de la letra
-                top: '94%',
-                left: '30%',
-              }}
-            >
-              <p>{rating} </p>
-            </Typography>
+ 
 
-            {/* Seccion vendedor */}
-            <Typography
-              variant="h5"
-              paragraph
-              sx={{
-                position: 'absolute',
-                top: '102%',
-              }}
-            >
-              <p>Acerca del vendedor </p>
-            </Typography>
 
-            {/* Nombre del vendedor   */}
-            <Typography sx={{ color: 'text.secondary', position: 'absolute', top: '109%' }}>
-              <Link to="/otra-pagina"> Estibaliz Baeza</Link>
-            </Typography>
-            <Typography sx={{ color: 'text.secondary', position: 'absolute', top: '114%' }}>
-              <p>Calle 45#12-34</p>
-            </Typography>
-            <Typography sx={{ color: 'text.secondary', position: 'absolute', top: '120%' }}>
-              <p>Cali</p>
-            </Typography>
           </Box>
-
-          <Box
-            style={{
-              position: 'absolute',
-              left: '98%',
-              top: '5%',
-              transform: 'translate(-50%, -50%)',
-            }}
-          >
-            {mdUp && <AccountPopover />}
-          </Box>
+         
         </StyledRoot2>
       </Container>
     </>

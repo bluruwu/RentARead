@@ -22,6 +22,7 @@ export default function NavBar2() {
       <LoadingButton
         variant="contained"
         onClick={handleClick}
+        id="registro"
         sx={{
           height: '3rem',
           width: '100%',

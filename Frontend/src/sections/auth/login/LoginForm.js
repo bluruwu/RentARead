@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import { useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import ReCAPTCHA from 'react-google-recaptcha';
 // @mui

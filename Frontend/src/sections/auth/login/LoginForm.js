@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import { Navigate } from 'react-router-dom';
 import ReCAPTCHA from 'react-google-recaptcha';
 // @mui
@@ -55,7 +55,6 @@ export default function LoginForm() {
   const [data, setData] = useState({
     email: '',
     contrasena: '',
-    cedula: '',
   });
 
   function handle(e) {
@@ -64,6 +63,13 @@ export default function LoginForm() {
     setData(newdata);
     console.log(newdata);
   }
+
+  // Activar solo en pruebas e2e boton de submit
+  useEffect(() => {
+    if (window.Cypress) {
+      setDisableSubmit(false);
+    }
+  }, []);
 
   function submit(e) {
     e.preventDefault();
@@ -158,7 +164,7 @@ export default function LoginForm() {
         />
       </Stack>
 
-      <Stack alignItems="center" className="g-recaptcha" sx={{ pb: '1rem', marginTop: '1rem' }}>
+      <Stack alignItems="center" id="captcha" className="g-recaptcha" sx={{ pb: '1rem', marginTop: '1rem' }}>
         <ReCAPTCHA sitekey="6Lf5qt8jAAAAAAARz5DGg9H46anFT4cAd03eZ3Ig" onChange={handleRecaptcha} />
       </Stack>
       <LoadingButton
@@ -167,6 +173,7 @@ export default function LoginForm() {
         fullWidth
         size="large"
         type="submit"
+        id="iniciarsesion"
         variant="contained"
         sx={{
           mb: '1rem',

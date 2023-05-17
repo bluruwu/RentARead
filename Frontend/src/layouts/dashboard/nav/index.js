@@ -1,5 +1,6 @@
+import Cookies from 'js-cookie';
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 // @mui
 import { styled, alpha } from '@mui/material/styles';
@@ -38,6 +39,7 @@ export default function Nav({ openNav, onCloseNav }) {
   const { pathname } = useLocation();
 
   const isDesktop = useResponsive('up', 'lg');
+  const [userName, setUserName] = useState('');
 
   useEffect(() => {
     if (openNav) {
@@ -45,6 +47,16 @@ export default function Nav({ openNav, onCloseNav }) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
+
+  useEffect(() => {
+    // Obtener el nombre de las cookies
+    const obtenerNombreCookie = () => {
+      return Cookies.get('nombre');
+    };
+
+    // Actualizar el estado con el nombre de las cookies
+    setUserName(obtenerNombreCookie());
+  }, []);
 
   const renderContent = (
     <Scrollbar
@@ -64,7 +76,7 @@ export default function Nav({ openNav, onCloseNav }) {
 
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                {account.displayName}
+                {userName}
               </Typography>
 
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
@@ -76,9 +88,8 @@ export default function Nav({ openNav, onCloseNav }) {
       </Box>
 
       <NavSection data={navConfig} />
-        
-      <Box sx={{ flexGrow: 1 }} />
 
+      <Box sx={{ flexGrow: 1 }} />
     </Scrollbar>
   );
 

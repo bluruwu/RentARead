@@ -27,33 +27,14 @@ def get_user(request):
     return user
 
 
-"""
-API-View de ejemplo, se le envia un email y responde con el nombre
-Recordar al crear una View agregarla al archivo urls.py
-"""
-
-
-class PruebaView(APIView):
-    permission_classes = (permissions.AllowAny,)
-
-    def post(self, request, format=None):
-        data = self.request.data
-        email = data['email']
-
-        for usuario in Usuario.objects.all():
-            if usuario.email == email:
-                return Response({'success': "El nombre del usuario es: " + usuario.nombre})
-            else:
-                return Response({'error': "No hay usuarios con este email"})
-
-
 class RegistrarLibroView(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request, format=None):
         data = self.request.data
 
-        email = Usuario.objects.get(pk=data['email'])
+        user = get_user(request)
+        email = Usuario.objects.get(pk=user)
 
         titulo = data["nombre_libro"]
         numero_paginas = data["numero_paginas"]
@@ -100,12 +81,12 @@ class RegistrarLibroView(APIView):
 class CatalogoLibrosView(APIView):
     permission_classes = (permissions.AllowAny,)
 
-    def post(self, request, format=None):
-        data = self.request.data
+    def get(self, request, format=None):
 
         user = get_user(request)
         email = Usuario.objects.get(pk=user)
         print("--->", email)
+        print("user", user)
 
         listadolibros = []
 
@@ -123,8 +104,8 @@ class CatalogoLibrosView(APIView):
                     uso = "Intercambio"
 
                 listadolibros.append(
-                    {"idlibro": libro.id_libro, "titulo": libro.titulo, "genero": libro.genero, "autor": libro.autor, "uso": uso, "editorial": libro.editorial, "isbn": libro.isbn, "anoPublicacion": libro.ano_publicacion, "numeroPaginas": libro.numero_paginas, "descripcion": libro.descripcion, "precioVenta": libro.precio_venta, "precioRenta": libro.precio_renta, "intercambio": libro.intercambio, "estado": libro.estado, "vendedorNombre": libro.email.nombre, "vendedorId": libro.email.email, "vendedorCiudad": libro.email.ciudad})
-
+                    {"idlibro": libro.id_libro, "titulo": libro.titulo, "genero": libro.genero, "autor": libro.autor, "uso": uso, "editorial": libro.editorial, "isbn": libro.isbn, "anoPublicacion": libro.ano_publicacion, "numeroPaginas": libro.numero_paginas, "descripcion": libro.descripcion, "precioVenta": libro.precio_venta, "precioRenta": libro.precio_renta, "intercambio": libro.intercambio, "estado": libro.estado, "vendedorNombre": libro.email.nombre, "vendedorId": libro.email.email, "vendedorCiudad": libro.email.ciudad, "lat": libro.email.latitud, "lng": libro.email.longitud})
+        print(list(listadolibros))
         return Response({'success': list(listadolibros)})
 
 

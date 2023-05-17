@@ -33,7 +33,8 @@ class RegistrarLibroView(APIView):
     def post(self, request, format=None):
         data = self.request.data
 
-        email = Usuario.objects.get(pk=data['email'])
+        user = get_user(request)
+        email = Usuario.objects.get(pk=user)
 
         titulo = data["nombre_libro"]
         numero_paginas = data["numero_paginas"]
@@ -85,6 +86,7 @@ class CatalogoLibrosView(APIView):
         user = get_user(request)
         email = Usuario.objects.get(pk=user)
         print("--->", email)
+        print("user", user)
 
         listadolibros = []
 
@@ -103,7 +105,7 @@ class CatalogoLibrosView(APIView):
 
                 listadolibros.append(
                     {"idlibro": libro.id_libro, "titulo": libro.titulo, "genero": libro.genero, "autor": libro.autor, "uso": uso, "editorial": libro.editorial, "isbn": libro.isbn, "anoPublicacion": libro.ano_publicacion, "numeroPaginas": libro.numero_paginas, "descripcion": libro.descripcion, "precioVenta": libro.precio_venta, "precioRenta": libro.precio_renta, "intercambio": libro.intercambio, "estado": libro.estado, "vendedorNombre": libro.email.nombre, "vendedorId": libro.email.email, "vendedorCiudad": libro.email.ciudad, "lat": libro.email.latitud, "lng": libro.email.longitud})
-
+        print(list(listadolibros))
         return Response({'success': list(listadolibros)})
 
 

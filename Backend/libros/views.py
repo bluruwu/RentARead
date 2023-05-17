@@ -67,7 +67,7 @@ class RegistrarLibroView(APIView):
         partes = str(email.email).split("@")
         nombre_usuario = partes[0] + "@" + partes[1].split(".")[0]
         nombre_imagen = str(titulo) + "-" + nombre_usuario + ".jpg"
-        ruta_imagen = 'media/' + nombre_imagen
+        ruta_imagen = '../Frontend/public/static/librosMedia/' + nombre_imagen
         with open(ruta_imagen, 'wb') as archivo_imagen:
             archivo_imagen.write(imagen_binaria)
 

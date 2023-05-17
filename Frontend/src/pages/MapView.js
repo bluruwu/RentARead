@@ -5,32 +5,82 @@ import markerIconPng from 'leaflet/dist/images/marker-icon.png';
 import { Icon } from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import swal from 'sweetalert';
 import account from '../_mock/account';
 
 export default function MapView() {
   const [listalibros, setListalibros] = useState([]);
-  const [latitud, setLatitud] = useState(0);
-  const [longitud, setLongitud] = useState(0);
+  const [userData, setUserData] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const url = 'http://127.0.0.1:8000/api/catalogolibros';
 
   useEffect(() => {
-    const obtenerLibrosCookie = () => {
-      const librosCookie = Cookies.get('listalibros');
-      const latitudCookie = Cookies.get('latitud');
-      const longitudCookie = Cookies.get('longitud');
+    const obtenerCoordenadas = () => {
+      const latitud = Cookies.get('latitud');
+      const longitud = Cookies.get('longitud');
+      // Agrega más llamadas a Cookies.get() para obtener otros datos de las cookies
 
       return {
-        listalibros: JSON.parse(librosCookie || '[]'),
-        latitud: parseFloat(latitudCookie || 0),
-        longitud: parseFloat(longitudCookie || 0),
+        latitud,
+        longitud,
       };
     };
 
-    const { listalibros, latitud, longitud } = obtenerLibrosCookie();
+    setUserData(obtenerCoordenadas());
 
-    setListalibros(listalibros);
-    setLatitud(latitud);
-    setLongitud(longitud);
+    function fetchCatalogo() {
+      setIsLoading(true);
+      setError(null);
+
+      swal({
+        title: 'Cargando',
+        text: 'Un momento...',
+        icon: 'info',
+        buttons: false,
+        closeOnClickOutside: false,
+        closeOnEsc: false,
+      });
+
+      fetch(url, {
+        method: 'GET',
+        credentials: 'same-origin',
+        headers: {
+          'X-CSRFToken': Cookies.get('csrftoken'),
+          Accept: 'application/json',
+          'Content-type': 'application/json',
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if ('success' in data) {
+            Cookies.set('listalibros', data.success); // Guardar los datos en la cookie listalibros
+            console.log('LISTALIBROS', data.success);
+            setListalibros(data.success);
+          } else if ('error' in data) {
+            setError(data.error);
+          }
+        })
+        .catch((error) => {
+          setError(error.message);
+        })
+        .finally(() => {
+          setIsLoading(false);
+          swal.close();
+        });
+    }
+
+    fetchCatalogo();
   }, []);
+
+  if (isLoading) {
+    return <p>Cargando mapa...</p>;
+  }
+
+  if (error) {
+    return <p>Error al cargar el mapa: {error}</p>;
+  }
 
   const markers = listalibros.map((place, index) => (
     <Marker
@@ -43,25 +93,24 @@ export default function MapView() {
           <Link to="/dashboard/book">
             <h3>{place.titulo}</h3>
           </Link>
-          <p>{place.idlibro}</p>
+          <p>{place.uso}</p>
         </div>
       </Popup>
     </Marker>
   ));
 
   return (
-    <>
-      {latitud !== 0 && longitud !== 0 ? (
-        <MapContainer style={{ height: '70vh', width: '72vw' }} center={[latitud, longitud]} zoom={13} scrollWheelZoom>
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          {markers}
-        </MapContainer>
-      ) : (
-        <p>Cargando mapa...</p>
-      )}
-    </>
+    <MapContainer
+      style={{ height: '70vh', width: '72vw' }}
+      center={[userData.latitud, userData.longitud]}
+      zoom={13}
+      scrollWheelZoom
+    >
+      <TileLayer
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      {markers}
+    </MapContainer>
   );
 }

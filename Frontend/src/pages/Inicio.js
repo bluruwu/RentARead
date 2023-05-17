@@ -151,7 +151,6 @@ export default function UserPage() {
 
   useEffect(() => {
     function fetchCatalogo() {
-      setIsLoading(true);
       swal({
         title: 'Cargando',
         text: 'Un momento...',
@@ -173,14 +172,9 @@ export default function UserPage() {
         .then((response) => response.json())
         .then((data) => {
           if ('success' in data) {
-            console.log('FILTEREDUSER', filteredUsers);
             Cookies.set('listalibros', data.success); // Guardar los datos en la cookie listalibros
-            console.log('LISTALIBROS', data.success);
             setListalibros(data.success);
-            setIsLoading(false);
             swal.close();
-            setIsLoading(false);
-            console.log('FILTEREDUSER', filteredUsers);
           } else if ('error' in data) {
             console.log(data.error);
             swal.close();

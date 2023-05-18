@@ -8,15 +8,16 @@ import './index.css';
 import Cookies from 'js-cookie';
 import CSRFToken from '../csrftoken';
 
-export default function PaymentForms(idlibro,valor, usolibro) {
-  console.log('id libro :',idlibro);
-  console.log('cantidad: ',  usolibro);
-  
-  const confirmacion = () => {
+export default function PaymentForms(idlibro, valor, usolibro) {
+  console.log('id libro :', idlibro);
+  console.log('cantidad: ', usolibro);
+
+  const confirmacion = (msg) => {
     swal({
-      text: 'Pago exitoso del libro',
-      icon: 'success',
+      text: msg,
+      icon: 'info',
       button: 'Aceptar',
+      className: 'text-center', // Aplica la clase 'text-center' al contenido del cuadro de diálogo
     });
   };
 
@@ -51,11 +52,9 @@ export default function PaymentForms(idlibro,valor, usolibro) {
   };
   // POST
   const [data, setData] = useState({
-    id_libro: idlibro.idLibro1
- 
-
+    id_libro: idlibro.idLibro1,
   });
- console.log('3l dato',data);
+  console.log('3l dato', data);
   function handle(e) {
     const newdata = { ...data };
     newdata[e.target.id] = e.target.value;
@@ -63,21 +62,20 @@ export default function PaymentForms(idlibro,valor, usolibro) {
     console.log(newdata);
   }
 
-  const [goToDashboard, setGoToDashboard] = useState(false);
+  const [goToMisCompras, setGoToMisCompras] = useState(false);
   let url;
 
-  if (idlibro.usolibro
-    === 'Venta') {
+  if (idlibro.usolibro === 'Venta') {
     url = 'http://127.0.0.1:8000/api/comprarlibro';
   } else if (idlibro.usolibro === 'Renta') {
     url = 'http://127.0.0.1:8000/api/rentarlibro';
   }
-  
-  console.log('url :',url);
+
+  console.log('url :', url);
 
   function submit(e) {
     e.preventDefault();
-   
+
     try {
       fetch(url, {
         method: 'POST',
@@ -92,8 +90,8 @@ export default function PaymentForms(idlibro,valor, usolibro) {
         .then((response) => response.json())
         .then((data) => {
           if ('success' in data) {
-            confirmacion();
-            setGoToDashboard(true);
+            confirmacion(String(data.success));
+            setGoToMisCompras(true);
           } else {
             error();
           }
@@ -103,8 +101,8 @@ export default function PaymentForms(idlibro,valor, usolibro) {
     }
   }
 
-  if (goToDashboard) {
-    return <Navigate to="/dashboard/user" />;
+  if (goToMisCompras) {
+    return <Navigate to="/dashboard/miscompras" />;
   }
 
   return (
@@ -114,20 +112,19 @@ export default function PaymentForms(idlibro,valor, usolibro) {
           <Cards number={state.number} name={state.name} expiry={state.expiry} cvc={state.cvc} focused={state.focus} />
           <form>
             <div className="form-row">
-            <div className="form-group col-md-6">
-              <label htmlFor="number">
-                Número de la tarjeta
-                <input
-                  type="text"
-                  name="number"
-                  id="number"
-                  maxLength="16"
-                  className="form-control"
-                  onChange={handleInputChange}
-                  onFocus={handleFocusChange}
-                />
-                
-              </label>
+              <div className="form-group col-md-6">
+                <label htmlFor="number">
+                  Número de la tarjeta
+                  <input
+                    type="text"
+                    name="number"
+                    id="number"
+                    maxLength="16"
+                    className="form-control"
+                    onChange={handleInputChange}
+                    onFocus={handleFocusChange}
+                  />
+                </label>
               </div>
               <label htmlFor="name">
                 Nombre
@@ -142,7 +139,7 @@ export default function PaymentForms(idlibro,valor, usolibro) {
                 />
               </label>
             </div>
-           
+
             <div className="form-row">
               <div className="form-group col-md-6">
                 <label htmlFor="expiry">
@@ -174,7 +171,7 @@ export default function PaymentForms(idlibro,valor, usolibro) {
               </div>
             </div>
             <div className="form-row">
-             { /* value={data.cantidad} */ }
+              {/* value={data.cantidad} */}
               <div className="form-group col-md-6">
                 <label htmlFor="cantidad-a-pagar">
                   Cantidad a pagar
@@ -185,7 +182,6 @@ export default function PaymentForms(idlibro,valor, usolibro) {
                     id="cantidad"
                     className="form-control"
                     readOnly
-                   
                   />
                 </label>
               </div>
@@ -193,7 +189,6 @@ export default function PaymentForms(idlibro,valor, usolibro) {
           </form>
           <Stack spacing={2}>
             <Button onClick={(e) => submit(e)} variant="contained" fullWidth sx={{ m: 1 }}>
-            
               Pagar
             </Button>
           </Stack>

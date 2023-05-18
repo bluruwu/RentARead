@@ -2,10 +2,9 @@ import { Helmet } from 'react-helmet-async';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Container, Typography, Avatar, Box } from '@mui/material';
-import { useState ,Redirect} from 'react';
-import { Link, useParams ,useNavigate,Navigate} from 'react-router-dom';
-import { LoadingButton } from "@mui/lab";
-
+import { useState, Redirect } from 'react';
+import { Link, useParams, useNavigate, Navigate } from 'react-router-dom';
+import { LoadingButton } from '@mui/lab';
 
 // components
 import { darken } from 'polished';
@@ -13,7 +12,6 @@ import { darken } from 'polished';
 // eslint-disable-next-line import/no-unresolved
 import Nav from 'src/layouts/dashboard/nav';
 import AccountPopover from 'src/layouts/dashboard/header/AccountPopover'; // eslint-disable-line import/no-unresolved
-import BookB from './BookB';
 
 // components
 
@@ -62,15 +60,13 @@ const StyledContent = styled('div')(({ theme }) => ({
   padding: theme.spacing(12, 0),
 }));
 
-
 // Interfaz de libro
 
 export default function InterfaceBook() {
   const [goPagar, setGoPagar] = useState(false);
 
-  const { name, autor, vendedorNombre, descripcion, disponible, valor,idlibro,urlImagen } = useParams();
-  console.log(name, autor, vendedorNombre, descripcion, disponible, valor,idlibro);
-
+  const { name, autor, vendedorNombre, descripcion, disponible, valor, idlibro, urlImagen } = useParams();
+  console.log(name, autor, vendedorNombre, descripcion, disponible, valor, idlibro);
 
   const mdUp = useResponsive('up', 'md');
   const numero = Math.floor(Math.random() * 6);
@@ -81,7 +77,7 @@ export default function InterfaceBook() {
     setRating(newRating);
   }
   function getText(parametro) {
-    console.log(parametro)
+    console.log(parametro);
     switch (parametro) {
       case 'Venta':
         return 'Comprar por $$';
@@ -92,25 +88,21 @@ export default function InterfaceBook() {
       default:
         return 'Rentar por $$';
     }
-   
   }
- 
+
   if (goPagar) {
     return <Navigate to={`/dashboard/onlinepayment/${idlibro}/${valor}/${disponible}`} />;
   }
 
   // Direcionamiento
-  
- 
 
   return (
     <>
       <Helmet>
         <title> Book | RentARead </title>
       </Helmet>
-      { /* <Nav /> */}
-      <Container maxWidth='sm' class="container-sm">
-
+      {/* <Nav /> */}
+      <Container maxWidth="sm" class="container-sm">
         <StyledRoot2 tack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Box
             style={{
@@ -132,56 +124,62 @@ export default function InterfaceBook() {
               />
             </div>
 
-            <Typography variant="h2" paragraph style={{
-              position: 'absolute',
-              fontSize: '20px',
-              top: '1vh', // <-- cambiar valor absoluto por unidades de vh
-              left: '15vw',
-              width: '110vh',
-              height: '40vh',
-            }}>
-
+            <Typography
+              variant="h2"
+              paragraph
+              style={{
+                position: 'absolute',
+                fontSize: '20px',
+                top: '1vh', // <-- cambiar valor absoluto por unidades de vh
+                left: '15vw',
+                width: '110vh',
+                height: '40vh',
+              }}
+            >
               {name}
             </Typography>
-            <Typography sx={{
-              color: 'text.secondary', position: 'absolute',
-              top: '7vh', // <-- cambiar valor absoluto por unidades de vh
-              left: '15vw',
-              width: '100vh',
-              height: '30vh',
-            }}>
+            <Typography
+              sx={{
+                color: 'text.secondary',
+                position: 'absolute',
+                top: '7vh', // <-- cambiar valor absoluto por unidades de vh
+                left: '15vw',
+                width: '100vh',
+                height: '30vh',
+              }}
+            >
               Autor : {autor}
             </Typography>
 
             <Typography sx={{ color: 'text.secondary' }}>
-              <p style={{
-                position: 'absolute',
-                top: '12vh', // <-- cambiar valor absoluto por unidades de vh
-                left: '15vw',
-                width: '100vh',
-                height: '30vh'
-              }}>
-                Disponible para : {disponible} </p>
+              <p
+                style={{
+                  position: 'absolute',
+                  top: '12vh', // <-- cambiar valor absoluto por unidades de vh
+                  left: '15vw',
+                  width: '100vh',
+                  height: '30vh',
+                }}
+              >
+                Disponible para : {disponible}{' '}
+              </p>
             </Typography>
 
-
             <Typography sx={{ color: 'text.secondary' }}>
-              <p style={{
-                position: 'absolute',
-                top: '29vh', // <-- cambiar valor absoluto por unidades de vh
-                left: '15vw',
-                width: '100vh',
-                height: '30vh'
-              }}>
-                Ofrecido Por :    <Link to={`/dashboard/404`}>{vendedorNombre}</Link>
-
-                
-                 </p>
+              <p
+                style={{
+                  position: 'absolute',
+                  top: '29vh', // <-- cambiar valor absoluto por unidades de vh
+                  left: '15vw',
+                  width: '100vh',
+                  height: '30vh',
+                }}
+              >
+                Ofrecido Por : <Link to={`/dashboard/404`}>{vendedorNombre}</Link>
+              </p>
             </Typography>
 
             <LoadingButton
-
-
               variant="contained"
               sx={{
                 backgroundColor: darken(0.0, 'rgb(251, 131, 36)'),
@@ -202,51 +200,42 @@ export default function InterfaceBook() {
                 },
               }}
               onClick={() => {
-                if (disponible!=='Intercambio') {
+                if (disponible !== 'Intercambio') {
                   setGoPagar(true);
                 }
-                
-              }}              >
+              }}
+            >
               {getText(disponible)} {valor}
             </LoadingButton>
-            
 
+            <Start
+              value={rating}
+              onChange={() => handleRatingChange()}
+              style={{
+                position: 'absolute',
+                top: '30vh', // <-- cambiar valor absoluto por unidades de vh
+                left: '30vw',
+                width: '10vh',
+                height: '10vh',
+              }}
+            />
 
-            <Start value={rating} onChange={() => handleRatingChange()} style={{
-              position: 'absolute',
-              top: '30vh', // <-- cambiar valor absoluto por unidades de vh
-              left: '30vw',
-              width: '10vh',
-              height: '10vh'
-            }} />
-
-
-
-
-            <Typography sx={{ color: 'text.secondary' }} style={{
-              position: 'absolute',
-              top: '32vh', // <-- cambiar valor absoluto por unidades de vh
-              left: '25vw',
-              width: '100vh',
-              height: '30vh'
-            }}>
-
-
-
+            <Typography
+              sx={{ color: 'text.secondary' }}
+              style={{
+                position: 'absolute',
+                top: '32vh', // <-- cambiar valor absoluto por unidades de vh
+                left: '25vw',
+                width: '100vh',
+                height: '30vh',
+              }}
+            >
               {rating}
             </Typography>
             <Typography sx={{ color: 'text.secondary' }}>
-                <p>
-                  {descripcion}
-                </p>
-              </Typography>
-
-
- 
-
-
+              <p>{descripcion}</p>
+            </Typography>
           </Box>
-         
         </StyledRoot2>
       </Container>
     </>

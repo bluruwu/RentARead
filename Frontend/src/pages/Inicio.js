@@ -229,8 +229,26 @@ export default function UserPage() {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { idlibro, titulo, genero, autor, uso } = row;
+                    const { idlibro, titulo, genero, autor, uso, precioVenta,precioRenta,intercambio,vendedorNombre,descripcion,vendedorId
+                    } = row;
                     const selectedUser = selected.indexOf(idlibro) !== -1;
+                    const vende =  vendedorId.replace(/\.com$/, "");
+                    const url = `/static/librosMedia/${titulo}-${vende}.jpg`;
+                    const rutaCodificada = encodeURIComponent(url);
+
+                    console.log('url', url);
+                    console.log(precioVenta);
+                    const obtenerConstante = (parametro) => {
+                      if (parametro === 'Venta') {
+                        return precioVenta;
+                      }  if (parametro === 'Renta') {
+                        return precioRenta;
+                      }
+                        return intercambio;
+                     
+                    };
+                    console.log('disponible :', obtenerConstante(uso),uso);
+                    console.log(intercambio);
 
                     return (
                       <TableRow
@@ -239,10 +257,19 @@ export default function UserPage() {
                         tabIndex={-1}
                         selected={selectedUser}
                         sx={{ '& > *': { padding: '8px' } }}
-                        onClick={(event) => handleClick(event, idlibro)}
+
                       >
                         <TableCell align="left">
-                          <Link to={`/${idlibro}`}>{titulo}</Link>
+
+                          <Avatar
+                            alt={titulo} src={ url}  variant="rounded"
+                            style={{
+                              width: '20vh',
+                              height: '30vh',
+                            }}
+                          />
+                        <Link to={`/dashboard/book/${titulo}/${autor}/${vendedorNombre}/${descripcion}/${uso}/${obtenerConstante(uso)}/${idlibro}/${rutaCodificada}`}>{titulo}</Link>
+
                         </TableCell>
                         <TableCell align="left">{genero}</TableCell>
                         <TableCell align="left">{autor}</TableCell>

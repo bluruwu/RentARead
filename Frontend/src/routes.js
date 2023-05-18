@@ -35,9 +35,13 @@ export default function Router() {
         { path: 'misventas', element: <MisVentas /> },
         { path: 'perfil', element: <Perfil /> },
         { path: 'payment', element: <Payment /> },
-        { path: 'onlinepayment', element: <PaymentPage /> },
+        // { path: 'onlinepayment', element: <PaymentPage /> },
         { path: 'agregarlibro', element: <AgregarLibro /> },
         { path: 'book', element: <InterfaceBook /> },
+        { path: 'book/:name/:autor/:vendedorNombre/:descripcion/:disponible/:valor/:idlibro/:urlImagen', element: <InterfaceBook /> },
+        { path: 'onlinepayment/:idlibro/:valor/:uso', element: <PaymentPage /> },
+
+
       ],
     },
     {

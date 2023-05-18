@@ -108,6 +108,7 @@ export default function LoginForm() {
             Cookies.set('latitud', String(data.latitud));
             Cookies.set('longitud', String(data.longitud));
             Cookies.set('listaCoordenadas', data.listaCoordenadas);
+            Cookies.set('avatar', data.avatar);
             setGoToDashboard(true);
             setIsLoading(false);
           } else if ('error' in data) {

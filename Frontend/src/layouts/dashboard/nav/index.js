@@ -39,7 +39,7 @@ export default function Nav({ openNav, onCloseNav }) {
   const { pathname } = useLocation();
 
   const isDesktop = useResponsive('up', 'lg');
-  const [userName, setUserName] = useState('');
+  const [userData, setUserData] = useState({});
 
   useEffect(() => {
     if (openNav) {
@@ -49,13 +49,21 @@ export default function Nav({ openNav, onCloseNav }) {
   }, [pathname]);
 
   useEffect(() => {
-    // Obtener el nombre de las cookies
-    const obtenerNombreCookie = () => {
-      return Cookies.get('nombre');
+    // Obtener los datos de las cookies
+    const obtenerDatosUsuarioCookie = () => {
+      const nombre = Cookies.get('nombre');
+      const avatarNumber = Cookies.get('avatar');
+      const avatarURL = `/static/images/avatars/avatar_${avatarNumber}.jpg`;
+
+      return {
+        nombre,
+        avatar: avatarURL,
+        // Agrega más propiedades para otros datos de las cookies
+      };
     };
 
-    // Actualizar el estado con el nombre de las cookies
-    setUserName(obtenerNombreCookie());
+    // Actualizar el estado con los datos de las cookies
+    setUserData(obtenerDatosUsuarioCookie());
   }, []);
 
   const renderContent = (
@@ -72,11 +80,11 @@ export default function Nav({ openNav, onCloseNav }) {
       <Box sx={{ mb: 5, mx: 2.5 }}>
         <Link underline="none">
           <StyledAccount>
-            <Avatar src={account.photoURL} alt="photoURL" />
+            <Avatar src={userData.avatar} alt="photoURL" />
 
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                {userName}
+                {userData.nombre}
               </Typography>
 
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>

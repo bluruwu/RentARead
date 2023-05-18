@@ -132,7 +132,7 @@ class ComprarLibroView(APIView):
         # DATOS DE ENVIO
         titulo = Libro.objects.get(pk=id_libro).titulo
         direccion = Usuario.objects.get(pk=user).direccion
-        mensaje = "Tu pago ha sido aprobado. {} llegará a tu dirección: {} en máximo 3 a 5 días hábiles".format(
+        mensaje = "Tu pago ha sido aprobado. \n'{}' llegará a tu dirección: {} en máximo 3 a 5 días hábiles".format(
             titulo, direccion)
 
         return Response({'success': mensaje})
@@ -164,10 +164,10 @@ class RentarLibroView(APIView):
         fecha_devolucion = fecha_devolucion.strftime("%d de %B de %Y")
 
         if libro.precio_renta > 0:
-            mensaje = "Tu pago ha sido aprobado. {} llegará a tu dirección: {} en máximo 3 a 5 días hábiles. Recuerda regresarlo el día {}".format(
+            mensaje = "Tu pago ha sido aprobado. \n '{}' llegará a tu dirección: {} en máximo 3 a 5 días hábiles. \nRecuerda regresarlo el día {}".format(
                 titulo, direccion, fecha_devolucion)
         else:
-            mensaje = "Renta realizada. {} llegará a tu dirección: {} en máximo 3 a 5 días hábiles. Recuerda regresarlo el día {}".format(
+            mensaje = "Renta realizada. \n '{}' llegará a tu dirección: {} en máximo 3 a 5 días hábiles. \nRecuerda regresarlo el día {}".format(
                 titulo, direccion, fecha_devolucion)
 
         return Response({'success': mensaje})

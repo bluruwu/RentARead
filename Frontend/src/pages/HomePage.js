@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import Cookies from 'js-cookie';
 // @mui
 
 import { styled } from '@mui/material/styles';
@@ -39,6 +40,18 @@ const StyledContent = styled('div')(({ theme }) => ({
 
 export default function LoginPage() {
   const mdUp = useResponsive('up', 'md');
+
+  Cookies.remove('ciudad');
+  Cookies.remove('direccion');
+  Cookies.remove('cedula');
+  Cookies.remove('email');
+  Cookies.remove('telefono');
+  Cookies.remove('tipoDocumento');
+  Cookies.remove('nombre');
+  Cookies.remove('latitud');
+  Cookies.remove('longitud');
+  Cookies.remove('listaCoordenadas');
+  Cookies.remove('listalibros');
 
   return (
     <>

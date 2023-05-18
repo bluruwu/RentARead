@@ -58,6 +58,8 @@ export default function Cliente() {
       const ciudad = Cookies.get('ciudad');
       const direccion = Cookies.get('direccion');
       const tipoDocumento = Cookies.get('tipoDocumento');
+      const avatarNumber = Cookies.get('avatar');
+      const avatarURL = `/static/images/avatars/avatar_${avatarNumber}.jpg`;
       // Agrega más llamadas a Cookies.get() para obtener otros datos de las cookies
 
       return {
@@ -68,6 +70,7 @@ export default function Cliente() {
         ciudad,
         direccion,
         tipoDocumento,
+        avatar: avatarURL,
         // Agrega más propiedades para otros datos de las cookies
       };
     };
@@ -89,7 +92,7 @@ export default function Cliente() {
       </Stack>
       <StyledContentimg>
         <Avatar
-          src={account.photoURL}
+          src={userData.avatar}
           style={{
             width: '200px',
             height: '200px',

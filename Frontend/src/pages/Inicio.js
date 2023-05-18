@@ -79,7 +79,7 @@ export default function UserPage() {
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState('idlibro');
   const [filterName, setFilterName] = useState('');
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [isLoading, setIsLoading] = useState(true);
   const [listalibros, setListalibros] = useState([]);
 
@@ -229,10 +229,21 @@ export default function UserPage() {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { idlibro, titulo, genero, autor, uso, precioVenta,precioRenta,intercambio,vendedorNombre,descripcion,vendedorId
+                    const {
+                      idlibro,
+                      titulo,
+                      genero,
+                      autor,
+                      uso,
+                      precioVenta,
+                      precioRenta,
+                      intercambio,
+                      vendedorNombre,
+                      descripcion,
+                      vendedorId,
                     } = row;
                     const selectedUser = selected.indexOf(idlibro) !== -1;
-                    const vende =  vendedorId.replace(/\.com$/, "");
+                    const vende = vendedorId.replace(/\.com$/, '');
                     const url = `/static/librosMedia/${titulo}-${vende}.jpg`;
                     const rutaCodificada = encodeURIComponent(url);
 
@@ -241,13 +252,13 @@ export default function UserPage() {
                     const obtenerConstante = (parametro) => {
                       if (parametro === 'Venta') {
                         return precioVenta;
-                      }  if (parametro === 'Renta') {
+                      }
+                      if (parametro === 'Renta') {
                         return precioRenta;
                       }
-                        return intercambio;
-                     
+                      return intercambio;
                     };
-                    console.log('disponible :', obtenerConstante(uso),uso);
+                    console.log('disponible :', obtenerConstante(uso), uso);
                     console.log(intercambio);
 
                     return (
@@ -257,19 +268,24 @@ export default function UserPage() {
                         tabIndex={-1}
                         selected={selectedUser}
                         sx={{ '& > *': { padding: '8px' } }}
-
                       >
                         <TableCell align="left">
-
                           <Avatar
-                            alt={titulo} src={ url}  variant="rounded"
+                            alt={titulo}
+                            src={url}
+                            variant="rounded"
                             style={{
                               width: '20vh',
                               height: '30vh',
                             }}
                           />
-                        <Link to={`/dashboard/book/${titulo}/${autor}/${vendedorNombre}/${descripcion}/${uso}/${obtenerConstante(uso)}/${idlibro}/${rutaCodificada}`}>{titulo}</Link>
-
+                          <Link
+                            to={`/dashboard/book/${titulo}/${autor}/${vendedorNombre}/${descripcion}/${uso}/${obtenerConstante(
+                              uso
+                            )}/${idlibro}/${rutaCodificada}`}
+                          >
+                            {titulo}
+                          </Link>
                         </TableCell>
                         <TableCell align="left">{genero}</TableCell>
                         <TableCell align="left">{autor}</TableCell>

@@ -134,7 +134,7 @@ class Usuario(models.Model):
     tipo_documento = models.CharField(max_length=100)
     latitud = models.CharField(max_length=100)
     longitud = models.CharField(max_length=100)
-    localizacion = models.CharField(max_length=100)
+    avatar = models.IntegerField()
 
     class Meta:
         managed = False
@@ -161,6 +161,7 @@ class Libro(models.Model):
     email = models.ForeignKey(
         Usuario, models.DO_NOTHING, db_column='email')
     ruta_imagen = models.TextField()
+
     class Meta:
         managed = False
         db_table = "libro"

@@ -42,6 +42,7 @@ export default function Router() {
         { path: 'book/:name/:autor/:vendedorNombre/:descripcion/:disponible/:valor/:idlibro/:urlImagen', element: <InterfaceBook /> },
         { path: 'onlinepayment/:idlibro/:valor/:uso', element: <PaymentPage /> },
         { path: 'perfilvendedor', element:<PerfilVendedor/>},
+        { path: 'perfilvendedor/:idlibro', element:<PerfilVendedor/>},
 
 
       ],

@@ -189,5 +189,6 @@ class PerfilVendedorView(APIView):
         telefono = vendedor.telefono
         ciudad = vendedor.ciudad
         direccion = vendedor.direccion
+        avatar = vendedor.avatar
 
-        return Response({"nombre": nombre, "telefono": telefono, "ciudad": ciudad, "direccion": direccion})
+        return Response({"nombre": nombre, "telefono": telefono, "ciudad": ciudad, "direccion": direccion, "avatar":avatar})

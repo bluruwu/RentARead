@@ -167,6 +167,22 @@ class Libro(models.Model):
         db_table = "libro"
 
 
+class IntercambiosAvisos(models.Model):
+    id_aviso = models.AutoField(primary_key=True)
+    id_libro_vendedor = models.ForeignKey(
+        Libro, models.DO_NOTHING, db_column='id_libro_vendedor', related_name="intercambios_avisos_vendedor"
+    )
+    id_libro_cliente = models.ForeignKey(
+        Libro, models.DO_NOTHING, db_column='id_libro_cliente', related_name="intercambios_avisos_cliente"
+    )
+    fecha = models.DateField()
+    estado = models.CharField(max_length=100)
+
+    class Meta:
+        managed = False
+        db_table = "intercambiosavisos"
+
+
 class Transaccion(models.Model):
     id_transaccion = models.AutoField(primary_key=True)
     id_comprador = models.ForeignKey(
@@ -175,6 +191,8 @@ class Transaccion(models.Model):
         Libro, models.DO_NOTHING, db_column='id_libro')
     tipo_transaccion = models.CharField(max_length=100)
     fecha = models.DateField()
+    id_aviso = models.ForeignKey(
+        IntercambiosAvisos, models.DO_NOTHING, db_column="id_aviso")
 
     class Meta:
         managed = False

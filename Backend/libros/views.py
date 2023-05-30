@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.conf import settings
 from datetime import datetime, timedelta
-from loginPage.models import Usuario, Libro, Transaccion
+from loginPage.models import Usuario, Libro, Transaccion, IntercambiosAvisos
 import base64
 
 # OBTENER USUARIO ACTUAL CON LAS COOKIES
@@ -174,7 +174,43 @@ class RentarLibroView(APIView):
 
 
 class IntercambiarLibroView(APIView):
-    pass
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request, format=None):
+        data = self.request.data
+
+        id_libro_vendedor = Libro.objects.get(pk=data["id_libro_vendedor"])
+        id_libro_cliente = Libro.objects.get(pk=data["id_libro_cliente"])
+        fecha_actual = datetime.now().date()
+        estado = "Solicitado"
+
+        IntercambiosAvisos.objects.create(
+            id_libro_vendedor=id_libro_vendedor, id_libro_cliente=id_libro_cliente, fecha=fecha_actual, estado=estado)
+
+        libronombrevendedor = id_libro_vendedor.titulo
+        libronombrecliente = id_libro_cliente.titulo
+
+        mensaje = "Se ha hecho la solicitud de intercambio de '{}' por tu libro '{}' exitosamente".format(
+            libronombrevendedor, libronombrecliente)
+
+        return Response({'success': mensaje})
+
+
+class AceptarIntercambioView(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request, format=None):
+        data = self.request.data
+
+        id_libro = data["id_libro"]
+        vendedor = Libro.objects.get(pk=id_libro).email
+        nombre = vendedor.nombre
+        telefono = vendedor.telefono
+        ciudad = vendedor.ciudad
+        direccion = vendedor.direccion
+        avatar = vendedor.avatar
+
+        return Response({"nombre": nombre, "telefono": telefono, "ciudad": ciudad, "direccion": direccion, "avatar": avatar})
 
 
 class PerfilVendedorView(APIView):
@@ -191,4 +227,4 @@ class PerfilVendedorView(APIView):
         direccion = vendedor.direccion
         avatar = vendedor.avatar
 
-        return Response({"nombre": nombre, "telefono": telefono, "ciudad": ciudad, "direccion": direccion, "avatar":avatar})
+        return Response({"nombre": nombre, "telefono": telefono, "ciudad": ciudad, "direccion": direccion, "avatar": avatar})

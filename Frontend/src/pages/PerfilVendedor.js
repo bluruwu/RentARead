@@ -1,12 +1,11 @@
 import * as React from 'react';
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
-import {useParams }from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { styled } from '@mui/material/styles';
 import { Stack, Avatar, Typography, Rating } from '@mui/material';
 import account from '../_mock/account';
-
 
 const StyledContent = styled('div')(({ theme }) => ({
   maxWidth: 400,
@@ -54,10 +53,10 @@ export default function Cliente() {
   const { idlibro } = useParams();
   console.log(idlibro);
   const data = {
-    id_libro: idlibro
+    id_libro: idlibro,
   };
 
-  const url = 'http://127.0.0.1:8000/api/perfilvendedor'
+  const url = 'http://127.0.0.1:8000/api/perfilvendedor';
 
   useEffect(() => {
     // Obtener los datos de las cookies
@@ -67,33 +66,30 @@ export default function Cliente() {
         credentials: 'same-origin',
         headers: {
           'X-CSRFToken': Cookies.get('csrftoken'),
-           Accept : 'application/json',
-          'Content-Type': 'application/json'
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
       })
-        .then(response => response.json())
-        .then(data => {
+        .then((response) => response.json())
+        .then((data) => {
           const nombre = data.nombre;
           const telefono = data.telefono;
           const ciudad = data.ciudad;
           const direccion = data.direccion;
-          const avatar = data.avatar
+          const avatar = data.avatar;
           const avatarURL = `/static/images/avatars/avatar_${avatar}.jpg`;
-          setUserData({ nombre, telefono, ciudad, direccion, avatar, avatarURL});
+          setUserData({ nombre, telefono, ciudad, direccion, avatar, avatarURL });
           console.log(nombre, telefono, ciudad, direccion, avatar);
         })
-        .catch(error => {
+        .catch((error) => {
           console.error('Error al obtener los datos del vendedor:', error);
         });
-  }
-  obtenerDatosUsuario()
+    }
+    obtenerDatosUsuario();
   }, []);
 
-   const valor = parseInt(idlibro,10);
-
-
-  
+  const valor = parseInt(idlibro, 10);
 
   return (
     <div className="Info-cliente">
@@ -103,7 +99,7 @@ export default function Cliente() {
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={4}>
         <Typography variant="h4" gutterBottom>
-            Perfil del Vendedor
+          Perfil del Vendedor
         </Typography>
       </Stack>
       <StyledContentimg>
@@ -115,22 +111,22 @@ export default function Cliente() {
           }}
         />
         <Rating
-            name="star-rating"
-            value={value}
-            size="large"
-            onChange={(event, newValue) => {
-                setValue(newValue);
-              }}
-            precision={0.5}
-            noRatingGiven
-            max={5}
-            sx={{
+          name="star-rating"
+          value={value}
+          size="large"
+          onChange={(event, newValue) => {
+            setValue(newValue);
+          }}
+          precision={0.5}
+          noRatingGiven
+          max={5}
+          sx={{
             position: 'absolute',
-            top : '100%',
+            top: '100%',
             left: '50%',
-        }}
+          }}
         />
-        <p>El valor actual es {value}</p>
+        {/* <p>El valor actual es {value}</p> */}
       </StyledContentimg>
 
       <StyledContent sx={{ textAlign: 'left', alignItems: 'center' }}>

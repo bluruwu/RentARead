@@ -202,15 +202,32 @@ class AceptarIntercambioView(APIView):
     def post(self, request, format=None):
         data = self.request.data
 
-        id_libro = data["id_libro"]
-        vendedor = Libro.objects.get(pk=id_libro).email
-        nombre = vendedor.nombre
-        telefono = vendedor.telefono
-        ciudad = vendedor.ciudad
-        direccion = vendedor.direccion
-        avatar = vendedor.avatar
+        id_aviso = IntercambiosAvisos.objects.get(pk=data["id_aviso"])
+        print(id_aviso)
+        titulo_libro_cliente = id_aviso.id_libro_cliente.titulo
+        titulo_libro_usuario = id_aviso.id_libro_vendedor.titulo
+        direccion = id_aviso.id_libro_vendedor.email.direccion
+        direccion_cliente = id_aviso.id_libro_cliente.email.direccion
+        id_cliente = id_aviso.id_libro_cliente.email
+        id_usuario = id_aviso.id_libro_vendedor.email
+        id_libro_cliente = id_aviso.id_libro_cliente
+        id_libro_usuario = id_aviso.id_libro_vendedor
+        tipo_transaccion = "Intercambio"
+        fecha_actual = datetime.now().date()
+        estado = "Aceptado"
 
-        return Response({"nombre": nombre, "telefono": telefono, "ciudad": ciudad, "direccion": direccion, "avatar": avatar})
+        IntercambiosAvisos.objects.filter(id_aviso=data["id_aviso"]).update(
+            fecha=fecha_actual, estado=estado)
+
+        Transaccion.objects.create(id_comprador=id_cliente, id_libro=id_libro_cliente,
+                                   tipo_transaccion=tipo_transaccion, fecha=fecha_actual, id_aviso=id_aviso)
+        Transaccion.objects.create(id_comprador=id_usuario, id_libro=id_libro_usuario,
+                                   tipo_transaccion=tipo_transaccion, fecha=fecha_actual, id_aviso=id_aviso)
+
+        mensaje = "¡Aceptaste el intercambio!. \n'{}' llegará a tu dirección: {} en máximo 3 a 5 días hábiles. \n -> Recuerda hacer el envío de tu libro '{}' a la dirección {}".format(
+            titulo_libro_cliente, direccion, titulo_libro_usuario, direccion_cliente)
+
+        return Response({'success': mensaje})
 
 
 class PerfilVendedorView(APIView):

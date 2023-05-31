@@ -5,6 +5,7 @@ from django.contrib.sessions.models import Session
 from rest_framework import permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from django.conf import settings
 from datetime import datetime, timedelta
 from loginPage.models import Usuario, Libro, Transaccion, IntercambiosAvisos
@@ -27,8 +28,20 @@ def get_user(request):
     return user
 
 
-class RegistrarLibroView(APIView):
+class GetUserView(APIView):
     permission_classes = (permissions.AllowAny,)
+
+    def get(self, request, format=None):
+        user = request.user
+
+        if user.is_authenticated:
+            return Response({"message": "Usuario autenticado"})
+        else:
+            return Response({"message": "Usuario no autenticado"})
+
+
+class RegistrarLibroView(APIView):
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request, format=None):
         data = self.request.data
@@ -79,7 +92,7 @@ class RegistrarLibroView(APIView):
 
 
 class CatalogoLibrosView(APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request, format=None):
 
@@ -110,7 +123,7 @@ class CatalogoLibrosView(APIView):
 
 
 class ComprarLibroView(APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request, format=None):
         data = self.request.data
@@ -139,7 +152,7 @@ class ComprarLibroView(APIView):
 
 
 class RentarLibroView(APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request, format=None):
         data = self.request.data
@@ -174,7 +187,7 @@ class RentarLibroView(APIView):
 
 
 class IntercambiarLibroView(APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request, format=None):
         data = self.request.data
@@ -197,7 +210,7 @@ class IntercambiarLibroView(APIView):
 
 
 class AceptarIntercambioView(APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request, format=None):
         data = self.request.data
@@ -231,7 +244,7 @@ class AceptarIntercambioView(APIView):
 
 
 class DenegarIntercambioView(APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request, format=None):
         data = self.request.data
@@ -248,7 +261,7 @@ class DenegarIntercambioView(APIView):
 
 
 class AvisosIntercambiosView(APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request, format=None):
 
@@ -285,7 +298,7 @@ class AvisosIntercambiosView(APIView):
 
 
 class PerfilVendedorView(APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request, format=None):
         data = self.request.data

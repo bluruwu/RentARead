@@ -193,6 +193,7 @@ class Transaccion(models.Model):
     fecha = models.DateField()
     id_aviso = models.ForeignKey(
         IntercambiosAvisos, models.DO_NOTHING, db_column="id_aviso")
+    calificacion = models.DecimalField(max_digits=1, decimal_places=1)
 
     class Meta:
         managed = False

@@ -82,6 +82,7 @@ export default function UserPage() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [isLoading, setIsLoading] = useState(true);
   const [listalibros, setListalibros] = useState([]);
+  const [goToHome, setGoToHome] = useState(false);
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -178,11 +179,16 @@ export default function UserPage() {
           } else if ('error' in data) {
             console.log(data.error);
             swal.close();
+            setGoToHome(true);
+          } else {
+            swal.close();
+            setGoToHome(true);
           }
         })
         .catch((error) => {
           console.log(error);
           swal.close();
+          setGoToHome(true);
         });
     }
     fetchCatalogo();
@@ -190,6 +196,10 @@ export default function UserPage() {
 
   if (goToAgregarLibro) {
     return <Navigate to="/dashboard/agregarlibro" />;
+  }
+
+  if (goToHome) {
+    return <Navigate to="/home" />;
   }
 
   return (

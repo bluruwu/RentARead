@@ -69,6 +69,15 @@ export default function LoginForm() {
     if (window.Cypress) {
       setDisableSubmit(false);
     }
+
+    if (Cookies.get('nombre')) {
+      // La cookie existe
+      setGoToDashboard(true);
+      console.log('La cookie existe');
+    } else {
+      // La cookie no existe
+      console.log('La cookie no existe');
+    }
   }, []);
 
   function submit(e) {

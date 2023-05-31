@@ -69,6 +69,7 @@ export default function AccountPopover() {
             Cookies.remove('listaCoordenadas');
             Cookies.remove('listalibros');
             Cookies.remove('avatar');
+            Cookies.remove('calificacion');
           }
         });
     } catch (error) {

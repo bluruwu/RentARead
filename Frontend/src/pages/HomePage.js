@@ -57,6 +57,7 @@ export default function LoginPage() {
       'listaCoordenadas',
       'listalibros',
       'avatar',
+      'calificacion',
     ];
 
     cookies.forEach((cookie) => {

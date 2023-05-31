@@ -123,8 +123,19 @@ class LoginView(APIView):
                         {"lat": libro.email.latitud, "lng": libro.email.longitud, "nombre_libro": nombre_libro, "id_libro": id_libro})
 
             print(lista_libros_coordenadas)
+            calificacion = 0
+            num_calificaciones = 0
 
-            return Response({'success': "Usuario autenticado exitosamente", "email": email, "nombre": nombre, "tipoDocumento": tipoDocumento, "cedula": cedula, "telefono": telefono, "ciudad": ciudad, "direccion": direccion, "latitud": latitud, "longitud": longitud, "listaCoordenadas": lista_libros_coordenadas, "avatar": avatar})
+            for transaccion in Transaccion.objects.all():
+                if transaccion.id_libro.email == usuario:
+                    if transaccion.calificacion is not None:
+                        calificacion += transaccion.calificacion
+                        num_calificaciones += 1
+
+            if num_calificaciones > 0:
+                calificacion = round(calificacion / num_calificaciones, 1)
+
+            return Response({'success': "Usuario autenticado exitosamente", "email": email, "nombre": nombre, "tipoDocumento": tipoDocumento, "cedula": cedula, "telefono": telefono, "ciudad": ciudad, "direccion": direccion, "latitud": latitud, "longitud": longitud, "listaCoordenadas": lista_libros_coordenadas, "avatar": avatar, "calificacion": calificacion})
         else:
             return Response({'error': 'Usuario y/o contraseña incorrectas'})
         # except:

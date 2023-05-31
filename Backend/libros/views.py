@@ -232,9 +232,9 @@ class AceptarIntercambioView(APIView):
         IntercambiosAvisos.objects.filter(id_aviso=data["id_aviso"]).update(
             fecha=fecha_actual, estado=estado)
 
-        Transaccion.objects.create(id_comprador=id_cliente, id_libro=id_libro_cliente,
+        Transaccion.objects.create(id_comprador=id_cliente, id_libro=id_libro_usuario,
                                    tipo_transaccion=tipo_transaccion, fecha=fecha_actual, id_aviso=id_aviso)
-        Transaccion.objects.create(id_comprador=id_usuario, id_libro=id_libro_usuario,
+        Transaccion.objects.create(id_comprador=id_usuario, id_libro=id_libro_cliente,
                                    tipo_transaccion=tipo_transaccion, fecha=fecha_actual, id_aviso=id_aviso)
 
         mensaje = "¡Aceptaste el intercambio!. \n'{}' llegará a tu dirección: {} en máximo 3 a 5 días hábiles. \n -> Recuerda hacer el envío de tu libro '{}' a la dirección {}".format(
@@ -310,5 +310,30 @@ class PerfilVendedorView(APIView):
         ciudad = vendedor.ciudad
         direccion = vendedor.direccion
         avatar = vendedor.avatar
+        calificacion = 0
+        num_calificaciones = 0
 
-        return Response({"nombre": nombre, "telefono": telefono, "ciudad": ciudad, "direccion": direccion, "avatar": avatar})
+        for transaccion in Transaccion.objects.all():
+            if transaccion.id_libro.email == vendedor:
+                if transaccion.calificacion is not None:
+                    calificacion += transaccion.calificacion
+                    num_calificaciones += 1
+
+        if num_calificaciones > 0:
+            calificacion = round(calificacion / num_calificaciones, 1)
+
+        return Response({"nombre": nombre, "telefono": telefono, "ciudad": ciudad, "direccion": direccion, "avatar": avatar, "calificacion": calificacion})
+
+
+class CalificacionTransaccionView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, format=None):
+        data = self.request.data
+
+        calificacion = data["calificacion"]
+
+        Transaccion.objects.filter(id_transaccion=data["id_transaccion"]).update(
+            calificacion=calificacion)
+
+        return Response({'success': "Calificado"})

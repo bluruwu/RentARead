@@ -78,9 +78,10 @@ export default function Cliente() {
           const ciudad = data.ciudad;
           const direccion = data.direccion;
           const avatar = data.avatar;
+          const calificacion = data.calificacion;
           const avatarURL = `/static/images/avatars/avatar_${avatar}.jpg`;
-          setUserData({ nombre, telefono, ciudad, direccion, avatar, avatarURL });
-          console.log(nombre, telefono, ciudad, direccion, avatar);
+          setUserData({ nombre, telefono, ciudad, direccion, avatar, avatarURL, calificacion });
+          console.log(nombre, telefono, ciudad, direccion, avatar, calificacion);
         })
         .catch((error) => {
           console.error('Error al obtener los datos del vendedor:', error);
@@ -112,7 +113,7 @@ export default function Cliente() {
         />
         <Rating
           name="star-rating"
-          value={value}
+          value={userData.calificacion}
           size="large"
           onChange={(event, newValue) => {
             setValue(newValue);

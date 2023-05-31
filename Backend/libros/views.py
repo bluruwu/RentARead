@@ -230,6 +230,23 @@ class AceptarIntercambioView(APIView):
         return Response({'success': mensaje})
 
 
+class DenegarIntercambioView(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request, format=None):
+        data = self.request.data
+
+        fecha_actual = datetime.now().date()
+        estado = "Cancelado"
+
+        IntercambiosAvisos.objects.filter(id_aviso=data["id_aviso"]).update(
+            fecha=fecha_actual, estado=estado)
+
+        mensaje = "Solicitud de intercambio cancelada"
+
+        return Response({'success': mensaje})
+
+
 class PerfilVendedorView(APIView):
     permission_classes = (permissions.AllowAny,)
 

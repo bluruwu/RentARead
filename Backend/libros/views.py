@@ -247,6 +247,43 @@ class DenegarIntercambioView(APIView):
         return Response({'success': mensaje})
 
 
+class AvisosIntercambiosView(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def get(self, request, format=None):
+
+        user = get_user(request)
+
+        usuario = Usuario.objects.get(pk=user)
+
+        listaintercambios = []
+
+        for aviso in IntercambiosAvisos.objects.all():
+            if aviso.id_libro_vendedor.email == usuario:
+                idlibrousuario = aviso.id_libro_vendedor.id_libro
+                titulolibrousuario = aviso.id_libro_vendedor.titulo
+                idlibrocliente = aviso.id_libro_cliente.id_libro
+                titulolibrocliente = aviso.id_libro_cliente.titulo
+                estado = aviso.estado
+
+                listaintercambios.append(
+                    {"idlibrousuario": idlibrousuario, "titulolibrousuario": titulolibrousuario, "idlibrocliente": idlibrocliente, "titulolibrocliente": titulolibrocliente, "estado": estado})
+            elif aviso.id_libro_cliente.email == usuario:
+                idlibrocliente = aviso.id_libro_vendedor.id_libro
+                titulolibrocliente = aviso.id_libro_vendedor.titulo
+                idlibrousuario = aviso.id_libro_cliente.id_libro
+                titulolibrousuario = aviso.id_libro_cliente.titulo
+                estado = aviso.estado
+
+                if estado == "Solicitado":
+                    estado = "Solicitud enviada"
+
+                listaintercambios.append(
+                    {"idlibrousuario": idlibrousuario, "titulolibrousuario": titulolibrousuario, "idlibrocliente": idlibrocliente, "titulolibrocliente": titulolibrocliente, "estado": estado})
+
+        return Response({'success': list(listaintercambios)})
+
+
 class PerfilVendedorView(APIView):
     permission_classes = (permissions.AllowAny,)
 

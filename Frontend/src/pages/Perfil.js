@@ -1,5 +1,6 @@
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { styled } from '@mui/material/styles';
 import { Stack, Avatar, Typography } from '@mui/material';
@@ -47,8 +48,17 @@ const StyledContentInfo = styled('div')(({ theme }) => ({
 
 export default function Cliente() {
   const [userData, setUserData] = useState({});
+  const [goToHome, setGoToHome] = useState(false);
 
   useEffect(() => {
+    if (Cookies.get('nombre')) {
+      // La cookie existe
+      console.log('La cookie existe');
+    } else {
+      // La cookie no existe
+      setGoToHome(true);
+      console.log('La cookie no existe');
+    }
     // Obtener los datos de las cookies
     const obtenerDatosUsuarioCookie = () => {
       const nombre = Cookies.get('nombre');
@@ -78,6 +88,10 @@ export default function Cliente() {
     // Actualizar el estado con los datos de las cookies
     setUserData(obtenerDatosUsuarioCookie());
   }, []);
+
+  if (goToHome) {
+    return <Navigate to="/home" />;
+  }
 
   return (
     <div className="Info-cliente">

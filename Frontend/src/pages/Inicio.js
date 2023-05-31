@@ -191,7 +191,16 @@ export default function UserPage() {
           setGoToHome(true);
         });
     }
-    fetchCatalogo();
+
+    if (Cookies.get('nombre')) {
+      // La cookie existe
+      fetchCatalogo();
+      console.log('La cookie existe');
+    } else {
+      // La cookie no existe
+      setGoToHome(true);
+      console.log('La cookie no existe');
+    }
   }, []);
 
   if (goToAgregarLibro) {

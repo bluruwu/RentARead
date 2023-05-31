@@ -134,7 +134,7 @@ class Usuario(models.Model):
     tipo_documento = models.CharField(max_length=100)
     latitud = models.CharField(max_length=100)
     longitud = models.CharField(max_length=100)
-    localizacion = models.CharField(max_length=100)
+    avatar = models.IntegerField()
 
     class Meta:
         managed = False
@@ -161,9 +161,26 @@ class Libro(models.Model):
     email = models.ForeignKey(
         Usuario, models.DO_NOTHING, db_column='email')
     ruta_imagen = models.TextField()
+
     class Meta:
         managed = False
         db_table = "libro"
+
+
+class IntercambiosAvisos(models.Model):
+    id_aviso = models.AutoField(primary_key=True)
+    id_libro_vendedor = models.ForeignKey(
+        Libro, models.DO_NOTHING, db_column='id_libro_vendedor', related_name="intercambios_avisos_vendedor"
+    )
+    id_libro_cliente = models.ForeignKey(
+        Libro, models.DO_NOTHING, db_column='id_libro_cliente', related_name="intercambios_avisos_cliente"
+    )
+    fecha = models.DateField()
+    estado = models.CharField(max_length=100)
+
+    class Meta:
+        managed = False
+        db_table = "intercambiosavisos"
 
 
 class Transaccion(models.Model):
@@ -174,6 +191,9 @@ class Transaccion(models.Model):
         Libro, models.DO_NOTHING, db_column='id_libro')
     tipo_transaccion = models.CharField(max_length=100)
     fecha = models.DateField()
+    id_aviso = models.ForeignKey(
+        IntercambiosAvisos, models.DO_NOTHING, db_column="id_aviso")
+    calificacion = models.DecimalField(max_digits=1, decimal_places=1)
 
     class Meta:
         managed = False

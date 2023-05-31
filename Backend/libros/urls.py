@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import RegistrarLibroView, CatalogoLibrosView, ComprarLibroView, RentarLibroView, IntercambiarLibroView, PerfilVendedorView
+from .views import RegistrarLibroView, CatalogoLibrosView, ComprarLibroView, RentarLibroView, IntercambiarLibroView, PerfilVendedorView, AceptarIntercambioView, DenegarIntercambioView, AvisosIntercambiosView, GetUserView, CalificacionTransaccionView
 
 urlpatterns = [
     path("registrarLibro", RegistrarLibroView.as_view()),
@@ -7,5 +7,10 @@ urlpatterns = [
     path('comprarlibro', ComprarLibroView.as_view()),
     path('rentarlibro', RentarLibroView.as_view()),
     path('intercambiarlibro', IntercambiarLibroView.as_view()),
+    path('aceptarintercambio', AceptarIntercambioView.as_view()),
+    path('denegarintercambio', DenegarIntercambioView.as_view()),
+    path('avisosintercambios', AvisosIntercambiosView.as_view()),
     path('perfilvendedor', PerfilVendedorView.as_view()),
+    path('calificaciontransaccion', CalificacionTransaccionView.as_view()),
+    path('getuser', GetUserView.as_view()),
 ]

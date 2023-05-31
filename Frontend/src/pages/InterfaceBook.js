@@ -175,7 +175,7 @@ export default function InterfaceBook() {
                   height: '30vh',
                 }}
               >
-                Ofrecido Por : <Link to={`/dashboard/404`}>{vendedorNombre}</Link>
+                Ofrecido Por : <Link to={`/dashboard/perfilvendedor/${idlibro}`}>{vendedorNombre}</Link>
               </p>
             </Typography>
 

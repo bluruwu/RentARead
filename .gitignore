@@ -11,6 +11,8 @@
 # testing
 /coverage
 
+#startup
+Startup.bat
 # production
 /build
 

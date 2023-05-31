@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import Cookies from 'js-cookie';
+import { useEffect } from 'react';
 // @mui
 
 import { styled } from '@mui/material/styles';
@@ -41,17 +42,28 @@ const StyledContent = styled('div')(({ theme }) => ({
 export default function LoginPage() {
   const mdUp = useResponsive('up', 'md');
 
-  Cookies.remove('ciudad');
-  Cookies.remove('direccion');
-  Cookies.remove('cedula');
-  Cookies.remove('email');
-  Cookies.remove('telefono');
-  Cookies.remove('tipoDocumento');
-  Cookies.remove('nombre');
-  Cookies.remove('latitud');
-  Cookies.remove('longitud');
-  Cookies.remove('listaCoordenadas');
-  Cookies.remove('listalibros');
+  useEffect(() => {
+    // Eliminar todas las cookies al entrar en la página
+    const cookies = [
+      'ciudad',
+      'direccion',
+      'cedula',
+      'email',
+      'telefono',
+      'tipoDocumento',
+      'nombre',
+      'latitud',
+      'longitud',
+      'listaCoordenadas',
+      'listalibros',
+      'avatar',
+      'calificacion',
+    ];
+
+    cookies.forEach((cookie) => {
+      Cookies.remove(cookie);
+    });
+  }, []);
 
   return (
     <>

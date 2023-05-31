@@ -9,6 +9,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
 from django.utils.decorators import method_decorator
 from loginPage.models import Usuario, Libro, Transaccion
 import geocoder
+import random
 import requests  # npm i requests [si sale error]
 
 # Creatme your views here.
@@ -63,10 +64,12 @@ class SignUpView(APIView):
                         # coordenadas = localizacion.latlng
                         latitud = localizacion.latlng[0]
                         longitud = localizacion.latlng[1]
+                        avatar = random.randint(1, 24)
                         user = User.objects.create_user(
                             username=email, password=contrasena)
+
                         Usuario.objects.create(email=email, cedula=cedula, nombre=nombre, telefono=telefono,
-                                               ciudad=ciudad, direccion=direccion, tipo_documento=tipo_documento, latitud=latitud, longitud=longitud)
+                                               ciudad=ciudad, direccion=direccion, tipo_documento=tipo_documento, latitud=latitud, longitud=longitud, avatar=avatar)
                         return Response({'success': 'El usuario ha sido creado'})
         else:
             return Response({'error': 'Las contraseñas no coinciden'})
@@ -110,6 +113,7 @@ class LoginView(APIView):
             direccion = usuario.direccion
             latitud = usuario.latitud
             longitud = usuario.longitud
+            avatar = usuario.avatar
 
             for libro in Libro.objects.all():
                 if libro.email != usuario:
@@ -119,8 +123,19 @@ class LoginView(APIView):
                         {"lat": libro.email.latitud, "lng": libro.email.longitud, "nombre_libro": nombre_libro, "id_libro": id_libro})
 
             print(lista_libros_coordenadas)
+            calificacion = 0
+            num_calificaciones = 0
 
-            return Response({'success': "Usuario autenticado exitosamente", "email": email, "nombre": nombre, "tipoDocumento": tipoDocumento, "cedula": cedula, "telefono": telefono, "ciudad": ciudad, "direccion": direccion, "latitud": latitud, "longitud": longitud, "listaCoordenadas": lista_libros_coordenadas})
+            for transaccion in Transaccion.objects.all():
+                if transaccion.id_libro.email == usuario:
+                    if transaccion.calificacion is not None:
+                        calificacion += transaccion.calificacion
+                        num_calificaciones += 1
+
+            if num_calificaciones > 0:
+                calificacion = round(calificacion / num_calificaciones, 1)
+
+            return Response({'success': "Usuario autenticado exitosamente", "email": email, "nombre": nombre, "tipoDocumento": tipoDocumento, "cedula": cedula, "telefono": telefono, "ciudad": ciudad, "direccion": direccion, "latitud": latitud, "longitud": longitud, "listaCoordenadas": lista_libros_coordenadas, "avatar": avatar, "calificacion": calificacion})
         else:
             return Response({'error': 'Usuario y/o contraseña incorrectas'})
         # except:

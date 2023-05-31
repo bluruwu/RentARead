@@ -68,6 +68,8 @@ export default function AccountPopover() {
             Cookies.remove('longitud');
             Cookies.remove('listaCoordenadas');
             Cookies.remove('listalibros');
+            Cookies.remove('avatar');
+            Cookies.remove('calificacion');
           }
         });
     } catch (error) {
@@ -80,11 +82,13 @@ export default function AccountPopover() {
     const obtenerDatosUsuarioCookie = () => {
       const nombre = Cookies.get('nombre');
       const email = Cookies.get('email');
-      // Agrega más llamadas a Cookies.get() para obtener otros datos de las cookies
+      const avatarNumber = Cookies.get('avatar');
+      const avatarURL = `/static/images/avatars/avatar_${avatarNumber}.jpg`;
 
       return {
         nombre,
         email,
+        avatar: avatarURL,
         // Agrega más propiedades para otros datos de las cookies
       };
     };
@@ -116,7 +120,7 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <Avatar src={account.photoURL} alt="photoURL" />
+        <Avatar src={userData.avatar} alt="photoURL" />
       </IconButton>
 
       <Popover

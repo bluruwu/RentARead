@@ -5,9 +5,10 @@ from django.contrib.sessions.models import Session
 from rest_framework import permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from django.conf import settings
 from datetime import datetime, timedelta
-from loginPage.models import Usuario, Libro, Transaccion
+from loginPage.models import Usuario, Libro, Transaccion, IntercambiosAvisos
 import base64
 
 # OBTENER USUARIO ACTUAL CON LAS COOKIES
@@ -27,8 +28,20 @@ def get_user(request):
     return user
 
 
-class RegistrarLibroView(APIView):
+class GetUserView(APIView):
     permission_classes = (permissions.AllowAny,)
+
+    def get(self, request, format=None):
+        user = request.user
+
+        if user.is_authenticated:
+            return Response({"message": "Usuario autenticado"})
+        else:
+            return Response({"message": "Usuario no autenticado"})
+
+
+class RegistrarLibroView(APIView):
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request, format=None):
         data = self.request.data
@@ -79,7 +92,7 @@ class RegistrarLibroView(APIView):
 
 
 class CatalogoLibrosView(APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request, format=None):
 
@@ -110,7 +123,7 @@ class CatalogoLibrosView(APIView):
 
 
 class ComprarLibroView(APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request, format=None):
         data = self.request.data
@@ -139,7 +152,7 @@ class ComprarLibroView(APIView):
 
 
 class RentarLibroView(APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request, format=None):
         data = self.request.data
@@ -174,11 +187,118 @@ class RentarLibroView(APIView):
 
 
 class IntercambiarLibroView(APIView):
-    pass
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, format=None):
+        data = self.request.data
+
+        id_libro_vendedor = Libro.objects.get(pk=data["id_libro_vendedor"])
+        id_libro_cliente = Libro.objects.get(pk=data["id_libro_cliente"])
+        fecha_actual = datetime.now().date()
+        estado = "Solicitado"
+
+        IntercambiosAvisos.objects.create(
+            id_libro_vendedor=id_libro_vendedor, id_libro_cliente=id_libro_cliente, fecha=fecha_actual, estado=estado)
+
+        libronombrevendedor = id_libro_vendedor.titulo
+        libronombrecliente = id_libro_cliente.titulo
+
+        mensaje = "Se ha hecho la solicitud de intercambio de '{}' por tu libro '{}' exitosamente".format(
+            libronombrevendedor, libronombrecliente)
+
+        return Response({'success': mensaje})
+
+
+class AceptarIntercambioView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, format=None):
+        data = self.request.data
+
+        id_aviso = IntercambiosAvisos.objects.get(pk=data["id_aviso"])
+        print(id_aviso)
+        titulo_libro_cliente = id_aviso.id_libro_cliente.titulo
+        titulo_libro_usuario = id_aviso.id_libro_vendedor.titulo
+        direccion = id_aviso.id_libro_vendedor.email.direccion
+        direccion_cliente = id_aviso.id_libro_cliente.email.direccion
+        id_cliente = id_aviso.id_libro_cliente.email
+        id_usuario = id_aviso.id_libro_vendedor.email
+        id_libro_cliente = id_aviso.id_libro_cliente
+        id_libro_usuario = id_aviso.id_libro_vendedor
+        tipo_transaccion = "Intercambio"
+        fecha_actual = datetime.now().date()
+        estado = "Aceptado"
+
+        IntercambiosAvisos.objects.filter(id_aviso=data["id_aviso"]).update(
+            fecha=fecha_actual, estado=estado)
+
+        Transaccion.objects.create(id_comprador=id_cliente, id_libro=id_libro_usuario,
+                                   tipo_transaccion=tipo_transaccion, fecha=fecha_actual, id_aviso=id_aviso)
+        Transaccion.objects.create(id_comprador=id_usuario, id_libro=id_libro_cliente,
+                                   tipo_transaccion=tipo_transaccion, fecha=fecha_actual, id_aviso=id_aviso)
+
+        mensaje = "¡Aceptaste el intercambio!. \n'{}' llegará a tu dirección: {} en máximo 3 a 5 días hábiles. \n -> Recuerda hacer el envío de tu libro '{}' a la dirección {}".format(
+            titulo_libro_cliente, direccion, titulo_libro_usuario, direccion_cliente)
+
+        return Response({'success': mensaje})
+
+
+class DenegarIntercambioView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, format=None):
+        data = self.request.data
+
+        fecha_actual = datetime.now().date()
+        estado = "Cancelado"
+
+        IntercambiosAvisos.objects.filter(id_aviso=data["id_aviso"]).update(
+            fecha=fecha_actual, estado=estado)
+
+        mensaje = "Solicitud de intercambio cancelada"
+
+        return Response({'success': mensaje})
+
+
+class AvisosIntercambiosView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, format=None):
+
+        user = get_user(request)
+
+        usuario = Usuario.objects.get(pk=user)
+
+        listaintercambios = []
+
+        for aviso in IntercambiosAvisos.objects.all():
+            if aviso.id_libro_vendedor.email == usuario:
+                idlibrousuario = aviso.id_libro_vendedor.id_libro
+                titulolibrousuario = aviso.id_libro_vendedor.titulo
+                idlibrocliente = aviso.id_libro_cliente.id_libro
+                titulolibrocliente = aviso.id_libro_cliente.titulo
+                estado = aviso.estado
+
+                listaintercambios.append(
+                    {"idlibrousuario": idlibrousuario, "titulolibrousuario": titulolibrousuario, "idlibrocliente": idlibrocliente, "titulolibrocliente": titulolibrocliente, "estado": estado})
+            elif aviso.id_libro_cliente.email == usuario:
+                idlibrocliente = aviso.id_libro_vendedor.id_libro
+                titulolibrocliente = aviso.id_libro_vendedor.titulo
+                idlibrousuario = aviso.id_libro_cliente.id_libro
+                titulolibrousuario = aviso.id_libro_cliente.titulo
+                estado = aviso.estado
+
+                if estado == "Solicitado":
+                    estado = "Solicitud enviada"
+
+                listaintercambios.append(
+                    {"idlibrousuario": idlibrousuario, "titulolibrousuario": titulolibrousuario, "idlibrocliente": idlibrocliente, "titulolibrocliente": titulolibrocliente, "estado": estado})
+
+        return Response({'success': list(listaintercambios)})
 
 
 class PerfilVendedorView(APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request, format=None):
         data = self.request.data
@@ -189,5 +309,31 @@ class PerfilVendedorView(APIView):
         telefono = vendedor.telefono
         ciudad = vendedor.ciudad
         direccion = vendedor.direccion
+        avatar = vendedor.avatar
+        calificacion = 0
+        num_calificaciones = 0
 
-        return Response({"nombre": nombre, "telefono": telefono, "ciudad": ciudad, "direccion": direccion})
+        for transaccion in Transaccion.objects.all():
+            if transaccion.id_libro.email == vendedor:
+                if transaccion.calificacion is not None:
+                    calificacion += transaccion.calificacion
+                    num_calificaciones += 1
+
+        if num_calificaciones > 0:
+            calificacion = round(calificacion / num_calificaciones, 1)
+
+        return Response({"nombre": nombre, "telefono": telefono, "ciudad": ciudad, "direccion": direccion, "avatar": avatar, "calificacion": calificacion})
+
+
+class CalificacionTransaccionView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, format=None):
+        data = self.request.data
+
+        calificacion = data["calificacion"]
+
+        Transaccion.objects.filter(id_transaccion=data["id_transaccion"]).update(
+            calificacion=calificacion)
+
+        return Response({'success': "Calificado"})

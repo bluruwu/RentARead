@@ -56,3 +56,8 @@ jobs:
         cd Frontend
         npx cypress run --spec cypress/e2e/funcionalLogin.cy.js
         npx cypress run --spec cypress/e2e/funcionalRegister.cy.js
+
+    - name: Ejecutar pruebas unitarias
+      run: |
+        cd Backend
+        python manage.py test

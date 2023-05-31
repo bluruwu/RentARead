@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import markerIconPng from 'leaflet/dist/images/marker-icon.png';
 import { Icon } from 'leaflet';
@@ -13,10 +13,20 @@ export default function MapView() {
   const [userData, setUserData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [goToHome, setGoToHome] = useState(false);
 
   const url = 'http://127.0.0.1:8000/api/catalogolibros';
 
   useEffect(() => {
+    if (Cookies.get('nombre')) {
+      // La cookie existe
+      console.log('La cookie existe');
+    } else {
+      // La cookie no existe
+      setGoToHome(true);
+      console.log('La cookie no existe');
+    }
+
     const obtenerCoordenadas = () => {
       const latitud = Cookies.get('latitud');
       const longitud = Cookies.get('longitud');
@@ -80,6 +90,10 @@ export default function MapView() {
 
   if (error) {
     return <p>Error al cargar el mapa: {error}</p>;
+  }
+
+  if (goToHome) {
+    return <Navigate to="/home" />;
   }
 
   const markers = listalibros.map((place, index) => (

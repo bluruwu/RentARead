@@ -12,6 +12,7 @@ import HomePage from './pages/HomePage';
 import MisCompras from './pages/MisCompras';
 import MisVentas from './pages/MisVentas';
 import Perfil from './pages/Perfil';
+import PerfilVendedor from './pages/PerfilVendedor';
 import Payment from './pages/Payment';
 import PaymentPage from './pages/PaymentPage';
 import PropertyRegistry from './pages/PropertyRegistry';
@@ -40,6 +41,8 @@ export default function Router() {
         { path: 'book', element: <InterfaceBook /> },
         { path: 'book/:name/:autor/:vendedorNombre/:descripcion/:disponible/:valor/:idlibro/:urlImagen', element: <InterfaceBook /> },
         { path: 'onlinepayment/:idlibro/:valor/:uso', element: <PaymentPage /> },
+        { path: 'perfilvendedor', element:<PerfilVendedor/>},
+        { path: 'perfilvendedor/:idlibro', element:<PerfilVendedor/>},
 
 
       ],

@@ -30,11 +30,11 @@ const navConfig = [
     icon: icon('ic_profile'),
   },
 
-  // {
-  //   title: 'Registrar Publicidad',
-  //   path: '/dashboard/publicityRegistry',
-  //   icon: icon('ic_blog'),
-  // },
+  {
+     title: 'Avisos de intercambios',
+     path: '/dashboard/avisos',
+     icon: icon('inter'),
+   },
 ];
 
 export default navConfig;

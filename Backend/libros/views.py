@@ -278,24 +278,25 @@ class AvisosIntercambiosView(APIView):
                 idlibrocliente = aviso.id_libro_cliente.id_libro
                 titulolibrocliente = aviso.id_libro_cliente.titulo
                 estado = aviso.estado
+                id_aviso = aviso.id_aviso
 
                 listaintercambios.append(
-                    {"idlibrousuario": idlibrousuario, "titulolibrousuario": titulolibrousuario, "idlibrocliente": idlibrocliente, "titulolibrocliente": titulolibrocliente, "estado": estado})
+                    {"idlibrousuario": idlibrousuario, "titulolibrousuario": titulolibrousuario, "idlibrocliente": idlibrocliente, "titulolibrocliente": titulolibrocliente, "estado": estado, "idaviso": id_aviso})
             elif aviso.id_libro_cliente.email == usuario:
                 idlibrocliente = aviso.id_libro_vendedor.id_libro
                 titulolibrocliente = aviso.id_libro_vendedor.titulo
                 idlibrousuario = aviso.id_libro_cliente.id_libro
                 titulolibrousuario = aviso.id_libro_cliente.titulo
                 estado = aviso.estado
+                id_aviso = aviso.id_aviso
 
                 if estado == "Solicitado":
                     estado = "Solicitud enviada"
 
                 listaintercambios.append(
-                    {"idlibrousuario": idlibrousuario, "titulolibrousuario": titulolibrousuario, "idlibrocliente": idlibrocliente, "titulolibrocliente": titulolibrocliente, "estado": estado})
+                    {"idlibrousuario": idlibrousuario, "titulolibrousuario": titulolibrousuario, "idlibrocliente": idlibrocliente, "titulolibrocliente": titulolibrocliente, "estado": estado, "idaviso": id_aviso})
 
         return Response({'success': list(listaintercambios)})
-
 
 class PerfilVendedorView(APIView):
     permission_classes = (IsAuthenticated,)

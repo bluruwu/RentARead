@@ -20,7 +20,7 @@ import AgregarLibro from './pages/AgregarLibro';
 import MapView from './pages/MapView';
 import EditUser from './pages/EditUser';
 import InterfaceBook from './pages/InterfaceBook';
-
+import Avisos  from'./pages/Avisos';
 // ----------------------------------------------------------------------
 
 export default function Router() {
@@ -43,6 +43,7 @@ export default function Router() {
         { path: 'onlinepayment/:idlibro/:valor/:uso', element: <PaymentPage /> },
         { path: 'perfilvendedor', element:<PerfilVendedor/>},
         { path: 'perfilvendedor/:idlibro', element:<PerfilVendedor/>},
+        { path: 'avisos', element:<Avisos/>},
 
 
       ],

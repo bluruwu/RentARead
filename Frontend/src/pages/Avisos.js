@@ -138,11 +138,10 @@ export default function UserPage() {
                 title: 'Éxito',
                 text: data2.success, // Mostrar el mensaje recibido en la respuesta
                 icon: 'success',
-                buttons: {
-                  confirm: {
-                    text: 'Aceptar',
-                    className: 'swal-button--success',
-                  },
+                button: {
+                  text: 'Aceptar',
+                  className: 'swal-button--success',
+                  icon: 'ic_blog', // Ícono de intercambio (debes proporcionar el nombre correcto del ícono)
                 },
               }).then(() => {
                 window.location.reload(); // Recargar la página después de hacer clic en "Aceptar"
@@ -150,7 +149,9 @@ export default function UserPage() {
             })
             .catch((error) => {
               console.error('Error al aceptar el intercambio:', error);
-            });
+            }); 
+          
+          
           
        
     };

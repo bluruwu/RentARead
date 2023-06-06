@@ -356,3 +356,22 @@ class HistorialCompras(APIView):
 
         print(list(listadoCompras))
         return Response({'success': list(listadoCompras)})
+    
+class LibrosParaTransacciones(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, format=None):
+
+        user = get_user(request)
+        email = Usuario.objects.get(pk=user)
+        idlibrosDisponibles = Libro.objects.filter(email=email.email) \
+                                    .exclude(id_libro__in=Transaccion.objects.values_list('id_libro', flat=True)) \
+                                    .values_list('id_libro', flat=True)
+        infoLibro = Libro.objects.filter(id_libro__in=idlibrosDisponibles)
+        librosDisponibles=[]
+        for libro in infoLibro:
+            librosDisponibles.append(
+                {"idLibro": libro.id_libro, "titulo": libro.titulo, "genero": libro.genero, "autor": libro.autor, "estado": libro.estado, "imagen": libro.ruta_imagen})
+            
+        print(list(librosDisponibles))
+        return Response({'success': list(librosDisponibles)})

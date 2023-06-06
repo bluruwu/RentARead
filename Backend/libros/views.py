@@ -338,3 +338,21 @@ class CalificacionTransaccionView(APIView):
             calificacion=calificacion)
 
         return Response({'success': "Calificado"})
+
+class HistorialCompras(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, format=None):
+
+        user = get_user(request)
+        email = Usuario.objects.get(pk=user)
+        listadoCompras = []
+
+        for compra in Transaccion.objects.all():
+            if compra.id_comprador == email:
+                libro = Libro.objects.get(pk=compra.id_libro.id_libro)
+                listadoCompras.append(
+                    {"idTransaccion": compra.id_transaccion, "tipoTransaccion": compra.tipo_transaccion,  "nombreLibro" : libro.titulo,  "vendedor": libro.email.email})
+
+        print(list(listadoCompras))
+        return Response({'success': list(listadoCompras)})

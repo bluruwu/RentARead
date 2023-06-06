@@ -375,3 +375,21 @@ class LibrosParaTransacciones(APIView):
             
         print(list(librosDisponibles))
         return Response({'success': list(librosDisponibles)})
+    
+class MisLibrosVendidos(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, format=None):
+
+        user = get_user(request)
+        email = Usuario.objects.get(pk=user)
+        listadoVentas = []
+
+        for venta in Transaccion.objects.all():
+            if venta.id_libro.email == email:
+                libro = Libro.objects.get(pk=venta.id_libro.id_libro)
+                listadoVentas.append(
+                    {"idTransaccion": venta.id_transaccion, "tipoTransaccion": venta.tipo_transaccion,  "nombreLibro" : libro.titulo,  "comprador/a": venta.id_comprador.email})
+
+        print(list(listadoVentas))
+        return Response({'success': list(listadoVentas)})

@@ -9,3 +9,4 @@ npm run build
 cd ..
 cd Backend
 pip install -r requirements.txt
+python manage.py collectstatic --no-input

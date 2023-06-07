@@ -352,7 +352,7 @@ class HistorialCompras(APIView):
             if compra.id_comprador == email:
                 libro = Libro.objects.get(pk=compra.id_libro.id_libro)
                 listadoCompras.append(
-                    {"idTransaccion": compra.id_transaccion, "tipoTransaccion": compra.tipo_transaccion,  "nombreLibro" : libro.titulo,  "vendedor": libro.email.email})
+                    {"idTransaccion": compra.id_transaccion, "tipoTransaccion": compra.tipo_transaccion,  "nombreLibro" : libro.titulo,  "vendedor": libro.email.email, "imagen": libro.ruta_imagen})
 
         print(list(listadoCompras))
         return Response({'success': list(listadoCompras)})
@@ -389,7 +389,7 @@ class MisLibrosVendidos(APIView):
             if venta.id_libro.email == email:
                 libro = Libro.objects.get(pk=venta.id_libro.id_libro)
                 listadoVentas.append(
-                    {"idTransaccion": venta.id_transaccion, "tipoTransaccion": venta.tipo_transaccion,  "nombreLibro" : libro.titulo,  "comprador/a": venta.id_comprador.email})
+                    {"idTransaccion": venta.id_transaccion, "tipoTransaccion": venta.tipo_transaccion,  "nombreLibro" : libro.titulo,  "comprador/a": venta.id_comprador.email, "imagen": libro.ruta_imagen})
 
         print(list(listadoVentas))
         return Response({'success': list(listadoVentas)})

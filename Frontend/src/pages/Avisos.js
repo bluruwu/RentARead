@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { filter } from 'lodash';
+import { filter, map } from 'lodash';
 import { sentenceCase } from 'change-case';
 import Cookies from 'js-cookie';
 import { darken } from 'polished';
@@ -24,6 +24,7 @@ import {
     Modal,
     Box,
     CircularProgress,
+    Avatar
 } from '@mui/material';
 import EditUserForm from '../components/editUserForm/EditUserForm';
 import Label from '../components/label';
@@ -103,6 +104,7 @@ export default function UserPage() {
         }
         setSelected([]);
     };
+    const [secondAvatarImage, setSecondAvatarImage] = useState('');
 
     const handleClick = () => {
         const selectedIndex = selected.indexOf(null);
@@ -119,41 +121,41 @@ export default function UserPage() {
         setSelected(newSelected);
     };
     const handleAceptar = (idaviso) => {
-        
+
         const url = 'http://127.0.0.1:8000/api/aceptarintercambio';
         fetch(url, {
             method: 'POST',
             credentials: 'same-origin',
             headers: {
-              'X-CSRFToken': Cookies.get('csrftoken'),
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
+                'X-CSRFToken': Cookies.get('csrftoken'),
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({ id_aviso: idaviso }), // Enviar el idaviso en el cuerpo de la solicitud
-          })
+        })
             .then((response) => response.json())
             .then((data2) => {
-              // Mostrar ventana emergente de éxito
-              swal({
-                title: 'Éxito',
-                text: data2.success, // Mostrar el mensaje recibido en la respuesta
-                icon: 'success',
-                button: {
-                  text: 'Aceptar',
-                  className: 'swal-button--success',
-                  icon: 'ic_blog', // Ícono de intercambio (debes proporcionar el nombre correcto del ícono)
-                },
-              }).then(() => {
-                window.location.reload(); // Recargar la página después de hacer clic en "Aceptar"
-              });
+                // Mostrar ventana emergente de éxito
+                swal({
+                    title: 'Éxito',
+                    text: data2.success, // Mostrar el mensaje recibido en la respuesta
+                    icon: 'success',
+                    button: {
+                        text: 'Aceptar',
+                        className: 'swal-button--success',
+                        icon: 'ic_blog', // Ícono de intercambio (debes proporcionar el nombre correcto del ícono)
+                    },
+                }).then(() => {
+                    window.location.reload(); // Recargar la página después de hacer clic en "Aceptar"
+                });
             })
             .catch((error) => {
-              console.error('Error al aceptar el intercambio:', error);
-            }); 
-          
-          
-          
-       
+                console.error('Error al aceptar el intercambio:', error);
+            });
+
+
+
+
     };
 
     const handleDenegar = (idaviso) => {
@@ -163,34 +165,34 @@ export default function UserPage() {
             method: 'POST',
             credentials: 'same-origin',
             headers: {
-              'X-CSRFToken': Cookies.get('csrftoken'),
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
+                'X-CSRFToken': Cookies.get('csrftoken'),
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({ id_aviso: idaviso }), // Enviar el idaviso en el cuerpo de la solicitud
-          })
+        })
             .then((response) => response.json())
             .then((data2) => {
-              // Mostrar ventana emergente de éxito
-              swal({
-                title: 'Éxito',
-                text: data2.success, // Mostrar el mensaje recibido en la respuesta
-                icon: 'success',
-                buttons: {
-                  confirm: {
-                    text: 'Aceptar',
-                    className: 'swal-button--success',
-                  },
-                },
-              }).then(() => {
-                window.location.reload(); // Recargar la página después de hacer clic en "Aceptar"
-              });
+                // Mostrar ventana emergente de éxito
+                swal({
+                    title: 'Éxito',
+                    text: data2.success, // Mostrar el mensaje recibido en la respuesta
+                    icon: 'success',
+                    buttons: {
+                        confirm: {
+                            text: 'Aceptar',
+                            className: 'swal-button--success',
+                        },
+                    },
+                }).then(() => {
+                    window.location.reload(); // Recargar la página después de hacer clic en "Aceptar"
+                });
             })
             .catch((error) => {
-              console.error('Error al aceptar el intercambio:', error);
+                console.error('Error al aceptar el intercambio:', error);
             });
-          
-       
+
+
     };
 
 
@@ -244,7 +246,9 @@ export default function UserPage() {
                 .then((data) => {
                     if ('success' in data) {
                         Cookies.set('listalibros', data.success); // Guardar los datos en la cookie listalibros
+                        
                         setListalibros(data.success);
+                      
                         swal.close();
                     } else if ('error' in data) {
                         console.log(data.error);
@@ -273,9 +277,7 @@ export default function UserPage() {
         }
     }, []);
 
-    console.log('data', data);
-
-
+   
     return (
         <>
             <Helmet>
@@ -304,13 +306,22 @@ export default function UserPage() {
                                 <TableBody>
                                     {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                                         const {
-                                            estado, idlibrocliente, idlibrousuario, titulolibrocliente, titulolibrousuario,idaviso
+                                            estado, idlibrocliente, idlibrousuario, titulolibrocliente, titulolibrousuario, idaviso
+                                            ,emailcliente,emailusuario, imagencliente,
+                                            imagenvendedor
 
 
                                         } = row;
-
-
-
+                                        
+                                           const vende = emailcliente.replace(/\.com$/, '');
+                                           const vende2 = emailusuario.replace(/\.com$/, '');
+                                                
+                                            const  urlA = `/static/librosMedia/${imagencliente}`;
+                                            const   urlA2 = `/static/librosMedia/${ imagenvendedor}`;
+                                            // si no existe 
+                                            const urlA3  =`/static/librosMedia/${ titulolibrocliente}-${vende2}.jpg`;
+                                            const  urlA4  =  `/static/librosMedia/${titulolibrousuario}-${vende}.jpg`;
+                                              
                                         return (
                                             <TableRow
                                                 hover
@@ -319,45 +330,68 @@ export default function UserPage() {
                                                 selected={null}
                                                 sx={{ '& > *': { padding: '8px' } }}
                                             >
-                                                <TableCell align="left">{titulolibrousuario}</TableCell>
-                                                <TableCell align="left">{titulolibrocliente}</TableCell>
+                                                <TableCell align="left">
+                                                    <Avatar
+                                                        alt={'titulo'}
+                                                        src={urlA}
+                                                        variant="rounded"
+                                                        style={{
+                                                            width: '20vh',
+                                                            height: '30vh',
+                                                        }}
+                                                    />
+                                                    {titulolibrousuario}</TableCell>
+                                                <TableCell align="left">
+                                                    <Avatar
+                                                        alt={'titul'}
+                                                        src={  urlA2}
+                                                        variant="rounded"
+                                                        style={{
+                                                            width: '20vh',
+                                                            height: '30vh',
+                                                        }}
+                                                    />
+                                                    {titulolibrocliente}</TableCell>
+
+
+
                                                 <TableCell align="left">
                                                     {estado === "Solicitado" ? (
                                                         <>
                                                             <Button sx={{ backgroundColor: 'green', color: 'white', marginRight: '10px' }} onClick={() => handleAceptar(idaviso)}>Aceptar</Button>
                                                             <Button sx={{ backgroundColor: 'red', color: 'white' }} onClick={() => handleDenegar(idaviso)}>Denegar</Button>
                                                         </>
-                                                        
-                                                ) : (
-                                                estado
+
+                                                    ) : (
+                                                        estado
                                                     )}
-                                            </TableCell>
+                                                </TableCell>
                                             </TableRow>
-                                );
+                                        );
                                     })}
 
-                                {emptyRows > 0 && (
-                                    <TableRow style={{ height: 53 * emptyRows }}>
-                                        <TableCell colSpan={6} />
-                                    </TableRow>
-                                )}
-                            </TableBody>
+                                    {emptyRows > 0 && (
+                                        <TableRow style={{ height: 53 * emptyRows }}>
+                                            <TableCell colSpan={6} />
+                                        </TableRow>
+                                    )}
+                                </TableBody>
 
-                        </Table>
-                    </TableContainer>
-                </Scrollbar>
+                            </Table>
+                        </TableContainer>
+                    </Scrollbar>
 
-                <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
-                    component="div"
-                    count={USERLIST.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-            </Card>
-        </Container >
+                    <TablePagination
+                        rowsPerPageOptions={[5, 10, 25]}
+                        component="div"
+                        count={USERLIST.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
+                </Card>
+            </Container >
 
             <Popover
                 open={Boolean(open)}

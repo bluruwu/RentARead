@@ -15,6 +15,11 @@ const navConfig = [
     icon: icon('near_me'),
   },
   {
+    title: 'Mis Libros',
+    path: '/dashboard/disponibles',
+    icon: icon('books2'),
+  },
+  {
     title: 'Mis Compras',
     path: '/dashboard/miscompras',
     icon: icon('shopping_cart'),
@@ -31,15 +36,9 @@ const navConfig = [
   },
 
   {
-     title: 'Avisos de intercambios',
-     path: '/dashboard/avisos',
-     icon: icon('inter'),
-   },
-
-   {
-    title: 'Mis Libros Disponibles para Transacciones',
-    path: '/dashboard/disponibles',
-    icon: icon('books2'),
+    title: 'Solicitudes de intercambios',
+    path: '/dashboard/avisos',
+    icon: icon('inter'),
   },
 ];
 

@@ -35,6 +35,12 @@ const navConfig = [
      path: '/dashboard/avisos',
      icon: icon('inter'),
    },
+
+   {
+    title: 'Mis Libros Disponibles para Transacciones',
+    path: '/dashboard/disponibles',
+    icon: icon('books2'),
+  },
 ];
 
 export default navConfig;

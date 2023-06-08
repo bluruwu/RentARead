@@ -21,6 +21,9 @@ import MapView from './pages/MapView';
 import EditUser from './pages/EditUser';
 import InterfaceBook from './pages/InterfaceBook';
 import Avisos  from'./pages/Avisos';
+import Intercambio from './pages/interfaceIntercambio';
+import  Disponibles from './pages/MisLibros'
+
 // ----------------------------------------------------------------------
 
 export default function Router() {
@@ -44,6 +47,8 @@ export default function Router() {
         { path: 'perfilvendedor', element:<PerfilVendedor/>},
         { path: 'perfilvendedor/:idlibro', element:<PerfilVendedor/>},
         { path: 'avisos', element:<Avisos/>},
+        {path :  'intercambios/:libro/:name/:urlImagen', element:<Intercambio/>},
+        {path :  'disponibles', element:< Disponibles/>},
 
 
       ],

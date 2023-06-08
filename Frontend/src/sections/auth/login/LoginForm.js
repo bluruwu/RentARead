@@ -143,9 +143,8 @@ export default function LoginForm() {
 
   return (
     <>
+      <CSRFToken />
       <Stack spacing={3}>
-        <CSRFToken />
-
         <TextField
           onChange={(e) => handle(e)}
           value={data.email}

@@ -29,25 +29,44 @@ SECRET_KEY = 'django-insecure-6bp!a9v#srb7^2%$2ysmr7d8-4gr%y##zibn$=fih)vht^c_37
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    '*'
+    '127.0.0.1',
+    'localhost',
+    'https://rentaread-a9yy.onrender.com'
     ]
 
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8000',
+    'http://127.0.0.1:8000',
+    'https://rentaread-a9yy.onrender.com',
     
                         ]
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:8000',
     'http://127.0.0.1:8000',
+    'https://rentaread-a9yy.onrender.com',
 ]
 
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",
     "http://localhost:8000",
+    'https://rentaread-a9yy.onrender.com',
 ]
 
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'http')
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS=  False
 
+CORS_ALLOW_HEADERS = [
+    'Accept',
+    'Accept-Language',
+    'Content-Type',
+    'Authorization',
+    'X-CSRFToken',
+    'Set-Cookie'
+]
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SECURE = True 
+SESSION_COOKIE_SAMESITE = 'None'
 # Application definition
 
 INSTALLED_APPS = [

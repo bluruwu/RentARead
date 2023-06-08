@@ -5,6 +5,7 @@ import { Container, Typography, Avatar, Box } from '@mui/material';
 import { useState, Redirect } from 'react';
 import { Link, useParams, useNavigate, Navigate } from 'react-router-dom';
 import { LoadingButton } from '@mui/lab';
+import Cookies from 'js-cookie';
 
 // components
 import { darken } from 'polished';
@@ -64,6 +65,7 @@ const StyledContent = styled('div')(({ theme }) => ({
 
 export default function InterfaceBook() {
   const [goPagar, setGoPagar] = useState(false);
+  const [goIntercambio,setGoIntercambiar] = useState(false);
 
   const { name, autor, vendedorNombre, descripcion, disponible, valor, idlibro, urlImagen } = useParams();
   console.log(name, autor, vendedorNombre, descripcion, disponible, valor, idlibro);
@@ -93,6 +95,13 @@ export default function InterfaceBook() {
   if (goPagar) {
     return <Navigate to={`/dashboard/onlinepayment/${idlibro}/${valor}/${disponible}`} />;
   }
+  if(goIntercambio)
+  {
+    const rutaCodificada = encodeURIComponent(urlImagen);
+    return <Navigate to={`/dashboard/intercambios/${idlibro}/${name}/${rutaCodificada }`} />;
+
+  }
+
 
   // Direcionamiento
 
@@ -202,8 +211,10 @@ export default function InterfaceBook() {
               onClick={() => {
                 if (disponible !== 'Intercambio') {
                   setGoPagar(true);
-                }
-              }}
+                }else{
+                  console.log('AAA')
+                setGoIntercambiar(true);
+              }}}
             >
               {getText(disponible)} {valor}
             </LoadingButton>

@@ -10,6 +10,7 @@ from django.conf import settings
 from datetime import datetime, timedelta
 from loginPage.models import Usuario, Libro, Transaccion, IntercambiosAvisos
 import base64
+import os
 
 # OBTENER USUARIO ACTUAL CON LAS COOKIES
 
@@ -274,19 +275,28 @@ class AvisosIntercambiosView(APIView):
         for aviso in IntercambiosAvisos.objects.all():
             if aviso.id_libro_vendedor.email == usuario:
                 idlibrousuario = aviso.id_libro_vendedor.id_libro
+                imagencliente  = os.path.basename(aviso.id_libro_vendedor.ruta_imagen)
                 titulolibrousuario = aviso.id_libro_vendedor.titulo
                 idlibrocliente = aviso.id_libro_cliente.id_libro
+                imagenusuario = os.path.basename(aviso.id_libro_cliente.ruta_imagen)
                 titulolibrocliente = aviso.id_libro_cliente.titulo
+                emailcliente = aviso.id_libro_cliente.email.email
+                emailusuario = aviso.id_libro_vendedor.email.email
                 estado = aviso.estado
                 id_aviso = aviso.id_aviso
 
                 listaintercambios.append(
-                    {"idlibrousuario": idlibrousuario, "titulolibrousuario": titulolibrousuario, "idlibrocliente": idlibrocliente, "titulolibrocliente": titulolibrocliente, "estado": estado, "idaviso": id_aviso})
+                    {"idlibrousuario": idlibrousuario, "titulolibrousuario": titulolibrousuario, "idlibrocliente": idlibrocliente, "titulolibrocliente": titulolibrocliente, "estado": estado, "idaviso": id_aviso, "imagenvendedor": imagenusuario, "imagencliente": imagencliente, "emailcliente": emailcliente, "emailusuario": emailusuario})
             elif aviso.id_libro_cliente.email == usuario:
                 idlibrocliente = aviso.id_libro_vendedor.id_libro
                 titulolibrocliente = aviso.id_libro_vendedor.titulo
+
                 idlibrousuario = aviso.id_libro_cliente.id_libro
                 titulolibrousuario = aviso.id_libro_cliente.titulo
+                imagenusuario = os.path.basename(aviso.id_libro_vendedor.ruta_imagen)
+                imagencliente = os.path.basename(aviso.id_libro_cliente.ruta_imagen)
+                emailcliente = aviso.id_libro_cliente.email.email
+                emailusuario = aviso.id_libro_vendedor.email.email
                 estado = aviso.estado
                 id_aviso = aviso.id_aviso
 
@@ -294,10 +304,10 @@ class AvisosIntercambiosView(APIView):
                     estado = "Solicitud enviada"
 
                 listaintercambios.append(
-                    {"idlibrousuario": idlibrousuario, "titulolibrousuario": titulolibrousuario, "idlibrocliente": idlibrocliente, "titulolibrocliente": titulolibrocliente, "estado": estado, "idaviso": id_aviso})
+                    {"idlibrousuario": idlibrousuario, "titulolibrousuario": titulolibrousuario, "idlibrocliente": idlibrocliente, "titulolibrocliente": titulolibrocliente, "estado": estado, "idaviso": id_aviso, "imagenvendedor": imagenusuario, "imagencliente": imagencliente, "emailcliente": emailcliente, "emailusuario": emailusuario})
 
         return Response({'success': list(listaintercambios)})
-
+    
 class PerfilVendedorView(APIView):
     permission_classes = (IsAuthenticated,)
 

@@ -9,6 +9,12 @@ const navConfig = [
     path: '/dashboard/inicio',
     icon: icon('books2'),
   },
+
+  {
+    title: 'Solicitudes de intercambios',
+    path: '/dashboard/avisos',
+    icon: icon('inter'),
+  },
   {
     title: 'Mapa de Libros',
     path: '/dashboard/mapa',
@@ -17,7 +23,7 @@ const navConfig = [
   {
     title: 'Mis Libros',
     path: '/dashboard/disponibles',
-    icon: icon('books2'),
+    icon: icon('ic_book'),
   },
   {
     title: 'Mis Compras',
@@ -33,12 +39,6 @@ const navConfig = [
     title: 'Mi Perfil',
     path: '/dashboard/perfil',
     icon: icon('ic_profile'),
-  },
-
-  {
-    title: 'Solicitudes de intercambios',
-    path: '/dashboard/avisos',
-    icon: icon('inter'),
   },
 ];
 

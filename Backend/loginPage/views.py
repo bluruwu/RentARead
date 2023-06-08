@@ -73,7 +73,7 @@ class SignUpView(APIView):
                         return Response({'success': 'El usuario ha sido creado'})
         else:
             return Response({'error': 'Las contraseñas no coinciden'})
-
+        
 @ method_decorator(ensure_csrf_cookie, name='dispatch')
 @ method_decorator(csrf_protect, name='dispatch')
 class LoginView(APIView):

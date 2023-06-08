@@ -7,7 +7,7 @@
 .pnp.js
 /.vscode
 /node_modules
-
+/Backend/static
 # testing
 /coverage
 

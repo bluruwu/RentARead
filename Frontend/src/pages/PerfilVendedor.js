@@ -56,7 +56,7 @@ export default function Cliente() {
     id_libro: idlibro,
   };
 
-  const url = 'http://127.0.0.1:8000/api/perfilvendedor';
+  const url = 'https://rentaread-a9yy.onrender.com/api/perfilvendedor';
 
   useEffect(() => {
     // Obtener los datos de las cookies

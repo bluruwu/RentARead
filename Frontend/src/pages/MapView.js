@@ -15,7 +15,7 @@ export default function MapView() {
   const [error, setError] = useState(null);
   const [goToHome, setGoToHome] = useState(false);
 
-  const url = 'http://127.0.0.1:8000/api/catalogolibros';
+  const url = 'https://rentaread-a9yy.onrender.com/api/catalogolibros';
 
   useEffect(() => {
     if (Cookies.get('nombre')) {

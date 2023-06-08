@@ -57,7 +57,7 @@ export default function PaymentPage(props) {
   }
   const [listalibros, setListalibros] = useState([]);
 
-  const url = 'http://127.0.0.1:8000/api/librosdisponibles';
+  const url = 'https://rentaread-a9yy.onrender.com/api/librosdisponibles';
   const [data, setData] = useState({
 
   });
@@ -168,7 +168,7 @@ export default function PaymentPage(props) {
       'id_libro_cliente': selectedBookId
     };
 
-    const url = 'http://127.0.0.1:8000/api/intercambiarlibro';
+    const url = 'https://rentaread-a9yy.onrender.com/api/intercambiarlibro';
     fetch(url, {
       method: 'POST',
       credentials: 'same-origin',

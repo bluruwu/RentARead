@@ -57,7 +57,7 @@ export default function RegisterPropertyForm(){
         console.log(newdata);
     }
 
-    const url = 'http://127.0.0.1:8000/api/nuevoInmueble';
+    const url = 'https://rentaread-a9yy.onrender.com/api/nuevoInmueble';
     function submit(e){
         e.preventDefault();
         fetch(url, {

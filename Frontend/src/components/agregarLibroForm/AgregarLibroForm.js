@@ -95,7 +95,7 @@ export default function AgregarLibroForm() {
     console.log(newdata);
   }
 
-  const url = 'http://127.0.0.1:8000/api/registrarLibro';
+  const url = 'https://rentaread-a9yy.onrender.com/api/registrarLibro';
 
   function submit(e) {
     e.preventDefault();

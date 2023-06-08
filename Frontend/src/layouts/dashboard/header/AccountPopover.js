@@ -35,7 +35,7 @@ export default function AccountPopover() {
     setOpen(null);
   };
 
-  const url = 'http://127.0.0.1:8000/api/logout';
+  const url = 'https://rentaread-a9yy.onrender.com/api/logout';
 
   function submit(e) {
     e.preventDefault();

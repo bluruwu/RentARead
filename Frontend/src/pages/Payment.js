@@ -51,7 +51,7 @@ export default function PaymentPage(props) {
     console.log(newdata);
   }
 
-  const url = 'http://127.0.0.1:8000/api/pagarpresencial';
+  const url = 'https://rentaread-a9yy.onrender.com/api/pagarpresencial';
 
   function submit(e) {
     e.preventDefault();

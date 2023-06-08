@@ -122,7 +122,7 @@ export default function UserPage() {
     };
     const handleAceptar = (idaviso) => {
 
-        const url = 'http://127.0.0.1:8000/api/aceptarintercambio';
+        const url = 'https://rentaread-a9yy.onrender.com/api/aceptarintercambio';
         fetch(url, {
             method: 'POST',
             credentials: 'same-origin',
@@ -160,7 +160,7 @@ export default function UserPage() {
 
     const handleDenegar = (idaviso) => {
 
-        const url = 'http://127.0.0.1:8000/api/denegarintercambio';
+        const url = 'https://rentaread-a9yy.onrender.com/api/denegarintercambio';
         fetch(url, {
             method: 'POST',
             credentials: 'same-origin',
@@ -217,7 +217,7 @@ export default function UserPage() {
     const isNotFound = !filteredUsers.length && !!filterName;
 
 
-    const url = 'http://127.0.0.1:8000/api/avisosintercambios';
+    const url = 'https://rentaread-a9yy.onrender.com/api/avisosintercambios';
 
 
     const [data, setData] = useState(null);

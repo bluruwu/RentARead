@@ -66,9 +66,9 @@ export default function PaymentForms(idlibro, valor, usolibro) {
   let url;
 
   if (idlibro.usolibro === 'Venta') {
-    url = 'http://127.0.0.1:8000/api/comprarlibro';
+    url = 'https://rentaread-a9yy.onrender.com/api/comprarlibro';
   } else if (idlibro.usolibro === 'Renta') {
-    url = 'http://127.0.0.1:8000/api/rentarlibro';
+    url = 'https://rentaread-a9yy.onrender.com/api/rentarlibro';
   }
 
   console.log('url :', url);

@@ -31,7 +31,7 @@ export default function EditUserForm(){
 
     const confirmacion=()=>{}
 
-    const url = 'http://127.0.0.1:8000/api/editar_usuario';
+    const url = 'https://rentaread-a9yy.onrender.com/api/editar_usuario';
     function submit(e){
         e.preventDefault();
         fetch(url, {

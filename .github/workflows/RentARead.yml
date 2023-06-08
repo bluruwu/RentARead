@@ -44,7 +44,7 @@ jobs:
     
     - name: Iniciar proyecto
       run: |
-        cd Backend && python manage.py collectstatic --no-input && python manage.py runserver &
+        cd Backend && python manage.py runserver &
         
     - name: Ejecutar prueba de humo con Cypress
       run: |

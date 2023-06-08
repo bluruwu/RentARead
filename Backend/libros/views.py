@@ -10,6 +10,7 @@ from django.conf import settings
 from datetime import datetime, timedelta
 from loginPage.models import Usuario, Libro, Transaccion, IntercambiosAvisos
 import base64
+import os
 
 # OBTENER USUARIO ACTUAL CON LAS COOKIES
 
@@ -274,19 +275,28 @@ class AvisosIntercambiosView(APIView):
         for aviso in IntercambiosAvisos.objects.all():
             if aviso.id_libro_vendedor.email == usuario:
                 idlibrousuario = aviso.id_libro_vendedor.id_libro
+                imagencliente  = os.path.basename(aviso.id_libro_vendedor.ruta_imagen)
                 titulolibrousuario = aviso.id_libro_vendedor.titulo
                 idlibrocliente = aviso.id_libro_cliente.id_libro
+                imagenusuario = os.path.basename(aviso.id_libro_cliente.ruta_imagen)
                 titulolibrocliente = aviso.id_libro_cliente.titulo
+                emailcliente = aviso.id_libro_cliente.email.email
+                emailusuario = aviso.id_libro_vendedor.email.email
                 estado = aviso.estado
                 id_aviso = aviso.id_aviso
 
                 listaintercambios.append(
-                    {"idlibrousuario": idlibrousuario, "titulolibrousuario": titulolibrousuario, "idlibrocliente": idlibrocliente, "titulolibrocliente": titulolibrocliente, "estado": estado, "idaviso": id_aviso})
+                    {"idlibrousuario": idlibrousuario, "titulolibrousuario": titulolibrousuario, "idlibrocliente": idlibrocliente, "titulolibrocliente": titulolibrocliente, "estado": estado, "idaviso": id_aviso, "imagenvendedor": imagenusuario, "imagencliente": imagencliente, "emailcliente": emailcliente, "emailusuario": emailusuario})
             elif aviso.id_libro_cliente.email == usuario:
                 idlibrocliente = aviso.id_libro_vendedor.id_libro
                 titulolibrocliente = aviso.id_libro_vendedor.titulo
+
                 idlibrousuario = aviso.id_libro_cliente.id_libro
                 titulolibrousuario = aviso.id_libro_cliente.titulo
+                imagenusuario = os.path.basename(aviso.id_libro_vendedor.ruta_imagen)
+                imagencliente = os.path.basename(aviso.id_libro_cliente.ruta_imagen)
+                emailcliente = aviso.id_libro_cliente.email.email
+                emailusuario = aviso.id_libro_vendedor.email.email
                 estado = aviso.estado
                 id_aviso = aviso.id_aviso
 
@@ -294,10 +304,10 @@ class AvisosIntercambiosView(APIView):
                     estado = "Solicitud enviada"
 
                 listaintercambios.append(
-                    {"idlibrousuario": idlibrousuario, "titulolibrousuario": titulolibrousuario, "idlibrocliente": idlibrocliente, "titulolibrocliente": titulolibrocliente, "estado": estado, "idaviso": id_aviso})
+                    {"idlibrousuario": idlibrousuario, "titulolibrousuario": titulolibrousuario, "idlibrocliente": idlibrocliente, "titulolibrocliente": titulolibrocliente, "estado": estado, "idaviso": id_aviso, "imagenvendedor": imagenusuario, "imagencliente": imagencliente, "emailcliente": emailcliente, "emailusuario": emailusuario})
 
         return Response({'success': list(listaintercambios)})
-
+    
 class PerfilVendedorView(APIView):
     permission_classes = (IsAuthenticated,)
 
@@ -338,3 +348,58 @@ class CalificacionTransaccionView(APIView):
             calificacion=calificacion)
 
         return Response({'success': "Calificado"})
+
+class HistorialCompras(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, format=None):
+
+        user = get_user(request)
+        email = Usuario.objects.get(pk=user)
+        listadoCompras = []
+
+        for compra in Transaccion.objects.all():
+            if compra.id_comprador == email:
+                libro = Libro.objects.get(pk=compra.id_libro.id_libro)
+                listadoCompras.append(
+                    {"idTransaccion": compra.id_transaccion, "tipoTransaccion": compra.tipo_transaccion,  "nombreLibro" : libro.titulo,  "vendedor": libro.email.email, "imagen": libro.ruta_imagen})
+
+        print(list(listadoCompras))
+        return Response({'success': list(listadoCompras)})
+    
+class LibrosParaTransacciones(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, format=None):
+
+        user = get_user(request)
+        email = Usuario.objects.get(pk=user)
+        idlibrosDisponibles = Libro.objects.filter(email=email.email) \
+                                    .exclude(id_libro__in=Transaccion.objects.values_list('id_libro', flat=True)) \
+                                    .values_list('id_libro', flat=True)
+        infoLibro = Libro.objects.filter(id_libro__in=idlibrosDisponibles)
+        librosDisponibles=[]
+        for libro in infoLibro:
+            librosDisponibles.append(
+                {"idLibro": libro.id_libro, "titulo": libro.titulo, "genero": libro.genero, "autor": libro.autor, "estado": libro.estado, "imagen": libro.ruta_imagen})
+            
+        print(list(librosDisponibles))
+        return Response({'success': list(librosDisponibles)})
+    
+class MisLibrosVendidos(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, format=None):
+
+        user = get_user(request)
+        email = Usuario.objects.get(pk=user)
+        listadoVentas = []
+
+        for venta in Transaccion.objects.all():
+            if venta.id_libro.email == email:
+                libro = Libro.objects.get(pk=venta.id_libro.id_libro)
+                listadoVentas.append(
+                    {"idTransaccion": venta.id_transaccion, "tipoTransaccion": venta.tipo_transaccion,  "nombreLibro" : libro.titulo,  "comprador/a": venta.id_comprador.email, "imagen": libro.ruta_imagen})
+
+        print(list(listadoVentas))
+        return Response({'success': list(listadoVentas)})

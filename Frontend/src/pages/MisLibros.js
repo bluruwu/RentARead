@@ -180,16 +180,13 @@ export default function UserPage() {
           } else if ('error' in data) {
             console.log(data.error);
             swal.close();
-
           } else {
             swal.close();
-
           }
         })
         .catch((error) => {
           console.log(error);
           swal.close();
-
         });
     }
 
@@ -199,7 +196,7 @@ export default function UserPage() {
       console.log('La cookie existe');
     } else {
       // La cookie no existe
-
+      setGoToHome(true);
       console.log('La cookie no existe');
     }
   }, []);
@@ -220,12 +217,10 @@ export default function UserPage() {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-          Mis Libros Disponibles para Transacciones
+            Mis Libros Disponibles para Transacciones
           </Typography>
-          
         </Stack>
         <Card>
-
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
@@ -240,23 +235,11 @@ export default function UserPage() {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const {
-                      idlibro,
-                      titulo,
-                      genero,
-                      autor,
-                      estado,
-                      imagen
-
-                    } = row;
+                    const { idlibro, titulo, genero, autor, estado, imagen } = row;
                     const selectedUser = selected.indexOf(idlibro) !== -1;
                     const imagePath = imagen;
-                    const imageName = imagePath.substring(imagePath.indexOf("/static"));
+                    const imageName = imagePath.substring(imagePath.indexOf('/static'));
                     const url = imageName;
-                 
-
-                    
-                   
 
                     return (
                       <TableRow
@@ -277,13 +260,10 @@ export default function UserPage() {
                             }}
                           />
                           <TableCell align="left">{titulo}</TableCell>
-                            
-                         
                         </TableCell>
                         <TableCell align="left">{genero}</TableCell>
                         <TableCell align="left">{autor}</TableCell>
                         <TableCell align="left">{estado}</TableCell>
-                      
                       </TableRow>
                     );
                   })}

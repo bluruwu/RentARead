@@ -21,7 +21,7 @@ const CSRFToken = () => {
 
     useEffect(() => {
         const fetchData = async () => {    
-                await axios.get(`http://127.0.0.1:8000/api/csrf_cookie`, {
+                await axios.get(`https://rentaread-a9yy.onrender.com/api/csrf_cookie`, {
                         withCredentials: true, 
                 });
         };

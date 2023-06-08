@@ -29,7 +29,7 @@ export default function LoginForm() {
   const [disableSubmit, setDisableSubmit] = useState(true);
   const [captchaResult, setCaptchaResult] = useState();
   const handleRecaptcha = (value) => {
-    fetch('http://127.0.0.1:8000/api/recaptcha', {
+    fetch('https://rentaread-a9yy.onrender.com/api/recaptcha', {
       method: 'POST',
       body: JSON.stringify({ captcha_value: value }),
       headers: { 'Content-Type': 'application/json' },
@@ -45,7 +45,7 @@ export default function LoginForm() {
   };
 
   // Login
-  const url1 = 'http://127.0.0.1:8000/api/login';
+  const url1 = 'https://rentaread-a9yy.onrender.com/api/login';
 
   const [showPassword, setShowPassword] = useState(false);
   const [goToDashboard, setGoToDashboard] = useState(false);

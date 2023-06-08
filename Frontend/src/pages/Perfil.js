@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { styled } from '@mui/material/styles';
-import { Stack, Avatar, Typography } from '@mui/material';
+import { Stack, Avatar, Typography, Rating } from '@mui/material';
 import account from '../_mock/account';
 
 const StyledContent = styled('div')(({ theme }) => ({
@@ -68,6 +68,7 @@ export default function Cliente() {
       const ciudad = Cookies.get('ciudad');
       const direccion = Cookies.get('direccion');
       const tipoDocumento = Cookies.get('tipoDocumento');
+      const calificacion = Cookies.get('calificacion');
       const avatarNumber = Cookies.get('avatar');
       const avatarURL = `/static/images/avatars/avatar_${avatarNumber}.jpg`;
       // Agrega más llamadas a Cookies.get() para obtener otros datos de las cookies
@@ -80,6 +81,7 @@ export default function Cliente() {
         ciudad,
         direccion,
         tipoDocumento,
+        calificacion,
         avatar: avatarURL,
         // Agrega más propiedades para otros datos de las cookies
       };
@@ -110,6 +112,19 @@ export default function Cliente() {
           style={{
             width: '200px',
             height: '200px',
+          }}
+        />
+        <Rating
+          name="star-rating"
+          value={userData.calificacion}
+          size="large"
+          precision={0.5}
+          readOnly
+          max={5}
+          sx={{
+            position: 'absolute',
+            top: '100%',
+            left: '50%',
           }}
         />
       </StyledContentimg>

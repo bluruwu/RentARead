@@ -31,7 +31,7 @@ DEBUG = False
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
-    'https://rentaread-a9yy.onrender.com'
+    'rentaread-a9yy.onrender.com'
     ]
 
 CSRF_TRUSTED_ORIGINS = [

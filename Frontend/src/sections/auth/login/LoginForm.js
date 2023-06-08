@@ -96,7 +96,7 @@ export default function LoginForm() {
     try {
       fetch(url1, {
         method: 'POST',
-        credentials: 'same-origin',
+        credentials: 'include',
         headers: {
           'X-CSRFToken': Cookies.get('csrftoken'),
           Accept: 'application/json',

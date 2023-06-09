@@ -31,7 +31,7 @@ import EditUserForm from '../components/editUserForm/EditUserForm';
 import Label from '../components/label';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
-import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
+import { UserListHead} from '../sections/@dashboard/user';
 import USERLIST from '../_mock/user';
 import RegisterForm from '../components/registerForm';
 import account from '../_mock/account';

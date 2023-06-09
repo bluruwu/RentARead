@@ -99,8 +99,6 @@ class CatalogoLibrosView(APIView):
 
         user = get_user(request)
         email = Usuario.objects.get(pk=user)
-        print("--->", email)
-        print("user", user)
 
         listadolibros = []
 
@@ -117,8 +115,20 @@ class CatalogoLibrosView(APIView):
                 else:
                     uso = "Intercambio"
 
+                calificacion = 0
+                num_calificaciones = 0
+
+                for transaccion in Transaccion.objects.all():
+                    if transaccion.id_libro.email == libro.email:
+                        if transaccion.calificacion is not None:
+                            calificacion += transaccion.calificacion
+                            num_calificaciones += 1
+
+                if num_calificaciones > 0:
+                    calificacion = round(calificacion / num_calificaciones, 1)
+
                 listadolibros.append(
-                    {"idlibro": libro.id_libro, "titulo": libro.titulo, "genero": libro.genero, "autor": libro.autor, "uso": uso, "editorial": libro.editorial, "isbn": libro.isbn, "anoPublicacion": libro.ano_publicacion, "numeroPaginas": libro.numero_paginas, "descripcion": libro.descripcion, "precioVenta": libro.precio_venta, "precioRenta": libro.precio_renta, "intercambio": libro.intercambio, "estado": libro.estado, "vendedorNombre": libro.email.nombre, "vendedorId": libro.email.email, "vendedorCiudad": libro.email.ciudad, "lat": libro.email.latitud, "lng": libro.email.longitud})
+                    {"idlibro": libro.id_libro, "titulo": libro.titulo, "genero": libro.genero, "autor": libro.autor, "uso": uso, "editorial": libro.editorial, "isbn": libro.isbn, "anoPublicacion": libro.ano_publicacion, "numeroPaginas": libro.numero_paginas, "descripcion": libro.descripcion, "precioVenta": libro.precio_venta, "precioRenta": libro.precio_renta, "intercambio": libro.intercambio, "estado": libro.estado, "vendedorNombre": libro.email.nombre, "vendedorId": libro.email.email, "vendedorCiudad": libro.email.ciudad, "lat": libro.email.latitud, "lng": libro.email.longitud, "calificacion": calificacion})
         print(list(listadolibros))
         return Response({'success': list(listadolibros)})
 
@@ -357,13 +367,26 @@ class HistorialCompras(APIView):
         user = get_user(request)
         email = Usuario.objects.get(pk=user)
         listadoCompras = []
-        calificacion5 = 0
+        calificacion = 0
 
         for compra in Transaccion.objects.all():
             if compra.id_comprador == email:
                 libro = Libro.objects.get(pk=compra.id_libro.id_libro)
+
+                calificacion = 0
+                num_calificaciones = 0
+
+                for transaccion in Transaccion.objects.all():
+                    if transaccion.id_libro.email == compra.id_libro.email:
+                        if transaccion.calificacion is not None:
+                            calificacion += transaccion.calificacion
+                            num_calificaciones += 1
+
+                if num_calificaciones > 0:
+                    calificacion = round(calificacion / num_calificaciones, 1)
+
                 listadoCompras.append(
-                    {"idTransaccion": compra.id_transaccion, "tipoTransaccion": compra.tipo_transaccion, "nombreLibro" : libro.titulo, "genero":libro.genero, "autor":libro.autor,  "vendedor": libro.email.nombre, "vendedorId": libro.email.email, "imagen": libro.ruta_imagen, "calificacion": calificacion5})
+                    {"idTransaccion": compra.id_transaccion, "tipoTransaccion": compra.tipo_transaccion, "nombreLibro": libro.titulo, "genero": libro.genero, "autor": libro.autor,  "vendedor": libro.email.nombre, "vendedorId": libro.email.email, "imagen": libro.ruta_imagen, "calificacion": calificacion})
 
         print(list(listadoCompras))
         return Response({'success': list(listadoCompras)})

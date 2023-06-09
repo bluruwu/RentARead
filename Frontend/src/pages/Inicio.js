@@ -31,7 +31,7 @@ import EditUserForm from '../components/editUserForm/EditUserForm';
 import Label from '../components/label';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
-import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
+import { UserListHead} from '../sections/@dashboard/user';
 import USERLIST from '../_mock/user';
 import RegisterForm from '../components/registerForm';
 import account from '../_mock/account';
@@ -232,7 +232,6 @@ export default function UserPage() {
           </Button>
         </Stack>
         <Card>
-          <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
@@ -260,6 +259,7 @@ export default function UserPage() {
                       vendedorNombre,
                       descripcion,
                       vendedorId,
+                      calificacion
                     } = row;
                     const selectedUser = selected.indexOf(idlibro) !== -1;
                     const vende = vendedorId.replace(/\.com$/, '');
@@ -301,7 +301,7 @@ export default function UserPage() {
                           <Link
                             to={`/dashboard/book/${titulo}/${autor}/${vendedorNombre}/${descripcion}/${uso}/${obtenerConstante(
                               uso
-                            )}/${idlibro}/${rutaCodificada}`}
+                            )}/${idlibro}/${rutaCodificada}/${calificacion}`}
                           >
                             {titulo}
                           </Link>

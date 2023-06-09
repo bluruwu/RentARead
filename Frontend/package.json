@@ -71,6 +71,7 @@
     "scripts": "^0.1.0",
     "simplebar-react": "^2.4.3",
     "sweetalert": "^2.1.2",
+    "sweetalert2": "^11.7.12",
     "web-vitals": "^3.0.3"
   },
   "devDependencies": {

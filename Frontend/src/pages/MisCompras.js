@@ -38,7 +38,6 @@ import { UserListHead } from '../sections/@dashboard/user';
 import USERLIST from '../_mock/user';
 import account from '../_mock/account';
 
-
 const TABLE_HEAD = [
   { id: 'titulo', label: 'Titulo', alignRight: false },
   { id: 'genero', label: 'Género', alignRight: false },
@@ -46,7 +45,6 @@ const TABLE_HEAD = [
   { id: 'vendedor', label: 'Vendido por', alignRight: false },
   { id: 'calificacion', label: 'Califica al vendedor', alignRight: false },
   { id: '', label: '' },
-
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -91,7 +89,6 @@ export default function UserPage() {
   const [listalibros, setListalibros] = useState([]);
   const [goToHome, setGoToHome] = useState(false);
   const [calificacion1, setCalificacion] = useState(0);
-
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -213,22 +210,16 @@ export default function UserPage() {
     }
   }, []);
 
-
   const inicialValor = (a) => {
-
-    setCalificacion(a)
-
-  }
-
+    setCalificacion(a);
+  };
 
   // calificaciontransaccion
-  const handleCalificacion = (calificacion, idTransaccion) => {
-
+  const handleCalificacion = (calificacionn, idTransaccionn) => {
     const data = {
-      "calificacion": calificacion,
-      "id_transaccion": idTransaccion
-
-    }
+      calificacion: calificacionn,
+      id_transaccion: idTransaccionn,
+    };
     const url = 'http://127.0.0.1:8000/api/calificaciontransaccion';
     fetch(url, {
       method: 'POST',
@@ -262,10 +253,9 @@ export default function UserPage() {
       });
   };
 
-  
   const openCalificacionDialog = (idTransaccion) => {
     const options = [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5]; // Lista de opciones de calificación
-  
+
     Swal.fire({
       title: 'Calificar',
       html: `
@@ -286,11 +276,6 @@ export default function UserPage() {
       },
     });
   };
-  
-
-
-
-
 
   if (goToAgregarLibro) {
     return <Navigate to="/dashboard/agregarlibro" />;
@@ -312,7 +297,6 @@ export default function UserPage() {
           </Typography>
         </Stack>
         <Card>
-
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
@@ -327,22 +311,12 @@ export default function UserPage() {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const {
-                      idTransaccion,
-                      nombreLibro,
-                      genero,
-                      autor,
-                      calificacion,
-                      vendedor,
-                      vendedorId,
-                    } = row;
+                    const { idTransaccion, nombreLibro, genero, autor, calificacion, vendedor, vendedorId } = row;
                     const selectedUser = selected.indexOf(idTransaccion) !== -1;
                     const vende = vendedorId.replace(/\.com$/, '');
                     const url = `/static/librosMedia/${nombreLibro}-${vende}.jpg`;
                     const rutaCodificada = encodeURIComponent(url);
                     console.log('url', url);
-                    
-
 
                     return (
                       <TableRow
@@ -368,22 +342,26 @@ export default function UserPage() {
                         <TableCell align="left">{autor}</TableCell>
                         <TableCell align="left">{vendedor}</TableCell>
 
-
                         <TableCell align="left">
-                          <Rating
+                          {/* <Rating
                             name="simple-controlled"
-                            value={calificacion }
+                            value={calificacion}
                             size="medium"
                             readOnly // Establece la propiedad readOnly en true
-                            precision={0.5}
+                            precision={0.1}
                             max={5}
-
+                          /> */}
+                          <Rating
+                            name="simple-controlled"
+                            value={calificacion}
+                            size="large"
+                            precision={0.1}
+                            readOnly
+                            max={5}
                           />
-                           
                         </TableCell>
 
                         <TableCell align="left">
-
                           <>
                             <Button
                               sx={{ backgroundColor: 'green', color: 'white', marginRight: '10px' }}
@@ -393,11 +371,6 @@ export default function UserPage() {
                             </Button>
                           </>
                         </TableCell>
-
-
-
-
-
                       </TableRow>
                     );
                   })}

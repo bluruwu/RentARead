@@ -5,8 +5,8 @@ import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
 import Cookies from 'js-cookie';
-import { darken } from 'polished';
 import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import {
   Card,
   Table,
@@ -33,10 +33,11 @@ import EditUserForm from '../components/editUserForm/EditUserForm';
 import Label from '../components/label';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
-import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
-import USERLIST from '../_mock/user';
 import RegisterForm from '../components/registerForm';
+import { UserListHead } from '../sections/@dashboard/user';
+import USERLIST from '../_mock/user';
 import account from '../_mock/account';
+
 
 const TABLE_HEAD = [
   { id: 'titulo', label: 'Titulo', alignRight: false },
@@ -44,6 +45,8 @@ const TABLE_HEAD = [
   { id: 'autor', label: 'Autor', alignRight: false },
   { id: 'vendedor', label: 'Vendido por', alignRight: false },
   { id: 'calificacion', label: 'Califica al vendedor', alignRight: false },
+  { id: '', label: '' },
+
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -87,6 +90,8 @@ export default function UserPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [listalibros, setListalibros] = useState([]);
   const [goToHome, setGoToHome] = useState(false);
+  const [calificacion1, setCalificacion] = useState(0);
+
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -179,6 +184,7 @@ export default function UserPage() {
           if ('success' in data) {
             Cookies.set('listalibros', data.success); // Guardar los datos en la cookie listalibros
             setListalibros(data.success);
+
             swal.close();
           } else if ('error' in data) {
             console.log(data.error);
@@ -207,6 +213,85 @@ export default function UserPage() {
     }
   }, []);
 
+
+  const inicialValor = (a) => {
+
+    setCalificacion(a)
+
+  }
+
+
+  // calificaciontransaccion
+  const handleCalificacion = (calificacion, idTransaccion) => {
+
+    const data = {
+      "calificacion": calificacion,
+      "id_transaccion": idTransaccion
+
+    }
+    const url = 'http://127.0.0.1:8000/api/calificaciontransaccion';
+    fetch(url, {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+        'X-CSRFToken': Cookies.get('csrftoken'),
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data), // Enviar el idaviso en el cuerpo de la solicitud
+    })
+      .then((response) => response.json())
+      .then((data2) => {
+        // Mostrar ventana emergente de éxito
+        swal({
+          title: 'Éxito',
+          text: 'Se ha calificado  con exito ', // Mostrar el mensaje recibido en la respuesta
+          icon: 'success',
+          buttons: {
+            confirm: {
+              text: 'Aceptar',
+              className: 'swal-button--success',
+            },
+          },
+        }).then(() => {
+          window.location.reload(); // Recargar la página después de hacer clic en "Aceptar"
+        });
+      })
+      .catch((error) => {
+        console.error('Error al aceptar el intercambio:', error);
+      });
+  };
+
+  
+  const openCalificacionDialog = (idTransaccion) => {
+    const options = [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5]; // Lista de opciones de calificación
+  
+    Swal.fire({
+      title: 'Calificar',
+      html: `
+        <p>Selecciona una calificación:</p>
+        <select id="calificacionSelect" class="swal2-select">
+          ${options.map((option) => `<option value="${option}">${option}</option>`)}
+        </select>
+      `,
+      showCloseButton: true,
+      showCancelButton: true,
+      focusConfirm: false,
+      preConfirm: () => {
+        const selectElement = document.getElementById('calificacionSelect');
+        const selectedOption = parseFloat(selectElement.options[selectElement.selectedIndex].value);
+        setCalificacion(selectedOption);
+        console.log('calificacion', selectedOption);
+        handleCalificacion(selectedOption, idTransaccion);
+      },
+    });
+  };
+  
+
+
+
+
+
   if (goToAgregarLibro) {
     return <Navigate to="/dashboard/agregarlibro" />;
   }
@@ -227,7 +312,6 @@ export default function UserPage() {
           </Typography>
         </Stack>
         <Card>
-          <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
@@ -248,7 +332,7 @@ export default function UserPage() {
                       nombreLibro,
                       genero,
                       autor,
-                      calificacion5,
+                      calificacion,
                       vendedor,
                       vendedorId,
                     } = row;
@@ -256,9 +340,9 @@ export default function UserPage() {
                     const vende = vendedorId.replace(/\.com$/, '');
                     const url = `/static/librosMedia/${nombreLibro}-${vende}.jpg`;
                     const rutaCodificada = encodeURIComponent(url);
-
                     console.log('url', url);
                     
+
 
                     return (
                       <TableRow
@@ -278,24 +362,42 @@ export default function UserPage() {
                               height: '30vh',
                             }}
                           />
-                            {nombreLibro}
+                          {nombreLibro}
                         </TableCell>
                         <TableCell align="left">{genero}</TableCell>
                         <TableCell align="left">{autor}</TableCell>
                         <TableCell align="left">{vendedor}</TableCell>
+
+
                         <TableCell align="left">
                           <Rating
-                              name="star-rating"
-                              value={calificacion5}
-                              size="medium"
-                              onChange={(event, newValue) => {
-                                setValue(newValue);
-                              }}
-                              precision={0.5}
-                              max={5}
-                              
-                            />
-                          </TableCell>
+                            name="simple-controlled"
+                            value={calificacion }
+                            size="medium"
+                            readOnly // Establece la propiedad readOnly en true
+                            precision={0.5}
+                            max={5}
+
+                          />
+                           
+                        </TableCell>
+
+                        <TableCell align="left">
+
+                          <>
+                            <Button
+                              sx={{ backgroundColor: 'green', color: 'white', marginRight: '10px' }}
+                              onClick={() => openCalificacionDialog(idTransaccion)}
+                            >
+                              Calificar
+                            </Button>
+                          </>
+                        </TableCell>
+
+
+
+
+
                       </TableRow>
                     );
                   })}

@@ -42,7 +42,7 @@ export default function Router() {
         // { path: 'onlinepayment', element: <PaymentPage /> },
         { path: 'agregarlibro', element: <AgregarLibro /> },
         { path: 'book', element: <InterfaceBook /> },
-        { path: 'book/:name/:autor/:vendedorNombre/:descripcion/:disponible/:valor/:idlibro/:urlImagen', element: <InterfaceBook /> },
+        { path: 'book/:name/:autor/:vendedorNombre/:descripcion/:disponible/:valor/:idlibro/:urlImagen/:calificacion', element: <InterfaceBook /> },
         { path: 'onlinepayment/:idlibro/:valor/:uso', element: <PaymentPage /> },
         { path: 'perfilvendedor', element:<PerfilVendedor/>},
         { path: 'perfilvendedor/:idlibro', element:<PerfilVendedor/>},

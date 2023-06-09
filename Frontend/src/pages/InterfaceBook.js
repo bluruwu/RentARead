@@ -67,11 +67,11 @@ export default function InterfaceBook() {
   const [goPagar, setGoPagar] = useState(false);
   const [goIntercambio,setGoIntercambiar] = useState(false);
 
-  const { name, autor, vendedorNombre, descripcion, disponible, valor, idlibro, urlImagen } = useParams();
-  console.log(name, autor, vendedorNombre, descripcion, disponible, valor, idlibro);
+  const { name, autor, vendedorNombre, descripcion, disponible, valor, idlibro, urlImagen,calificacion} = useParams();
+  console.log(calificacion);
 
   const mdUp = useResponsive('up', 'md');
-  const numero = Math.floor(Math.random() * 6);
+  const numero =calificacion;
 
   const [rating, setRating] = useState(numero); // Valor inicial de la calificación
 

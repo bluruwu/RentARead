@@ -31,7 +31,7 @@ import EditUserForm from '../components/editUserForm/EditUserForm';
 import Label from '../components/label';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
-import { UserListHead} from '../sections/@dashboard/user';
+import { UserListHead } from '../sections/@dashboard/user';
 import USERLIST from '../_mock/user';
 import RegisterForm from '../components/registerForm';
 import account from '../_mock/account';
@@ -39,8 +39,7 @@ import account from '../_mock/account';
 const TABLE_HEAD = [
   { id: 'titulo', label: 'Titulo', alignRight: false },
   { id: 'genero', label: 'Tipo de Transacion', alignRight: false },
- { id: 'genero', label: 'comprador', alignRight: false },
- 
+  { id: 'genero', label: 'comprador', alignRight: false },
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -219,7 +218,7 @@ export default function UserPage() {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            MIS VENTAS
+            Libros Vendidos
           </Typography>
           <Button
             onClick={() => {
@@ -232,8 +231,6 @@ export default function UserPage() {
           </Button>
         </Stack>
         <Card>
-          
-
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
@@ -248,16 +245,11 @@ export default function UserPage() {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const {
-                      idTransaccion, tipoTransaccion, nombreLibro, comprador, imagen
-
-                    } = row;
-                    const  urlA = `/static/librosMedia/${ imagen}`;
+                    const { idTransaccion, tipoTransaccion, nombreLibro, comprador, imagen } = row;
+                    const urlA = `/static/librosMedia/${imagen}`;
 
                     return (
-                      <TableRow
-
-                      >
+                      <TableRow>
                         <TableCell align="left">
                           <Avatar
                             alt={'titulo'}
@@ -267,9 +259,10 @@ export default function UserPage() {
                               width: '20vh',
                               height: '30vh',
                             }}
-                          />{nombreLibro} </TableCell>
+                          />
+                          {nombreLibro}{' '}
+                        </TableCell>
 
-                        
                         <TableCell align="left">{tipoTransaccion}</TableCell>
                         <TableCell align="left">{comprador}</TableCell>
                       </TableRow>

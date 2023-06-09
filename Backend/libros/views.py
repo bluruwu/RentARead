@@ -357,12 +357,13 @@ class HistorialCompras(APIView):
         user = get_user(request)
         email = Usuario.objects.get(pk=user)
         listadoCompras = []
+        calificacion5 = 0
 
         for compra in Transaccion.objects.all():
             if compra.id_comprador == email:
                 libro = Libro.objects.get(pk=compra.id_libro.id_libro)
                 listadoCompras.append(
-                    {"idTransaccion": compra.id_transaccion, "tipoTransaccion": compra.tipo_transaccion,  "nombreLibro" : libro.titulo,  "vendedor": libro.email.email, "imagen": libro.ruta_imagen})
+                    {"idTransaccion": compra.id_transaccion, "tipoTransaccion": compra.tipo_transaccion, "nombreLibro" : libro.titulo, "genero":libro.genero, "autor":libro.autor,  "vendedor": libro.email.nombre, "vendedorId": libro.email.email, "imagen": libro.ruta_imagen, "calificacion": calificacion5})
 
         print(list(listadoCompras))
         return Response({'success': list(listadoCompras)})

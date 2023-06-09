@@ -154,7 +154,7 @@ export default function UserPage() {
     id_libro: '10',
   });
 
-  const url = 'https://rentaread-a9yy.onrender.com/historialcompras';
+  const url = 'https://rentaread-a9yy.onrender.com/api/historialcompras';
 
   useEffect(() => {
     function fetchCatalogo() {

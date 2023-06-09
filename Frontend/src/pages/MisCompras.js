@@ -154,7 +154,7 @@ export default function UserPage() {
     id_libro: '10',
   });
 
-  const url = 'http://127.0.0.1:8000/api/historialcompras';
+  const url = 'https://rentaread-a9yy.onrender.com/historialcompras';
 
   useEffect(() => {
     function fetchCatalogo() {
@@ -220,7 +220,7 @@ export default function UserPage() {
       calificacion: calificacionn,
       id_transaccion: idTransaccionn,
     };
-    const url = 'http://127.0.0.1:8000/api/calificaciontransaccion';
+    const url = 'https://rentaread-a9yy.onrender.com/api/calificaciontransaccion';
     fetch(url, {
       method: 'POST',
       credentials: 'same-origin',

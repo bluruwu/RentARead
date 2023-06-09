@@ -147,7 +147,7 @@ export default function UserPage() {
     id_libro: '10',
   });
 
-  const url = 'http://127.0.0.1:8000/api/librosvendidos';
+  const url = 'https://rentaread-a9yy.onrender.com/api/librosvendidos';
 
   useEffect(() => {
     function fetchCatalogo() {

@@ -1,16 +1,19 @@
+import { useState, useEffect } from 'react';
+import { Link, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
-import { useState } from 'react';
-// @mui
+import Cookies from 'js-cookie';
+import { darken } from 'polished';
+import swal from 'sweetalert';
 import {
   Card,
   Table,
   Stack,
   Paper,
   Avatar,
+  Button,
   Popover,
-  Checkbox,
   TableRow,
   MenuItem,
   TableBody,
@@ -20,30 +23,25 @@ import {
   IconButton,
   TableContainer,
   TablePagination,
+  Modal,
+  Box,
+  CircularProgress,
 } from '@mui/material';
-import Bills from './MisCompras';
-
-// components
+import EditUserForm from '../components/editUserForm/EditUserForm';
 import Label from '../components/label';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
-// sections
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
-// mock
-import USERLIST from '../_mock/customer';
+import USERLIST from '../_mock/user';
+import RegisterForm from '../components/registerForm';
 import account from '../_mock/account';
 
-// ----------------------------------------------------------------------
-
 const TABLE_HEAD = [
-  { id: 'nombre', label: 'Nombre', alignRight: false },
-  { id: 'userID', label: 'ID', alignRight: false },
-  { id: 'isInMora', label: 'En Mora', alignRight: false },
-  { id: 'status', label: 'Estado', alignRight: false },
-  { id: '' },
+  { id: 'titulo', label: 'Titulo', alignRight: false },
+  { id: 'genero', label: 'Tipo de Transacion', alignRight: false },
+ { id: 'genero', label: 'comprador', alignRight: false },
+ 
 ];
-
-// ----------------------------------------------------------------------
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -69,30 +67,24 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(array, (_user) => _user.idlibro.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
 export default function UserPage() {
   const [open, setOpen] = useState(null);
-
   const [page, setPage] = useState(0);
-
   const [order, setOrder] = useState('asc');
-
   const [selected, setSelected] = useState([]);
-
-  const [orderBy, setOrderBy] = useState('name');
-
+  const [orderBy, setOrderBy] = useState('idlibro');
   const [filterName, setFilterName] = useState('');
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [isLoading, setIsLoading] = useState(true);
+  const [listalibros, setListalibros] = useState([]);
+  const [goToHome, setGoToHome] = useState(false);
 
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-
-  const [nameSelected, setNameSelected] = useState();
-
-  const handleOpenMenu = (event, name) => {
-    setNameSelected(name);
+  const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
   };
 
@@ -108,18 +100,18 @@ export default function UserPage() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
+      const newSelecteds = USERLIST.map((n) => n.idlibro);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (event, idlibro) => {
+    const selectedIndex = selected.indexOf(idlibro);
     let newSelected = [];
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, idlibro);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -146,31 +138,101 @@ export default function UserPage() {
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(listalibros, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
 
-  const [goToBills, setGoToBills] = useState(false);
+  const [goToAgregarLibro, setGoToAgregarLibro] = useState(false);
 
-  if (goToBills) {
-    return <Bills customer={false} name={nameSelected} />;
+  const [data, setData] = useState({
+    id_libro: '10',
+  });
+
+  const url = 'http://127.0.0.1:8000/api/librosvendidos';
+
+  useEffect(() => {
+    function fetchCatalogo() {
+      swal({
+        title: 'Cargando',
+        text: 'Un momento...',
+        icon: 'info',
+        buttons: false,
+        closeOnClickOutside: false,
+        closeOnEsc: false,
+      });
+
+      fetch(url, {
+        method: 'GET',
+        credentials: 'same-origin',
+        headers: {
+          'X-CSRFToken': Cookies.get('csrftoken'),
+          Accept: 'application/json',
+          'Content-type': 'application/json',
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if ('success' in data) {
+            Cookies.set('listalibros', data.success); // Guardar los datos en la cookie listalibros
+            setListalibros(data.success);
+            swal.close();
+          } else if ('error' in data) {
+            console.log(data.error);
+            swal.close();
+            setGoToHome(true);
+          } else {
+            swal.close();
+            setGoToHome(true);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          swal.close();
+          setGoToHome(true);
+        });
+    }
+
+    if (Cookies.get('nombre')) {
+      // La cookie existe
+      fetchCatalogo();
+      console.log('La cookie existe');
+    } else {
+      // La cookie no existe
+      setGoToHome(true);
+      console.log('La cookie no existe');
+    }
+  }, []);
+
+  if (goToAgregarLibro) {
+    return <Navigate to="/dashboard/agregarlibro" />;
+  }
+
+  if (goToHome) {
+    return <Navigate to="/home" />;
   }
 
   return (
     <>
       <Helmet>
-        <title> Mis Ventas </title>
+        <title>Página Principal</title>
       </Helmet>
-
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Mis Ventas
+            MIS VENTAS
           </Typography>
+          <Button
+            onClick={() => {
+              setGoToAgregarLibro(true);
+            }}
+            variant="contained"
+            startIcon={<Iconify icon="eva:plus-fill" />}
+          >
+            Agregar Nuevo Libro
+          </Button>
         </Stack>
-
         <Card>
-          <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+          
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
@@ -185,54 +247,35 @@ export default function UserPage() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {account.listaCliente.map((celda) => (
-                    <TableRow
-                      hover
-                      key={celda.cedula}
-                      tabIndex={-1}
-                      role="checkbox"
-                      selected={selected.indexOf(celda.nombre) !== -1}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={selected.indexOf(celda.nombre) !== -1}
-                          onChange={(event) => handleClick(event, celda.nombre)}
-                        />
-                      </TableCell>
+                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                    const {
+                      idTransaccion, tipoTransaccion, nombreLibro, comprador, imagen
 
-                      <TableCell component="th" scope="row" padding="none">
-                        <Stack direction="row" alignItems="center" spacing={2}>
+                    } = row;
+                    const  urlA = `/static/librosMedia/${ imagen}`;
+
+                    return (
+                      <TableRow
+
+                      >
+                        <TableCell align="left">
                           <Avatar
-                            alt={celda.nombre}
-                            src={'/Frontend/public/static/images/avatars/avatar_default.jpg'}
-                          />
-                          <Typography variant="subtitle2" noWrap>
-                            {celda.nombre}
-                          </Typography>
-                        </Stack>
-                      </TableCell>
+                            alt={'titulo'}
+                            src={urlA}
+                            variant="rounded"
+                            style={{
+                              width: '20vh',
+                              height: '30vh',
+                            }}
+                          />{nombreLibro} </TableCell>
 
-                      <TableCell align="left">{celda.cedula}</TableCell>
+                        
+                        <TableCell align="left">{tipoTransaccion}</TableCell>
+                        <TableCell align="left">{comprador}</TableCell>
+                      </TableRow>
+                    );
+                  })}
 
-                      <TableCell align="left">{'Si' ? 'Si' : 'No'}</TableCell>
-
-                      <TableCell align="left">
-                        <Label color={(celda.estado_usuario === 'inactivo' && 'error') || 'success'}>
-                          {sentenceCase(celda.estado_usuario)}
-                        </Label>
-                      </TableCell>
-
-                      <TableCell align="right">
-                        <IconButton
-                          size="large"
-                          color="inherit"
-                          onClick={(event) => handleOpenMenu(event, celda.nombre)}
-                        >
-                          <Iconify icon={'eva:more-vertical-fill'} />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  ))}
                   {emptyRows > 0 && (
                     <TableRow style={{ height: 53 * emptyRows }}>
                       <TableCell colSpan={6} />
@@ -302,15 +345,9 @@ export default function UserPage() {
           Editar
         </MenuItem>
 
-        <MenuItem
-          onClick={() => {
-            setGoToBills(true);
-          }}
-          variant="contained"
-          startIcon={<Iconify icon="eva:plus-fill" />}
-        >
-          <Iconify icon={'ri:bill-line'} sx={{ mr: 2 }} />
-          Facturas
+        <MenuItem sx={{ color: 'error.main' }}>
+          <Iconify icon={'eva:trash-2-fill'} sx={{ mr: 2 }} />
+          Eliminar
         </MenuItem>
       </Popover>
     </>

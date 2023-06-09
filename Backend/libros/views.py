@@ -399,7 +399,7 @@ class MisLibrosVendidos(APIView):
             if venta.id_libro.email == email:
                 libro = Libro.objects.get(pk=venta.id_libro.id_libro)
                 listadoVentas.append(
-                    {"idTransaccion": venta.id_transaccion, "tipoTransaccion": venta.tipo_transaccion,  "nombreLibro" : libro.titulo,  "comprador/a": venta.id_comprador.email, "imagen": libro.ruta_imagen})
+                    {"idTransaccion": venta.id_transaccion, "tipoTransaccion": venta.tipo_transaccion,  "nombreLibro" : libro.titulo,  "comprador": venta.id_comprador.nombre, "imagen": os.path.basename(libro.ruta_imagen)})
 
         print(list(listadoVentas))
         return Response({'success': list(listadoVentas)})

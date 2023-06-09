@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Container, Typography, Avatar, Box } from '@mui/material';
+import { Container, Typography, Avatar, Box, Rating } from '@mui/material';
 import { useState, Redirect } from 'react';
 import { Link, useParams, useNavigate, Navigate } from 'react-router-dom';
 import { LoadingButton } from '@mui/lab';
@@ -65,13 +65,13 @@ const StyledContent = styled('div')(({ theme }) => ({
 
 export default function InterfaceBook() {
   const [goPagar, setGoPagar] = useState(false);
-  const [goIntercambio,setGoIntercambiar] = useState(false);
+  const [goIntercambio, setGoIntercambiar] = useState(false);
 
-  const { name, autor, vendedorNombre, descripcion, disponible, valor, idlibro, urlImagen } = useParams();
-  console.log(name, autor, vendedorNombre, descripcion, disponible, valor, idlibro);
+  const { name, autor, vendedorNombre, descripcion, disponible, valor, idlibro, urlImagen, calificacion } = useParams();
+  console.log(calificacion);
 
   const mdUp = useResponsive('up', 'md');
-  const numero = Math.floor(Math.random() * 6);
+  const numero = calificacion;
 
   const [rating, setRating] = useState(numero); // Valor inicial de la calificación
 
@@ -95,13 +95,10 @@ export default function InterfaceBook() {
   if (goPagar) {
     return <Navigate to={`/dashboard/onlinepayment/${idlibro}/${valor}/${disponible}`} />;
   }
-  if(goIntercambio)
-  {
+  if (goIntercambio) {
     const rutaCodificada = encodeURIComponent(urlImagen);
-    return <Navigate to={`/dashboard/intercambios/${idlibro}/${name}/${rutaCodificada }`} />;
-
+    return <Navigate to={`/dashboard/intercambios/${idlibro}/${name}/${rutaCodificada}`} />;
   }
-
 
   // Direcionamiento
 
@@ -211,10 +208,11 @@ export default function InterfaceBook() {
               onClick={() => {
                 if (disponible !== 'Intercambio') {
                   setGoPagar(true);
-                }else{
-                  console.log('AAA')
-                setGoIntercambiar(true);
-              }}}
+                } else {
+                  console.log('AAA');
+                  setGoIntercambiar(true);
+                }
+              }}
             >
               {getText(disponible)} {valor}
             </LoadingButton>

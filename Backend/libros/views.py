@@ -99,8 +99,6 @@ class CatalogoLibrosView(APIView):
 
         user = get_user(request)
         email = Usuario.objects.get(pk=user)
-        print("--->", email)
-        print("user", user)
 
         listadolibros = []
 
@@ -117,8 +115,20 @@ class CatalogoLibrosView(APIView):
                 else:
                     uso = "Intercambio"
 
+                calificacion = 0
+                num_calificaciones = 0
+
+                for transaccion in Transaccion.objects.all():
+                    if transaccion.id_libro.email == libro.email:
+                        if transaccion.calificacion is not None:
+                            calificacion += transaccion.calificacion
+                            num_calificaciones += 1
+
+                if num_calificaciones > 0:
+                    calificacion = round(calificacion / num_calificaciones, 1)
+
                 listadolibros.append(
-                    {"idlibro": libro.id_libro, "titulo": libro.titulo, "genero": libro.genero, "autor": libro.autor, "uso": uso, "editorial": libro.editorial, "isbn": libro.isbn, "anoPublicacion": libro.ano_publicacion, "numeroPaginas": libro.numero_paginas, "descripcion": libro.descripcion, "precioVenta": libro.precio_venta, "precioRenta": libro.precio_renta, "intercambio": libro.intercambio, "estado": libro.estado, "vendedorNombre": libro.email.nombre, "vendedorId": libro.email.email, "vendedorCiudad": libro.email.ciudad, "lat": libro.email.latitud, "lng": libro.email.longitud})
+                    {"idlibro": libro.id_libro, "titulo": libro.titulo, "genero": libro.genero, "autor": libro.autor, "uso": uso, "editorial": libro.editorial, "isbn": libro.isbn, "anoPublicacion": libro.ano_publicacion, "numeroPaginas": libro.numero_paginas, "descripcion": libro.descripcion, "precioVenta": libro.precio_venta, "precioRenta": libro.precio_renta, "intercambio": libro.intercambio, "estado": libro.estado, "vendedorNombre": libro.email.nombre, "vendedorId": libro.email.email, "vendedorCiudad": libro.email.ciudad, "lat": libro.email.latitud, "lng": libro.email.longitud, "calificacion": calificacion})
         print(list(listadolibros))
         return Response({'success': list(listadolibros)})
 
@@ -275,10 +285,12 @@ class AvisosIntercambiosView(APIView):
         for aviso in IntercambiosAvisos.objects.all():
             if aviso.id_libro_vendedor.email == usuario:
                 idlibrousuario = aviso.id_libro_vendedor.id_libro
-                imagencliente  = os.path.basename(aviso.id_libro_vendedor.ruta_imagen)
+                imagencliente = os.path.basename(
+                    aviso.id_libro_vendedor.ruta_imagen)
                 titulolibrousuario = aviso.id_libro_vendedor.titulo
                 idlibrocliente = aviso.id_libro_cliente.id_libro
-                imagenusuario = os.path.basename(aviso.id_libro_cliente.ruta_imagen)
+                imagenusuario = os.path.basename(
+                    aviso.id_libro_cliente.ruta_imagen)
                 titulolibrocliente = aviso.id_libro_cliente.titulo
                 emailcliente = aviso.id_libro_cliente.email.email
                 emailusuario = aviso.id_libro_vendedor.email.email
@@ -293,8 +305,10 @@ class AvisosIntercambiosView(APIView):
 
                 idlibrousuario = aviso.id_libro_cliente.id_libro
                 titulolibrousuario = aviso.id_libro_cliente.titulo
-                imagenusuario = os.path.basename(aviso.id_libro_vendedor.ruta_imagen)
-                imagencliente = os.path.basename(aviso.id_libro_cliente.ruta_imagen)
+                imagenusuario = os.path.basename(
+                    aviso.id_libro_vendedor.ruta_imagen)
+                imagencliente = os.path.basename(
+                    aviso.id_libro_cliente.ruta_imagen)
                 emailcliente = aviso.id_libro_cliente.email.email
                 emailusuario = aviso.id_libro_vendedor.email.email
                 estado = aviso.estado
@@ -307,7 +321,8 @@ class AvisosIntercambiosView(APIView):
                     {"idlibrousuario": idlibrousuario, "titulolibrousuario": titulolibrousuario, "idlibrocliente": idlibrocliente, "titulolibrocliente": titulolibrocliente, "estado": estado, "idaviso": id_aviso, "imagenvendedor": imagenusuario, "imagencliente": imagencliente, "emailcliente": emailcliente, "emailusuario": emailusuario})
 
         return Response({'success': list(listaintercambios)})
-    
+
+
 class PerfilVendedorView(APIView):
     permission_classes = (IsAuthenticated,)
 
@@ -349,6 +364,7 @@ class CalificacionTransaccionView(APIView):
 
         return Response({'success': "Calificado"})
 
+
 class HistorialCompras(APIView):
     permission_classes = (IsAuthenticated,)
 
@@ -357,16 +373,33 @@ class HistorialCompras(APIView):
         user = get_user(request)
         email = Usuario.objects.get(pk=user)
         listadoCompras = []
+        calificacion = 0
 
         for compra in Transaccion.objects.all():
             if compra.id_comprador == email:
                 libro = Libro.objects.get(pk=compra.id_libro.id_libro)
+
+                calificacion = 0
+                num_calificaciones = 0
+                if compra.calificacion is not None:
+                    calificacion = compra.calificacion
+
+                # for transaccion in Transaccion.objects.all():
+                #     if transaccion.id_libro.email == compra.id_libro.email:
+                #         if transaccion.calificacion is not None:
+                #             calificacion += transaccion.calificacion
+                #             num_calificaciones += 1
+
+                # if num_calificaciones > 0:
+                #     calificacion = round(calificacion / num_calificaciones, 1)
+
                 listadoCompras.append(
-                    {"idTransaccion": compra.id_transaccion, "tipoTransaccion": compra.tipo_transaccion,  "nombreLibro" : libro.titulo,  "vendedor": libro.email.email, "imagen": libro.ruta_imagen})
+                    {"idTransaccion": compra.id_transaccion, "tipoTransaccion": compra.tipo_transaccion, "nombreLibro": libro.titulo, "genero": libro.genero, "autor": libro.autor,  "vendedor": libro.email.nombre, "vendedorId": libro.email.email, "imagen": libro.ruta_imagen, "calificacion": calificacion})
 
         print(list(listadoCompras))
         return Response({'success': list(listadoCompras)})
-    
+
+
 class LibrosParaTransacciones(APIView):
     permission_classes = (IsAuthenticated,)
 
@@ -375,17 +408,18 @@ class LibrosParaTransacciones(APIView):
         user = get_user(request)
         email = Usuario.objects.get(pk=user)
         idlibrosDisponibles = Libro.objects.filter(email=email.email) \
-                                    .exclude(id_libro__in=Transaccion.objects.values_list('id_libro', flat=True)) \
-                                    .values_list('id_libro', flat=True)
+            .exclude(id_libro__in=Transaccion.objects.values_list('id_libro', flat=True)) \
+            .values_list('id_libro', flat=True)
         infoLibro = Libro.objects.filter(id_libro__in=idlibrosDisponibles)
-        librosDisponibles=[]
+        librosDisponibles = []
         for libro in infoLibro:
             librosDisponibles.append(
                 {"idLibro": libro.id_libro, "titulo": libro.titulo, "genero": libro.genero, "autor": libro.autor, "estado": libro.estado, "imagen": libro.ruta_imagen})
-            
+
         print(list(librosDisponibles))
         return Response({'success': list(librosDisponibles)})
-    
+
+
 class MisLibrosVendidos(APIView):
     permission_classes = (IsAuthenticated,)
 
@@ -399,7 +433,7 @@ class MisLibrosVendidos(APIView):
             if venta.id_libro.email == email:
                 libro = Libro.objects.get(pk=venta.id_libro.id_libro)
                 listadoVentas.append(
-                    {"idTransaccion": venta.id_transaccion, "tipoTransaccion": venta.tipo_transaccion,  "nombreLibro" : libro.titulo,  "comprador/a": venta.id_comprador.email, "imagen": libro.ruta_imagen})
+                    {"idTransaccion": venta.id_transaccion, "tipoTransaccion": venta.tipo_transaccion,  "nombreLibro": libro.titulo,  "comprador": venta.id_comprador.nombre, "imagen": os.path.basename(libro.ruta_imagen)})
 
         print(list(listadoVentas))
         return Response({'success': list(listadoVentas)})

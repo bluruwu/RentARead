@@ -113,13 +113,13 @@ export default function Cliente() {
         />
         <Rating
           name="star-rating"
-          value={userData.calificacion}
+          value={parseFloat(userData.calificacion)}
           size="large"
           onChange={(event, newValue) => {
             setValue(newValue);
           }}
-          precision={0.5}
-          noRatingGiven
+          precision={0.1}
+          readOnly
           max={5}
           sx={{
             position: 'absolute',
@@ -133,9 +133,9 @@ export default function Cliente() {
       <StyledContent sx={{ textAlign: 'left', alignItems: 'center' }}>
         <div className="contenedor-text">
           <p className="nombre"> {userData.nombre}</p>
-          <p className="telefono"> Telefono: {userData.telefono}</p>
+          <p className="telefono"> Teléfono: {userData.telefono}</p>
           <p className="ciudad"> Ciudad: {userData.ciudad}</p>
-          <p className="direccion"> Direccion: {userData.direccion}</p>
+          <p className="direccion"> Dirección: {userData.direccion}</p>
         </div>
       </StyledContent>
     </div>
